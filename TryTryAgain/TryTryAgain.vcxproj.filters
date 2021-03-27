@@ -17,6 +17,7 @@
     <ClCompile Include="source\stb_image.cpp" />
     <ClCompile Include="source\Elements\Game.cpp" />
     <ClCompile Include="source\Elements\Actor.cpp" />
+    <ClCompile Include="Source\Panels\Console.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Main.h" />
@@ -30,5 +31,6 @@
     <ClInclude Include="source\Panels\Hierarchy.h" />
     <ClInclude Include="source\Elements\Game.h" />
     <ClInclude Include="source\Elements\Actor.h" />
+    <ClInclude Include="source\Elements\Camera.h" />
   </ItemGroup>
 </Project>

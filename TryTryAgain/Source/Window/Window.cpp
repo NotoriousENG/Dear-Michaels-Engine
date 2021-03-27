@@ -84,9 +84,8 @@ void Window::init_screen(const char* caption) {
     // Use v-sync
     SDL_GL_SetSwapInterval(1);
 
-    // Disable depth test and face culling.
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
+    glEnable(GL_DEPTH_TEST);
+    // glDisable(GL_CULL_FACE);
 
     int w, h;
     SDL_GetWindowSize(window, &w, &h);
@@ -135,8 +134,7 @@ void Window::execute() {
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    console = std::make_unique<Panels::Console>();
-
+    
     gameWindow = std::make_unique<Panels::GameWindow>();
 
     hierarchy = std::make_unique<Panels::Hierarchy>(gameWindow->MyGame.get());
@@ -213,13 +211,21 @@ void Window::execute() {
 void Window::processInputForWindow(SDL_Event event)
 {
     if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
-        quit = true;
+        gameWindow->MyGame->focused = false;
 
     auto key = event.key.keysym.sym;
     if (key >= 0 && key < 1024)
     {
-        
+        if (event.type == SDL_KEYDOWN)
+            gameWindow->MyGame->Keys[key] = true;
+        else if (event.type == SDL_KEYUP)
+            gameWindow->MyGame->Keys[key] = false;
     }
+
+	if (event.type == SDL_MOUSEMOTION)
+	{
+        gameWindow->MyGame->mouse = glm::vec2(event.motion.xrel, event.motion.yrel);
+	}
 }
 
 void Window::framebuffer_size_callback(int width, int height)

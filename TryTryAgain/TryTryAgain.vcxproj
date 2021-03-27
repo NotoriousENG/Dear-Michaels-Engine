@@ -156,6 +156,7 @@
     <ClCompile Include="source\Elements\Shader.cpp" />
     <ClCompile Include="source\Elements\Texture.cpp" />
     <ClCompile Include="source\Main.cpp" />
+    <ClCompile Include="Source\Panels\Console.cpp" />
     <ClCompile Include="source\stb_image.cpp" />
     <ClCompile Include="source\ThirdParty\imgui-docking\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="source\ThirdParty\imgui-docking\backends\imgui_impl_sdl.cpp" />
@@ -168,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="source\Elements\Camera.h" />
     <ClInclude Include="source\Elements\Game.h" />
     <ClInclude Include="source\Elements\Actor.h" />
     <ClInclude Include="source\Elements\ResourceManager.h" />

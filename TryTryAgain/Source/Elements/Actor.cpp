@@ -1,5 +1,7 @@
 #include "Actor.h"
 
+#include "Game.h"
+
 Actor::Actor()
 {
 	model = glm::mat4(1);
@@ -68,6 +70,9 @@ void Actor::Tick(float delta)
 	trans = glm::rotate(trans, glm::radians(rotation[2]), glm::vec3(0, 0, 1));
 	
 	trans = glm::scale(trans, glm::vec3(scale[0], scale[1], scale[2]));
+
+	view = glm::lookAt(Game::MainCamera.Position, Game::MainCamera.Position + Game::MainCamera.Front, Game::MainCamera.Up);
+	projection = glm::perspective(glm::radians(Game::MainCamera.Zoom), 1920.0f / 1080.0f, 0.1f, 100.0f);
 	
 	ResourceManager::GetShader("Standard").Use();
 	ResourceManager::GetShader("Standard").SetMatrix4("model", trans);

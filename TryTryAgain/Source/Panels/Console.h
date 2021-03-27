@@ -4,13 +4,15 @@
 #include <cstdlib>
 #include <imgui.h>
 
+#define M_LOG(...) Panels::Console::instance.AddLog(__VA_ARGS__);printf("%s\n",__VA_ARGS__)
+
 // Visual Studio warnings
 #ifdef _MSC_VER
 #pragma warning (disable: 4996) // 'This function or variable may be unsafe': strcpy, strdup, sprintf, vsnprintf, sscanf, fopen
 #endif
 
 namespace Panels
-{
+{	
     struct Console
     {
         char                  InputBuf[256];
@@ -21,6 +23,9 @@ namespace Panels
         ImGuiTextFilter       Filter;
         bool                  AutoScroll;
         bool                  ScrollToBottom;
+
+        static Console instance;
+        
 
         Console()
         {
@@ -164,6 +169,7 @@ namespace Panels
                 ImVec4 color;
                 bool has_color = false;
                 if (strstr(item, "[error]")) { color = ImVec4(1.0f, 0.4f, 0.4f, 1.0f); has_color = true; }
+                else if (strstr(item, "[warn]")) { color = ImVec4(1.0f, 1.0f, 0.0f, 1.0f); has_color = true; }
                 else if (strncmp(item, "# ", 2) == 0) { color = ImVec4(1.0f, 0.8f, 0.6f, 1.0f); has_color = true; }
                 if (has_color)
                     ImGui::PushStyleColor(ImGuiCol_Text, color);

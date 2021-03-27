@@ -9,6 +9,7 @@
 #include "Elements/Actor.h"
 #include "Elements/ResourceManager.h"
 #include "Elements/Shader.h"
+#include "Panels/Console.h"
 
 namespace Panels
 {
@@ -67,6 +68,17 @@ namespace Panels
 				{
 					scaleFactor = size.x / 1920.0f;
 				}
+				if (ImGui::IsWindowFocused())
+				{
+					MyGame->focused = true;
+					SDL_SetRelativeMouseMode(SDL_TRUE);
+				}
+				else
+				{
+					MyGame->focused = false;
+					SDL_SetRelativeMouseMode(SDL_FALSE);
+				}
+				
 
 				// Because I use the texture from OpenGL, I need to invert the V from the UV.
 				ImGui::Image((ImTextureID)texColorBuffer, ImVec2(1920 * scaleFactor, 1080 * scaleFactor), ImVec2(0, 1), ImVec2(1, 0));
@@ -87,11 +99,11 @@ namespace Panels
 			// second pass
 			glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
 			glClearColor(1.0f, 0, 0, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
+			glEnable(GL_DEPTH_TEST);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			ResourceManager::GetShader("Framebuffer").Use();
 			// glBindVertexArray(quadVAO);
-			glDisable(GL_DEPTH_TEST);
 			glBindTexture(GL_TEXTURE_2D, texColorBuffer);
 			// glDrawArrays(GL_TRIANGLES, 0, 6);
 		}
@@ -134,6 +146,8 @@ namespace Panels
 		unsigned int rbo;
 
 		ImVec2 size;
+
+		bool focused;
 		
 	};
 }

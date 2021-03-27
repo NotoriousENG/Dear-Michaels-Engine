@@ -33,7 +33,7 @@ public:
 	{
 		if (*p_open)
 		{
-			console->Draw("Console", p_open);
+			Panels::Console::instance.Draw("Console", p_open);
 		}
 	}
 	
@@ -69,8 +69,6 @@ private:
 	bool show_demo_window = false;
 	bool show_console = true;
 	bool show_hierarchy = true;
-
-	std::unique_ptr<Panels::Console> console;
 
 	std::unique_ptr<Panels::GameWindow> gameWindow;
 

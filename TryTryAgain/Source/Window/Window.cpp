@@ -224,7 +224,8 @@ void Window::processInputForWindow(SDL_Event event)
 
 	if (event.type == SDL_MOUSEMOTION)
 	{
-        gameWindow->MyGame->mouse = glm::vec2(event.motion.xrel, event.motion.yrel);
+		gameWindow->MyGame->mouse = glm::vec2(event.motion.xrel, event.motion.yrel);
+        gameWindow->MyGame->mouseMoving = true;
 	}
 }
 

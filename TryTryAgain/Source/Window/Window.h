@@ -73,6 +73,8 @@ private:
 	std::unique_ptr<Panels::GameWindow> gameWindow;
 
 	std::unique_ptr<Panels::Hierarchy> hierarchy;
+
+	glm::vec2 prevMouse;
 };
 
 

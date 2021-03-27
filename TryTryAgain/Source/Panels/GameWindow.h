@@ -38,10 +38,16 @@ namespace Panels
 			// -----------------------------Framebuffer/Renderbuffer End ----------------------------------------
 
 			MyGame = std::make_unique<Game>(framebuffer);
+
+			ImGui::GetIO().ConfigWindowsMoveFromTitleBarOnly = true;
 		}
 
 		void Draw()
 		{
+			if (focused)
+			{
+				ImGui::PushStyleColor(ImGuiCol_ChildBg, ActiveColor);
+			}
 			ImGui::Begin("GameWindow: 1920 x 1080");
 			{
 				// Using a Child allow to fill all the space of the window.
@@ -70,6 +76,10 @@ namespace Panels
 				}
 				if (ImGui::IsWindowFocused())
 				{
+					if (!MyGame->focused)
+					{
+						M_LOG("# To Exit Play mode Press Escape");
+					}
 					MyGame->focused = true;
 					SDL_SetRelativeMouseMode(SDL_TRUE);
 				}
@@ -85,6 +95,13 @@ namespace Panels
 				ImGui::EndChild();
 			}
 			ImGui::End();
+
+			if (focused)
+			{
+				ImGui::PopStyleColor();
+			}
+
+			focused = MyGame->focused;
 		}
 
 		std::unique_ptr<Game> MyGame;
@@ -146,6 +163,8 @@ namespace Panels
 		unsigned int rbo;
 
 		ImVec2 size;
+
+		const ImVec4 ActiveColor = ImVec4(0, 0, 255, 255);
 
 		bool focused;
 		

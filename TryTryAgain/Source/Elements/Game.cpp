@@ -37,6 +37,13 @@ void Game::Render()
 
 void Game::ProcessInput()
 {
+	if (mouseMoving)
+	{
+		MainCamera.ProcessMouseMovement(mouse.x, -mouse.y);
+		mouseMoving = false;
+	}
+	
+	
 	if (this->Keys[SDLK_w])
 	{
 		MainCamera.ProcessKeyboard(FORWARD, deltaTime);
@@ -52,12 +59,6 @@ void Game::ProcessInput()
 	if (this->Keys[SDLK_d])
 	{
 		MainCamera.ProcessKeyboard(RIGHT, deltaTime);
-	}
-
-	if (mouse != last_mouse)
-	{
-		MainCamera.ProcessMouseMovement(mouse.x, -mouse.y);
-		last_mouse = mouse;
 	}
 
 }

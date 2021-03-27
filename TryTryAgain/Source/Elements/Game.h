@@ -28,10 +28,11 @@ public:
 
 	bool focused;
 
+	bool mouseMoving;
+
 private:
 	unsigned int framebuffer;
 	float deltaTime, lastFrame;
-
-	glm::vec2 last_mouse;
+	
 };
 

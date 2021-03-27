@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="source\ThirdParty\imgui-docking\imgui.cpp" />
+    <ClCompile Include="source\ThirdParty\imgui-docking\imgui_demo.cpp" />
+    <ClCompile Include="source\ThirdParty\imgui-docking\imgui_draw.cpp" />
+    <ClCompile Include="source\ThirdParty\imgui-docking\imgui_tables.cpp" />
+    <ClCompile Include="source\ThirdParty\imgui-docking\imgui_widgets.cpp" />
+    <ClCompile Include="source\Main.cpp" />
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="source\Window\Window.cpp" />
+    <ClCompile Include="source\ThirdParty\imgui-docking\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="source\ThirdParty\imgui-docking\backends\imgui_impl_sdl.cpp" />
+    <ClCompile Include="source\Elements\Shader.cpp" />
+    <ClCompile Include="source\Elements\Texture.cpp" />
+    <ClCompile Include="source\Elements\ResourceManager.cpp" />
+    <ClCompile Include="source\stb_image.cpp" />
+    <ClCompile Include="source\Elements\Game.cpp" />
+    <ClCompile Include="source\Elements\Actor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\Main.h" />
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="source\Window\Window.h" />
+    <ClInclude Include="source\Panels\Console.h" />
+    <ClInclude Include="source\Panels\GameWindow.h" />
+    <ClInclude Include="source\Elements\Shader.h" />
+    <ClInclude Include="source\Elements\Texture.h" />
+    <ClInclude Include="source\Elements\ResourceManager.h" />
+    <ClInclude Include="source\Panels\Hierarchy.h" />
+    <ClInclude Include="source\Elements\Game.h" />
+    <ClInclude Include="source\Elements\Actor.h" />
+  </ItemGroup>
+</Project>

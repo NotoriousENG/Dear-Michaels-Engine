@@ -32,7 +32,7 @@ namespace Panels
 
 			glGenTextures(1, &texColorBuffer);
 
-			framebuffer_size_callback(size.x, size.y);
+			init_framebuffer();
 
 			// -----------------------------Framebuffer/Renderbuffer End ----------------------------------------
 
@@ -41,7 +41,7 @@ namespace Panels
 
 		void Draw()
 		{
-			ImGui::Begin("GameWindow");
+			ImGui::Begin("GameWindow: 1920 x 1080");
 			{
 				// Using a Child allow to fill all the space of the window.
 				// It also alows customization
@@ -49,15 +49,27 @@ namespace Panels
 				// Get the size of the child (i.e. the whole draw size of the windows).
 				ImVec2 wsize = ImGui::GetWindowSize();
 				Render(wsize);
-				if (wsize.x != size.x && wsize.y != size.x)
+				if (wsize.x != size.x || wsize.y != size.y)
 				{
 					size = wsize;
-					
-					framebuffer_size_callback(wsize.x, wsize.y);
+					init_framebuffer();
 				}
-				
+
+				float windowAspect = size.x / size.y;
+				float renderAspect = 1920.0f / 1080.0f;
+
+				float scaleFactor;
+				if (windowAspect > renderAspect)
+				{
+					scaleFactor = size.y / 1080.0f;
+				}
+				else
+				{
+					scaleFactor = size.x / 1920.0f;
+				}
+
 				// Because I use the texture from OpenGL, I need to invert the V from the UV.
-				ImGui::Image((ImTextureID)texColorBuffer, wsize, ImVec2(0, 1), ImVec2(1, 0));
+				ImGui::Image((ImTextureID)texColorBuffer, ImVec2(1920 * scaleFactor, 1080 * scaleFactor), ImVec2(0, 1), ImVec2(1, 0));
 				ImGui::EndChild();
 			}
 			ImGui::End();
@@ -84,9 +96,9 @@ namespace Panels
 			// glDrawArrays(GL_TRIANGLES, 0, 6);
 		}
 
-		void framebuffer_size_callback(int width, int height)
+		void init_framebuffer()
 		{
-			glViewport(0, 0, width, height);
+			glViewport(0, 0, size.x, size.y);
 
 			// Update GL Render Properties
 			glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);

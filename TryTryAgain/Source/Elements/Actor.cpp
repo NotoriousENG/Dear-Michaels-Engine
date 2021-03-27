@@ -3,13 +3,15 @@
 Actor::Actor()
 {
 	model = glm::mat4(1);
-	model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
 	view = glm::mat4(1.0f);
 	// note that we're translating the scene in the reverse direction of where we want to move
 	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 
-	projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+	projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
+
+	rotation[0] = 45.0f;
+	rotation[1] = 45.0f;
 
 	ResourceManager::LoadShader("Assets/Shaders/Standard.vert", "Assets/Shaders/Standard.frag", nullptr, "Standard");
 

@@ -1,26 +1,25 @@
 #pragma once
-#include <glad/glad.h>
+
 #include <glm/fwd.hpp>
-#include <glm/vec3.hpp>
 #include <glm/detail/type_quat.hpp>
 
-#include "ResourceManager.h"
+#include "Structs/FTransform.h"
 
-class Actor
+class AActor
 {
 public:
 	
-	float position[3] = {0,0,0};
-	float rotation[3] = { 0,0,0 };
-	float scale[3] = { 1,1,1 };
+    FTransform transform;
 
-	Actor();
+    const char* name = "Actor";
 
-	void Draw();
+	AActor(const char* name = "Actor", glm::vec3 pos = glm::vec3(0), glm::vec3 rot = glm::vec3(0), glm::vec3 scale = glm::vec3(1));
+
+	virtual void Draw();
 
 	virtual void Tick(float delta);
 	
-private:
+protected:
 
 	glm::mat4 model, view, projection;
 

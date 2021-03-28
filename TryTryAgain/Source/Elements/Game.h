@@ -4,9 +4,8 @@
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_timer.h>
 
-
-#include "Actor.h"
 #include "Camera.h"
+#include "Actors/AActor.h"
 
 class Game
 {
@@ -18,7 +17,7 @@ public:
 
 	void ProcessInput();
 	
-	std::vector<std::unique_ptr<Actor>> GameObjects;
+	std::vector<std::unique_ptr<AActor>> Actors;
 
 	static Camera MainCamera;
 

@@ -1,14 +1,8 @@
 #pragma once
 #include <glad/glad.h>
 
-#include <fstream>
-#include <imgui.h>
-#include <imgui_impl_opengl3.h>
 #include <imgui_impl_sdl.h>
-#include <SDL2/SDL_events.h>
-#include <glm/glm.hpp>
 
-#include <glad/glad.h>
 #include <SDL2/SDL.h>
 
 #include "Panels/Console.h"

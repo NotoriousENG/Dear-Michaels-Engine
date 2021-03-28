@@ -1,9 +1,15 @@
-#include "Actor.h"
+#include "AAwesomeBox.h"
 
-#include "Game.h"
+#include <glad/glad.h>
 
-Actor::Actor()
+
+#include "Elements/Game.h"
+#include "ResourceManagement/ResourceManager.h"
+
+AAwesomeBox::AAwesomeBox(const char* name, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale)
 {
+	this->name = name;
+
 	model = glm::mat4(1);
 
 	view = glm::mat4(1.0f);
@@ -12,13 +18,17 @@ Actor::Actor()
 
 	projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
 
-	rotation[0] = 45.0f;
-	rotation[1] = 45.0f;
+	this->transform = FTransform
+	{
+		pos,
+		rot,
+		scale
+	};
 
-	ResourceManager::LoadShader("Assets/Shaders/Standard.vert", "Assets/Shaders/Standard.frag", nullptr, "Standard");
+	ResourceManagement::ResourceManager::LoadShader("Assets/Shaders/Standard.vert", "Assets/Shaders/Standard.frag", nullptr, "Standard");
 
-	ResourceManager::LoadTexture("Assets/Textures/container.jpg", false, "container");
-	ResourceManager::LoadTexture("Assets/Textures/awesomeface.png", true, "awesomeface");
+	ResourceManagement::ResourceManager::LoadTexture("Assets/Textures/container.jpg", false, "container");
+	ResourceManagement::ResourceManager::LoadTexture("Assets/Textures/awesomeface.png", true, "awesomeface");
 
 	// -------------------------------------VAO/VBO------------------------------------------------------
 
@@ -45,37 +55,37 @@ Actor::Actor()
 	glBindVertexArray(0);
 }
 
-void Actor::Draw()
+void AAwesomeBox::Draw()
 {
-	ResourceManager::GetShader("Standard").Use();
+	ResourceManagement::ResourceManager::GetShader("Standard").Use();
 
 	glActiveTexture(GL_TEXTURE0);
-	ResourceManager::GetTexture("container").Bind();
+	ResourceManagement::ResourceManager::GetTexture("container").Bind();
 	glActiveTexture(GL_TEXTURE1);
-	ResourceManager::GetTexture("awesomeface").Bind();
+	ResourceManagement::ResourceManager::GetTexture("awesomeface").Bind();
 
-	ResourceManager::GetShader("Standard").SetInteger("texture1", 0);
-	ResourceManager::GetShader("Standard").SetInteger("texture2", 1);
-	
+	ResourceManagement::ResourceManager::GetShader("Standard").SetInteger("texture1", 0);
+	ResourceManagement::ResourceManager::GetShader("Standard").SetInteger("texture2", 1);
+
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 }
 
-void Actor::Tick(float delta)
+void AAwesomeBox::Tick(float delta)
 {
-	auto trans =  glm::translate(model, glm::vec3(position[0], position[1], position[2]));
-	
-	trans = glm::rotate(trans, glm::radians(rotation[0]), glm::vec3(1, 0, 0));
-	trans = glm::rotate(trans, glm::radians(rotation[1]), glm::vec3(0, 1, 0));
-	trans = glm::rotate(trans, glm::radians(rotation[2]), glm::vec3(0, 0, 1));
-	
-	trans = glm::scale(trans, glm::vec3(scale[0], scale[1], scale[2]));
+	auto trans = glm::translate(model, transform.position);
+
+	trans = glm::rotate(trans, transform.rotation.x, glm::vec3(1, 0, 0));
+	trans = glm::rotate(trans, transform.rotation.y, glm::vec3(0, 1, 0));
+	trans = glm::rotate(trans, transform.rotation.z, glm::vec3(0, 0, 1));
+
+	trans = glm::scale(trans, transform.scale);
 
 	view = glm::lookAt(Game::MainCamera.Position, Game::MainCamera.Position + Game::MainCamera.Front, Game::MainCamera.Up);
 	projection = glm::perspective(glm::radians(Game::MainCamera.Zoom), 1920.0f / 1080.0f, 0.1f, 100.0f);
-	
-	ResourceManager::GetShader("Standard").Use();
-	ResourceManager::GetShader("Standard").SetMatrix4("model", trans);
-	ResourceManager::GetShader("Standard").SetMatrix4("view", view);
-	ResourceManager::GetShader("Standard").SetMatrix4("projection", projection);
+
+	ResourceManagement::ResourceManager::GetShader("Standard").Use();
+	ResourceManagement::ResourceManager::GetShader("Standard").SetMatrix4("model", trans);
+	ResourceManagement::ResourceManager::GetShader("Standard").SetMatrix4("view", view);
+	ResourceManagement::ResourceManager::GetShader("Standard").SetMatrix4("projection", projection);
 }

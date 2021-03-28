@@ -3,13 +3,9 @@
 #include <glad/glad.h>
 #include <imgui.h>
 
-
-
 #include "Elements/Game.h"
-#include "Elements/Actor.h"
-#include "Elements/ResourceManager.h"
-#include "Elements/Shader.h"
 #include "Panels/Console.h"
+#include "ResourceManagement/ResourceManager.h"
 
 namespace Panels
 {
@@ -20,7 +16,7 @@ namespace Panels
 		
 		GameWindow()
 		{
-			ResourceManager::LoadShader("Assets/Shaders/Framebuffer.vert", "Assets/Shaders/Framebuffer.frag", nullptr, "Framebuffer");
+			ResourceManagement::ResourceManager::LoadShader("Assets/Shaders/Framebuffer.vert", "Assets/Shaders/Framebuffer.frag", nullptr, "Framebuffer");
 
 			size = ImVec2(1920, 1080);
 
@@ -119,7 +115,7 @@ namespace Panels
 			glEnable(GL_DEPTH_TEST);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			ResourceManager::GetShader("Framebuffer").Use();
+			ResourceManagement::ResourceManager::GetShader("Framebuffer").Use();
 			// glBindVertexArray(quadVAO);
 			glBindTexture(GL_TEXTURE_2D, texColorBuffer);
 			// glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -151,8 +147,8 @@ namespace Panels
 
 			glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
 
-			if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-				printf("ERROR::FRAMEBUFFER:: Framebuffer is not complete!\n");
+			// if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+				// M_LOG("[error]::FRAMEBUFFER:: Framebuffer is not complete!\n");
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}
 

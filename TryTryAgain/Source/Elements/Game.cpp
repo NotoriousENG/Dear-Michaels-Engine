@@ -1,10 +1,13 @@
 #include "Game.h"
 
+#include "Actors/AAwesomeBox.h"
+
 Camera Game::MainCamera;
 
 Game::Game(unsigned framebuffer)
 {
-	GameObjects.push_back(std::make_unique<Actor>());
+	Actors.push_back(std::make_unique<AAwesomeBox>("Awesome Box", glm::vec3(0, 0, 1), glm::vec3(0,45,0)));
+	Actors.push_back(std::make_unique<AAwesomeBox>("Second Box", glm::vec3(1, 1, -1), glm::vec3(45, 45, 0)));
 
 	MainCamera = Camera(glm::vec3(0,0,4), glm::vec3(0,1,0), -90);
 
@@ -28,10 +31,10 @@ void Game::Render()
 		ProcessInput();
 	}
 
-	for (auto& GameObject : GameObjects)
+	for (auto& actor : Actors)
 	{
-		GameObject->Tick(deltaTime);
-		GameObject->Draw();
+		actor->Tick(deltaTime);
+		actor->Draw();
 	}
 }
 

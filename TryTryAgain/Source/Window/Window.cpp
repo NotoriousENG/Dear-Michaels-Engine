@@ -1,5 +1,7 @@
 #include "Window.h"
 
+#include <imgui_impl_opengl3.h>
+
 #include "Panels/Hierarchy.h"
 
 void Window::sdl_die(const char* message) {

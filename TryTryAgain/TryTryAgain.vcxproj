@@ -150,7 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Actors\AAwesomeBox.cpp" />
-    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="source\Elements\Game.cpp" />
     <ClCompile Include="Source\Actors\AActor.cpp" />
     <ClCompile Include="Source\Panels\Hierarchy.cpp" />
@@ -171,7 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Actors\AAwesomeBox.h" />
-    <ClInclude Include="Application.h" />
+    <ClInclude Include="Source\Application.h" />
     <ClInclude Include="source\Elements\Camera.h" />
     <ClInclude Include="source\Elements\Game.h" />
     <ClInclude Include="Source\Actors\AActor.h" />

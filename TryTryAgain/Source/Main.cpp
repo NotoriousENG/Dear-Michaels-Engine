@@ -1,11 +1,9 @@
 #include "Main.h"
 
-#include <cstdio>
 #include <memory>
-
-#include "../Application.h"
-
 #include <SDL2/SDL.h>
+
+#include "Application.h"
 #undef main
 
 int main(void)

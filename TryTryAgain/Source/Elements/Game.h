@@ -13,6 +13,8 @@ public:
 	
 	Game(unsigned int framebuffer);
 
+	void ProcessCamera();
+	void ProcessInputEditor();
 	void Render();
 
 	void ProcessInput();
@@ -23,9 +25,11 @@ public:
 
 	bool Keys[1024];
 
+	bool MouseButtons[6];
+
 	glm::vec2 mouse;
 
-	bool focused;
+	bool playing;
 
 	bool mouseMoving;
 

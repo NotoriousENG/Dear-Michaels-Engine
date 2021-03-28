@@ -14,6 +14,7 @@ Game::Game(unsigned framebuffer)
 	this->framebuffer = framebuffer;
 }
 
+
 void Game::Render()
 {
 	float currentFrame = SDL_GetTicks();
@@ -26,9 +27,13 @@ void Game::Render()
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // we're not using the stencil buffer now
 
-	if (focused)
+	if (playing)
 	{
 		ProcessInput();
+	}
+	else
+	{
+		ProcessInputEditor();
 	}
 
 	for (auto& actor : Actors)
@@ -40,13 +45,39 @@ void Game::Render()
 
 void Game::ProcessInput()
 {
+	if (this->Keys[SDLK_ESCAPE])
+	{
+		playing = false;
+	}
+
+	ProcessCamera();
+}
+
+void Game::ProcessInputEditor()
+{
+	
+	if (this->MouseButtons[SDL_BUTTON_RIGHT])
+	{
+		SDL_SetRelativeMouseMode(SDL_TRUE);
+		SDL_ShowCursor(0);
+		ProcessCamera();
+	}
+	else
+	{
+		SDL_SetRelativeMouseMode(SDL_FALSE);
+		SDL_ShowCursor(1);
+	}
+}
+
+void Game::ProcessCamera()
+{
 	if (mouseMoving)
 	{
 		MainCamera.ProcessMouseMovement(mouse.x, -mouse.y);
 		mouseMoving = false;
 	}
-	
-	
+
+
 	if (this->Keys[SDLK_w])
 	{
 		MainCamera.ProcessKeyboard(FORWARD, deltaTime);
@@ -63,5 +94,4 @@ void Game::ProcessInput()
 	{
 		MainCamera.ProcessKeyboard(RIGHT, deltaTime);
 	}
-
 }

@@ -213,7 +213,7 @@ void Window::execute() {
 void Window::processInputForWindow(SDL_Event event)
 {
     if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
-        gameWindow->MyGame->focused = false;
+        gameWindow->MyGame->playing = false;
 
     auto key = event.key.keysym.sym;
     if (key >= 0 && key < 1024)
@@ -228,6 +228,29 @@ void Window::processInputForWindow(SDL_Event event)
 	{
 		gameWindow->MyGame->mouse = glm::vec2(event.motion.xrel, event.motion.yrel);
         gameWindow->MyGame->mouseMoving = true;
+	}
+
+    auto button = event.button.button;
+	if (button >= 0 && button < 6)
+	{
+		if (event.type == SDL_MOUSEBUTTONDOWN)
+		{
+            gameWindow->MyGame->MouseButtons[button] = true;
+		}
+        else if (event.type == SDL_MOUSEBUTTONUP)
+        {
+            gameWindow->MyGame->MouseButtons[button] = false;
+        }   
+	}
+
+	if (event.type == SDL_KEYDOWN)
+	{
+		if (key == SDLK_F5)
+		{
+            gameWindow->playing = true;
+            gameWindow->MyGame->playing = true;
+            SDL_SetRelativeMouseMode(SDL_TRUE);
+		}
 	}
 }
 

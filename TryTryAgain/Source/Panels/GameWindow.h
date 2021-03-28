@@ -40,12 +40,25 @@ namespace Panels
 
 		void Draw()
 		{
-			if (focused)
+			bool wasPlaying = playing;
+			playing = MyGame->playing;
+			
+			if (playing)
 			{
-				ImGui::PushStyleColor(ImGuiCol_ChildBg, ActiveColor);
+				ImGui::PushStyleColor(ImGuiCol_Button, ActiveColor);
 			}
+			
 			ImGui::Begin("GameWindow: 1920 x 1080");
 			{
+				const char* playButtonLabel = playing ? "Press Escape to Exit Play Mode" : "Play (F5)";
+				if (ImGui::Button(playButtonLabel))
+				{
+					playing = !playing;	
+				}
+				if (playing)
+				{
+					ImGui::PopStyleColor();
+				}
 				// Using a Child allow to fill all the space of the window.
 				// It also alows customization
 				ImGui::BeginChild("Game");
@@ -70,37 +83,27 @@ namespace Panels
 				{
 					scaleFactor = size.x / 1920.0f;
 				}
-				if (ImGui::IsWindowFocused())
+				if (playing && !wasPlaying)
 				{
-					if (!MyGame->focused)
-					{
-						M_LOG("# To Exit Play mode Press Escape");
-					}
-					MyGame->focused = true;
+					MyGame->playing = true;
 					SDL_SetRelativeMouseMode(SDL_TRUE);
 				}
-				else
+				else if (!playing && wasPlaying)
 				{
-					MyGame->focused = false;
+					MyGame->playing = false;
 					SDL_SetRelativeMouseMode(SDL_FALSE);
 				}
-				
 
 				// Because I use the texture from OpenGL, I need to invert the V from the UV.
 				ImGui::Image((ImTextureID)texColorBuffer, ImVec2(1920 * scaleFactor, 1080 * scaleFactor), ImVec2(0, 1), ImVec2(1, 0));
 				ImGui::EndChild();
 			}
 			ImGui::End();
-
-			if (focused)
-			{
-				ImGui::PopStyleColor();
-			}
-
-			focused = MyGame->focused;
 		}
 
 		std::unique_ptr<Game> MyGame;
+
+		bool playing;
 
 	private:
 
@@ -160,9 +163,7 @@ namespace Panels
 
 		ImVec2 size;
 
-		const ImVec4 ActiveColor = ImVec4(0, 0, 255, 255);
-
-		bool focused;
+		const ImVec4 ActiveColor = ImVec4(0, 128.0f/255.0f, 0, 1);
 		
 	};
 }

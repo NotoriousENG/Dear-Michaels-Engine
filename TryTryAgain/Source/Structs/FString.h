@@ -1,6 +1,6 @@
 #pragma once
 
-char TempBuffer[3073];
+char TempBuffer[255];
 
 struct FString
 {
@@ -13,7 +13,6 @@ struct FString
 
 		const char* label = TempBuffer;
 
-		Text = new char[(unsigned long) label_end - (unsigned long) label];
 		char* it = Text;
 
 		while(label <= label_end)
@@ -24,7 +23,7 @@ struct FString
 			it++;
 		}
 	}
-	char* Text;
+	char Text[255];
 };
 
 

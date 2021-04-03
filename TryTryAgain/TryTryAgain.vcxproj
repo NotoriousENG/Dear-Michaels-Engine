@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\ThirdParty;$(ProjectDir)source\ThirdParty\imgui-docking;$(ProjectDir)source\ThirdParty\imgui-docking\backends;$(ProjectDir)source\ThirdParty\plugins\imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\ThirdParty;$(ProjectDir)source\ThirdParty\imgui-docking;$(ProjectDir)source\ThirdParty\imgui-docking\backends;$(ProjectDir)source\ThirdParty\plugins\imgui;$(ProjectDir)source\ThirdParty\imgui-docking\misc\cpp</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,7 +135,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\ThirdParty;$(ProjectDir)source\ThirdParty\imgui-docking;$(ProjectDir)source\ThirdParty\imgui-docking\backends;$(ProjectDir)source\ThirdParty\plugins\imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\ThirdParty;$(ProjectDir)source\ThirdParty\imgui-docking;$(ProjectDir)source\ThirdParty\imgui-docking\backends;$(ProjectDir)source\ThirdParty\plugins\imgui;$(ProjectDir)source\ThirdParty\imgui-docking\misc\cpp</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -167,7 +167,9 @@
     <ClCompile Include="source\ThirdParty\imgui-docking\imgui_draw.cpp" />
     <ClCompile Include="source\ThirdParty\imgui-docking\imgui_tables.cpp" />
     <ClCompile Include="source\ThirdParty\imgui-docking\imgui_widgets.cpp" />
+    <ClCompile Include="Source\ThirdParty\imgui-docking\misc\cpp\imgui_stdlib.cpp" />
     <ClCompile Include="source\Window\Window.cpp" />
+    <ClCompile Include="Source\Objects\UTransformGizmo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Actors\AAwesomeBox.h" />
@@ -185,6 +187,7 @@
     <ClInclude Include="Source\Structs\FString.h" />
     <ClInclude Include="Source\Structs\FTransform.h" />
     <ClInclude Include="source\Window\Window.h" />
+    <ClInclude Include="Source\Objects\UTransformGizmo.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

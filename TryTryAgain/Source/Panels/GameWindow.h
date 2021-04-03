@@ -43,21 +43,12 @@ namespace Panels
 			bool wasPlaying = playing;
 			playing = MyGame->playing;
 			
-			if (playing)
-			{
-				ImGui::PushStyleColor(ImGuiCol_Button, ActiveColor);
-			}
-			
 			ImGui::Begin("GameWindow: 1920 x 1080");
 			{
 				const char* playButtonLabel = playing ? "Press Escape to Exit Play Mode" : "Play (F5)";
 				if (ImGui::Button(playButtonLabel))
 				{
 					playing = !playing;	
-				}
-				if (playing)
-				{
-					ImGui::PopStyleColor();
 				}
 				// Using a Child allow to fill all the space of the window.
 				// It also alows customization

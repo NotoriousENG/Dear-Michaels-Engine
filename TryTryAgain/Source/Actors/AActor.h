@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include <glm/fwd.hpp>
 #include <glm/detail/type_quat.hpp>
 
@@ -8,10 +9,12 @@
 class AActor
 {
 public:
+
+    bool isEditing;
 	
     FTransform transform;
 
-    const char* name = "Actor";
+    std::string name = "Actor";
 
 	AActor(const char* name = "Actor", glm::vec3 pos = glm::vec3(0), glm::vec3 rot = glm::vec3(0), glm::vec3 scale = glm::vec3(1));
 

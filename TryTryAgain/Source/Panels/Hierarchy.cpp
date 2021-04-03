@@ -1,9 +1,14 @@
 #include "Hierarchy.h"
 
+#include <string>
 
+
+
+#include "Console.h"
 #include "Actors/AAwesomeBox.h"
 #include "Elements/Game.h"
 #include "Structs/FString.h"
+#include "imgui_stdlib.h"
 
 namespace Panels
 {
@@ -34,16 +39,25 @@ namespace Panels
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         ImGui::AlignTextToFramePadding();
-        bool node_open = ImGui::TreeNode("Object", "%s", actor->name);
+        const char* actorLabel = actor->isEditing ? "" : actor->name.c_str();
+        actor->isEditing = ImGui::TreeNode("Object", actorLabel);
         ImGui::TableSetColumnIndex(1);
         ImGui::Text("ID: %lu", uid);
 
-        if (node_open)
+        if (actor->isEditing)
         {
             {
-                ImGui::PushID(0); // Use field index as identifier.
+                ImGui::TableSetColumnIndex(0);
+                // ImGui::AlignTextToFramePadding();
+                ImGui::PushID("Name");
+                ImGui::Indent(30);
+                ImGui::InputText("", &actor->name);
+                ImGui::Indent(-30);
+            	
+                ImGui::PopID();
+            	
+                ImGui::PushID("Transform"); // Use field index as identifier.
                 ShowTransform(actor->transform);
-
                 ImGui::PopID();
             }
             ImGui::TreePop();
@@ -60,6 +74,7 @@ namespace Panels
 
 		if (transform_open)
 		{
+            ImGui::PushID("Position");
             {
                 // Here we use a TreeNode to highlight on hover (we could use e.g. Selectable as well)
                 ImGui::TableNextRow();
@@ -74,7 +89,9 @@ namespace Panels
 
                 ImGui::NextColumn();
             }
+            ImGui::PopID();
 
+            ImGui::PushID("Rotation");
             {
                 // Here we use a TreeNode to highlight on hover (we could use e.g. Selectable as well)
                 ImGui::TableNextRow();
@@ -89,7 +106,9 @@ namespace Panels
 
                 ImGui::NextColumn();
             }
+            ImGui::PopID();
 
+            ImGui::PushID("Scale");
             {
                 // Here we use a TreeNode to highlight on hover (we could use e.g. Selectable as well)
                 ImGui::TableNextRow();
@@ -104,6 +123,9 @@ namespace Panels
 
                 ImGui::NextColumn();
             }
+            ImGui::PopID();
+
+            ImGui::TreePop();
 		}
         
 	}

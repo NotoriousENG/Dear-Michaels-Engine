@@ -20,6 +20,8 @@
     <ClCompile Include="Source\Actors\AActor.cpp" />
     <ClCompile Include="Source\Panels\Hierarchy.cpp" />
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Objects\UTransformGizmo.cpp" />
+    <ClCompile Include="Source\ThirdParty\imgui-docking\misc\cpp\imgui_stdlib.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Main.h" />
@@ -37,5 +39,6 @@
     <ClInclude Include="Source\Structs\FTransform.h" />
     <ClInclude Include="Source\Structs\FString.h" />
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\Objects\UTransformGizmo.h" />
   </ItemGroup>
 </Project>

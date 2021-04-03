@@ -74,10 +74,10 @@ void AAwesomeBox::Draw()
 void AAwesomeBox::Tick(float delta)
 {
 	auto trans = glm::translate(model, transform.position);
-
-	trans = glm::rotate(trans, transform.rotation.x, glm::vec3(1, 0, 0));
-	trans = glm::rotate(trans, transform.rotation.y, glm::vec3(0, 1, 0));
-	trans = glm::rotate(trans, transform.rotation.z, glm::vec3(0, 0, 1));
+	
+	trans = glm::rotate (trans, glm::radians(transform.rotation.x), glm::vec3(1, 0, 0));
+	trans = glm::rotate(trans, glm::radians(transform.rotation.y), glm::vec3(0, 1, 0));
+	trans = glm::rotate(trans, glm::radians(transform.rotation.z), glm::vec3(0, 0, 1));
 
 	trans = glm::scale(trans, transform.scale);
 

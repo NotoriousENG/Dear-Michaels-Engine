@@ -41,24 +41,38 @@ namespace Panels
         ImGui::AlignTextToFramePadding();
         const char* actorLabel = actor->isEditing ? "" : actor->name.c_str();
         actor->isEditing = ImGui::TreeNode("Object", actorLabel);
-        ImGui::TableSetColumnIndex(1);
-        ImGui::Text("ID: %lu", uid);
+
+        int indent = actor->isEditing ? 20 : 1;
+		{
+            ImGui::TableSetColumnIndex(1);
+            ImGui::Indent(indent);
+            ImGui::Text("ID: %lu", uid);
+            ImGui::Indent(-indent);
+		}
+        
 
         if (actor->isEditing)
         {
             {
                 ImGui::TableSetColumnIndex(0);
-                // ImGui::AlignTextToFramePadding();
                 ImGui::PushID("Name");
                 ImGui::Indent(30);
                 ImGui::InputText("", &actor->name);
                 ImGui::Indent(-30);
-            	
+                ImGui::PopID();
+
+                ImGui::TableSetColumnIndex(1);
+                ImGui::PushID("Remove");
+                if (ImGui::Button("X"))
+                {
+                    MyGame->Delete(actor);
+                }
                 ImGui::PopID();
             	
                 ImGui::PushID("Transform"); // Use field index as identifier.
                 ShowTransform(actor->transform);
                 ImGui::PopID();
+            	
             }
             ImGui::TreePop();
         }

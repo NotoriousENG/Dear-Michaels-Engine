@@ -36,8 +36,19 @@ void Game::Render()
 		ProcessInputEditor();
 	}
 
-	for (auto& actor : Actors)
+	for (int i = 0; i < Actors.size(); i++)
 	{
+		if (!KillStack.empty() &&
+			reinterpret_cast<unsigned long>(KillStack.top()) == reinterpret_cast<unsigned long>(Actors[i].get())
+			)
+		{
+			Actors.erase(Actors.begin() + i);
+			if (i >= Actors.size())
+			{
+				break;
+			}
+		}
+		auto* actor = Actors[i].get();
 		actor->Tick(deltaTime);
 		actor->Draw();
 	}
@@ -51,6 +62,11 @@ void Game::ProcessInput()
 	}
 
 	ProcessCamera();
+}
+
+void Game::Delete(AActor* actor)
+{
+	KillStack.push(actor);
 }
 
 void Game::ProcessInputEditor()

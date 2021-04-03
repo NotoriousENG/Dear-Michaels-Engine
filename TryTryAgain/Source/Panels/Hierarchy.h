@@ -27,6 +27,6 @@ namespace Panels
     private:
 
         Game* MyGame;
-    	
+   
     };
 }

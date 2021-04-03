@@ -18,5 +18,5 @@ void AActor::Draw()
 
 void AActor::Tick(float delta)
 {
-	
+
 }

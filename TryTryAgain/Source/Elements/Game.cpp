@@ -43,6 +43,7 @@ void Game::Render()
 			)
 		{
 			Actors.erase(Actors.begin() + i);
+			KillStack.pop();
 			if (i >= Actors.size())
 			{
 				break;

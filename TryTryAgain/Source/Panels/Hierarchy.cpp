@@ -65,7 +65,7 @@ namespace Panels
                 ImGui::PushID("Remove");
                 if (ImGui::Button("X"))
                 {
-                    MyGame->Delete(actor);
+                    Destroy(actor);
                 }
                 ImGui::PopID();
             	

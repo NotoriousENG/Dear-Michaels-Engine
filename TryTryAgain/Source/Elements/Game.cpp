@@ -38,20 +38,21 @@ void Game::Render()
 
 	for (int i = 0; i < Actors.size(); i++)
 	{
-		if (!KillStack.empty() &&
-			reinterpret_cast<unsigned long>(KillStack.top()) == reinterpret_cast<unsigned long>(Actors[i].get())
-			)
+		if (Actors[i]->isDead)
 		{
 			Actors.erase(Actors.begin() + i);
-			KillStack.pop();
 			if (i >= Actors.size())
 			{
 				break;
 			}
+			i--;
 		}
-		auto* actor = Actors[i].get();
-		actor->Tick(deltaTime);
-		actor->Draw();
+		else
+		{
+			auto* actor = Actors[i].get();
+			actor->Tick(deltaTime);
+			actor->Draw();
+		}
 	}
 }
 
@@ -63,11 +64,6 @@ void Game::ProcessInput()
 	}
 
 	ProcessCamera();
-}
-
-void Game::Delete(AActor* actor)
-{
-	KillStack.push(actor);
 }
 
 void Game::ProcessInputEditor()
@@ -110,5 +106,13 @@ void Game::ProcessCamera()
 	if (this->Keys[SDLK_d])
 	{
 		MainCamera.ProcessKeyboard(RIGHT, deltaTime);
+	}
+	if (this->Keys[SDLK_q])
+	{
+		MainCamera.ProcessKeyboard(DOWN, deltaTime);
+	}
+	if (this->Keys[SDLK_e])
+	{
+		MainCamera.ProcessKeyboard(UP, deltaTime);
 	}
 }

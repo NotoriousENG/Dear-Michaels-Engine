@@ -19,10 +19,6 @@ public:
 	void Render();
 
 	void ProcessInput();
-
-	void Delete(AActor* actor);
-
-	std::stack<AActor*> KillStack;
 	
 	std::vector<std::unique_ptr<AActor>> Actors;
 

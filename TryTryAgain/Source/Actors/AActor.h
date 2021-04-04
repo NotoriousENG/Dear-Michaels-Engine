@@ -11,6 +11,7 @@ class AActor
 public:
 
     bool isEditing;
+    bool isDead = false;
 	
     FTransform transform;
 
@@ -73,3 +74,7 @@ protected:
     };
 };
 
+static void Destroy(AActor* actor)
+{
+    actor->isDead = true;
+}

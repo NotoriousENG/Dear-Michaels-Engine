@@ -30,8 +30,17 @@ public:
 	bool Keys[1024];
 
 	bool MouseButtons[6];
+	bool MouseButtonsDown[6];
+
+	glm::vec2 mouseRel;
 
 	glm::vec2 mouse;
+
+	glm::vec2 renderSize;
+
+	glm::mat4 projection;
+
+	glm::mat4 view;
 
 	bool playing;
 

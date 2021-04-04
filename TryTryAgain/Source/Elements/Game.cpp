@@ -73,6 +73,36 @@ void Game::ProcessInput()
 
 void Game::ProcessInputEditor()
 {
+	if (this->MouseButtons[SDL_BUTTON_LEFT])
+	{
+		if (this->MouseButtonsDown[SDL_BUTTON_LEFT])
+		{	
+			if (mouse != glm::vec2(-1, -1))
+			{
+				// 3D Normalized device coordinates
+				glm::vec2 ndcPos = (mouse / (renderSize / 2.0f) - glm::vec2(1.0f));
+				ndcPos.y = -ndcPos.y;
+
+				// Homogeneous Clip Coordinates
+				glm::vec4 ray_clip = glm::vec4(ndcPos, -1, 1);
+
+				// Camera Coordinates
+				projection = glm::perspective(glm::radians(Game::MainCamera.Zoom), 1920.0f / 1080.0f, 0.1f, 100.0f);
+				glm::vec4 ray_eye = inverse(projection) * ray_clip;
+				ray_eye = glm::vec4(ray_eye.x, ray_eye.y, -1, 0);
+
+				// World Coordinates
+				view = glm::lookAt(Game::MainCamera.Position, Game::MainCamera.Position + Game::MainCamera.Front, Game::MainCamera.Up);
+				auto ray_wor4 = (inverse(view) * ray_eye);
+				glm::vec3 ray_wor = glm::vec3(ray_wor4.x, ray_wor4.y, ray_wor4.z);
+				// don't forget to normalise the vector at some point
+				ray_wor = glm::normalize(ray_wor);
+
+				Actors.push_back(std::make_unique<AAwesomeBox>("Second Box", MainCamera.Position + ray_wor * 3.0f));
+			}
+			this->MouseButtonsDown[SDL_BUTTON_LEFT] = false;
+		}
+	}
 	
 	if (this->MouseButtons[SDL_BUTTON_RIGHT])
 	{
@@ -91,7 +121,7 @@ void Game::ProcessCamera()
 {
 	if (mouseMoving)
 	{
-		MainCamera.ProcessMouseMovement(mouse.x, -mouse.y);
+		MainCamera.ProcessMouseMovement(mouseRel.x, -mouseRel.y);
 		mouseMoving = false;
 	}
 

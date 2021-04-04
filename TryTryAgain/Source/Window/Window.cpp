@@ -142,7 +142,7 @@ void Window::execute() {
     hierarchy = std::make_unique<Panels::Hierarchy>(gameWindow->MyGame.get());
 	
     while (!quit) {
-
+        gameWindow->MyGame->mouseRel = glm::vec2(0, 0);
         while (SDL_PollEvent(&event)) {
             // Forward to Imgui
             ImGui_ImplSDL2_ProcessEvent(&event);
@@ -223,10 +223,10 @@ void Window::processInputForWindow(SDL_Event event)
         else if (event.type == SDL_KEYUP)
             gameWindow->MyGame->Keys[key] = false;
     }
-
+	
 	if (event.type == SDL_MOUSEMOTION)
 	{
-		gameWindow->MyGame->mouse = glm::vec2(event.motion.xrel, event.motion.yrel);
+		gameWindow->MyGame->mouseRel = glm::vec2(event.motion.xrel, event.motion.yrel);
         gameWindow->MyGame->mouseMoving = true;
 	}
 
@@ -236,6 +236,7 @@ void Window::processInputForWindow(SDL_Event event)
 		if (event.type == SDL_MOUSEBUTTONDOWN)
 		{
             gameWindow->MyGame->MouseButtons[button] = true;
+            gameWindow->MyGame->MouseButtonsDown[button] = true;
 		}
         else if (event.type == SDL_MOUSEBUTTONUP)
         {

@@ -153,6 +153,7 @@
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="source\Elements\Game.cpp" />
     <ClCompile Include="Source\Actors\AActor.cpp" />
+    <ClCompile Include="Source\Panels\GameWindow.cpp" />
     <ClCompile Include="Source\Panels\Hierarchy.cpp" />
     <ClCompile Include="Source\ResourceManagement\ResourceManager.cpp" />
     <ClCompile Include="Source\ResourceManagement\Shader.cpp" />

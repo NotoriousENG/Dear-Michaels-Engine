@@ -8,14 +8,13 @@ class UTransformGizmo
 {
 public :
 
+	UTransformGizmo();
+	
 	FTransform SetTransform();
 
 	FTransform GetTransform();
 
-	void OnDrag()
-	{
-		
-	}
+	void OnDrag();
 
 	void Draw();
 
@@ -26,5 +25,15 @@ private:
 	glm::mat4 model, view, projection;
 
 	unsigned int VBO, VAO, EBO;
+
+	float vertices[66] =
+	{
+		0.0, 0.0, 0.0, 1.0 ,  1.0, 0.0, 0.0, 1.0,   0.0, 0.0, 1.0  ,
+		5.0, 0.0, 0.0, 1.0 ,  1.0, 0.0, 0.0, 1.0 ,  0.0, 0.0, 1.0  ,
+		0.0, 0.0, 0.0, 1.0 ,  0.0, 1.0, 0.0, 1.0 ,  0.0, 0.0, 1.0  ,
+		0.0, 5.0, 0.0, 1.0 ,  0.0, 1.0, 0.0, 1.0 ,  0.0, 0.0, 1.0  ,
+		0.0, 0.0, 0.0, 1.0 ,  0.0, 0.0, 1.0, 1.0 ,  0.0, 0.0, 1.0  ,
+		0.0, 0.0, 5.0, 1.0 ,  0.0, 0.0, 1.0, 1.0 ,  0.0, 0.0, 1.0  ,
+	};
 };
 

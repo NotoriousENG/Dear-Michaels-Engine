@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <imgui.h>
 
-#define M_LOG(...) Panels::Console::instance.AddLog(__VA_ARGS__);printf("%s\n",__VA_ARGS__)
+#define M_LOG(...) Panels::Console::instance.AddLog(__VA_ARGS__);printf(__VA_ARGS__); printf("\n");
 
 // Visual Studio warnings
 #ifdef _MSC_VER

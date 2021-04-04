@@ -7,6 +7,7 @@
 
 #include "Camera.h"
 #include "Actors/AActor.h"
+#include "Objects/UTransformGizmo.h"
 
 class Game
 {
@@ -21,6 +22,8 @@ public:
 	void ProcessInput();
 	
 	std::vector<std::unique_ptr<AActor>> Actors;
+
+	std::unique_ptr<UTransformGizmo> TransformGizmo;
 
 	static Camera MainCamera;
 

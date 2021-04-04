@@ -1,6 +1,8 @@
 #include "Game.h"
 
 #include "Actors/AAwesomeBox.h"
+#include "Panels/Console.h"
+#include "ResourceManagement/ResourceManager.h"
 
 Camera Game::MainCamera;
 
@@ -12,6 +14,8 @@ Game::Game(unsigned framebuffer)
 	MainCamera = Camera(glm::vec3(0,0,4), glm::vec3(0,1,0), -90);
 
 	this->framebuffer = framebuffer;
+
+	TransformGizmo = std::make_unique<UTransformGizmo>();
 }
 
 
@@ -53,6 +57,7 @@ void Game::Render()
 			actor->Tick(deltaTime);
 			actor->Draw();
 		}
+		TransformGizmo->Draw();
 	}
 }
 

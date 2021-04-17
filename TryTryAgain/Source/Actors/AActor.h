@@ -10,8 +10,12 @@ class AActor
 {
 public:
 
+	typedef AActor Super;
+
     bool isEditing;
     bool isDead = false;
+
+	bool toDraw = true;
 	
     FTransform transform;
 
@@ -21,13 +25,17 @@ public:
 
 	virtual void Draw();
 
-	virtual void Tick(float delta);
-	
-protected:
+	void DrawPicking();
 
-	glm::mat4 model, view, projection;
+	virtual void Tick(float delta);
+
+	glm::mat4 model, view, projection, trans;
 
 	unsigned int VBO, VAO, EBO;
+
+protected:
+	
+	int numVertices;
 };
 
 static void Destroy(AActor* actor)

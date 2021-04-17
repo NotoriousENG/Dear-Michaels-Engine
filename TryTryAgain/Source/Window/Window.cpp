@@ -29,7 +29,7 @@ void APIENTRY Window::openglCallbackFunction(
 
 void Window::init_screen(const char* caption) {
     // Initialize SDL 
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    if (SDL_Init(SDL_INIT_VIDEO | GL_STENCIL_BITS) < 0)
         sdl_die("Couldn't initialize SDL");
     atexit(SDL_Quit);
     SDL_GL_LoadLibrary(NULL); // Default OpenGL is fine.
@@ -143,6 +143,12 @@ void Window::execute() {
 	
     while (!quit) {
         gameWindow->MyGame->mouseRel = glm::vec2(0, 0);
+
+        for (int i = 0; i < 6; i++)
+        {
+            gameWindow->MyGame->MouseButtonsUp[i] = false;
+        }
+    	
         while (SDL_PollEvent(&event)) {
             // Forward to Imgui
             ImGui_ImplSDL2_ProcessEvent(&event);
@@ -241,7 +247,8 @@ void Window::processInputForWindow(SDL_Event event)
         else if (event.type == SDL_MOUSEBUTTONUP)
         {
             gameWindow->MyGame->MouseButtons[button] = false;
-        }   
+            gameWindow->MyGame->MouseButtonsUp[button] = true;
+        }
 	}
 
 	if (event.type == SDL_KEYDOWN)

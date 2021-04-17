@@ -31,6 +31,7 @@ public:
 
 	bool MouseButtons[6];
 	bool MouseButtonsDown[6];
+	bool MouseButtonsUp[6];
 
 	glm::vec2 mouseRel;
 
@@ -49,6 +50,8 @@ public:
 private:
 	unsigned int framebuffer;
 	float deltaTime, lastFrame;
+
+	void DrawActorsWithPickingShader();
 	
 };
 

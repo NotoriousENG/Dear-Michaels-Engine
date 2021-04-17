@@ -71,12 +71,45 @@ void Game::ProcessInput()
 	ProcessCamera();
 }
 
+void Game::DrawActorsWithPickingShader()
+{
+	// Picking
+	ResourceManagement::ResourceManager::LoadShader("Assets/Shaders/Picking.vert", "Assets/Shaders/Picking.frag", nullptr, "Picking");
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	ResourceManagement::ResourceManager::GetShader("Picking").Use();
+
+	// Only positions are needed
+	glEnableVertexAttribArray(0);
+
+	for (auto& a : Actors)
+	{
+		a->toDraw = false;
+		a->DrawPicking();
+	}
+}
+
 void Game::ProcessInputEditor()
 {
+	if (this->Keys[SDLK_1])
+	{
+		DrawActorsWithPickingShader();
+	}
+	else
+	{
+		for (auto& a : Actors)
+		{
+			a->toDraw = true;
+		}
+	}
 	if (this->MouseButtons[SDL_BUTTON_LEFT])
 	{
+		if (this->MouseButtonsUp[SDL_BUTTON_LEFT])
+		{
+			DrawActorsWithPickingShader();
+		}
 		if (this->MouseButtonsDown[SDL_BUTTON_LEFT])
-		{	
+		{
 			if (mouse != glm::vec2(-1, -1))
 			{
 				// 3D Normalized device coordinates
@@ -87,20 +120,28 @@ void Game::ProcessInputEditor()
 				glm::vec4 ray_clip = glm::vec4(ndcPos, -1, 1);
 
 				// Camera Coordinates
-				projection = glm::perspective(glm::radians(Game::MainCamera.Zoom), 1920.0f / 1080.0f, 0.1f, 100.0f);
+				projection = MainCamera.projection;
 				glm::vec4 ray_eye = inverse(projection) * ray_clip;
 				ray_eye = glm::vec4(ray_eye.x, ray_eye.y, -1, 0);
 
 				// World Coordinates
-				view = glm::lookAt(Game::MainCamera.Position, Game::MainCamera.Position + Game::MainCamera.Front, Game::MainCamera.Up);
+				view = MainCamera.GetViewMatrix();
 				auto ray_wor4 = (inverse(view) * ray_eye);
 				glm::vec3 ray_wor = glm::vec3(ray_wor4.x, ray_wor4.y, ray_wor4.z);
 				// don't forget to normalise the vector at some point
 				ray_wor = glm::normalize(ray_wor);
 
-				Actors.push_back(std::make_unique<AAwesomeBox>("Second Box", MainCamera.Position + ray_wor * 3.0f));
+				Actors.push_back(std::make_unique<AAwesomeBox>("Awesome Box", MainCamera.Position + ray_wor * 10.0f));
 			}
 			this->MouseButtonsDown[SDL_BUTTON_LEFT] = false;
+		}
+	}
+
+	if (this->MouseButtonsUp[SDL_BUTTON_LEFT])
+	{
+		for (auto& a : Actors)
+		{
+			a->toDraw = true;
 		}
 	}
 	

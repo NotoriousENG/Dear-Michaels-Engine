@@ -151,6 +151,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Actors\AAwesomeBox.cpp" />
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Elements\Camera.cpp" />
     <ClCompile Include="source\Elements\Game.cpp" />
     <ClCompile Include="Source\Actors\AActor.cpp" />
     <ClCompile Include="Source\Panels\GameWindow.cpp" />

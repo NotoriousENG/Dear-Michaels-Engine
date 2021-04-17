@@ -32,7 +32,7 @@ namespace Panels
 
 	void Hierarchy::ShowActor(AActor* actor)
 	{
-        unsigned long uid = reinterpret_cast<unsigned long>(actor);
+        int uid = reinterpret_cast<unsigned int>(actor);
         ImGui::PushID(uid);
 
         // Text and Tree nodes are less high than framed widgets, using AlignTextToFramePadding() we add vertical spacing to make the tree lines equal high.
@@ -46,7 +46,7 @@ namespace Panels
 		{
             ImGui::TableSetColumnIndex(1);
             ImGui::Indent(indent);
-            ImGui::Text("ID: %lu", uid);
+            ImGui::Text("ID: 0x%x", uid);
             ImGui::Indent(-indent);
 		}
         

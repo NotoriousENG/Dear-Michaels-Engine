@@ -40,6 +40,9 @@ AAwesomeBox::AAwesomeBox(const char* name, glm::vec3 pos, glm::vec3 rot, glm::ve
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+	int t = sizeof(vertices) / sizeof(vertices[0]);
+	numVertices = t / 5;
+
 	// position attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
@@ -57,23 +60,27 @@ AAwesomeBox::AAwesomeBox(const char* name, glm::vec3 pos, glm::vec3 rot, glm::ve
 
 void AAwesomeBox::Draw()
 {
-	ResourceManagement::ResourceManager::GetShader("Standard").Use();
+	if (toDraw)
+	{
+		ResourceManagement::ResourceManager::GetShader("Standard").Use();
 
-	glActiveTexture(GL_TEXTURE0);
-	ResourceManagement::ResourceManager::GetTexture("container").Bind();
-	glActiveTexture(GL_TEXTURE1);
-	ResourceManagement::ResourceManager::GetTexture("awesomeface").Bind();
+		glActiveTexture(GL_TEXTURE0);
+		ResourceManagement::ResourceManager::GetTexture("container").Bind();
+		glActiveTexture(GL_TEXTURE1);
+		ResourceManagement::ResourceManager::GetTexture("awesomeface").Bind();
 
-	ResourceManagement::ResourceManager::GetShader("Standard").SetInteger("texture1", 0);
-	ResourceManagement::ResourceManager::GetShader("Standard").SetInteger("texture2", 1);
+		ResourceManagement::ResourceManager::GetShader("Standard").SetInteger("texture1", 0);
+		ResourceManagement::ResourceManager::GetShader("Standard").SetInteger("texture2", 1);
 
-	glBindVertexArray(VAO);
-	glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(VAO);
+		glDrawArrays(GL_TRIANGLES, 0, numVertices);
+	}
+
 }
 
 void AAwesomeBox::Tick(float delta)
 {
-	auto trans = glm::translate(model, transform.position);
+	trans = glm::translate(model, transform.position);
 	
 	trans = glm::rotate (trans, glm::radians(transform.rotation.x), glm::vec3(1, 0, 0));
 	trans = glm::rotate(trans, glm::radians(transform.rotation.y), glm::vec3(0, 1, 0));

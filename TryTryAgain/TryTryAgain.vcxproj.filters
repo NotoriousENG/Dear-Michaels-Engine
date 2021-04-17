@@ -23,6 +23,7 @@
     <ClCompile Include="Source\Objects\UTransformGizmo.cpp" />
     <ClCompile Include="Source\ThirdParty\imgui-docking\misc\cpp\imgui_stdlib.cpp" />
     <ClCompile Include="Source\Panels\GameWindow.cpp" />
+    <ClCompile Include="Source\Elements\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Main.h" />

@@ -89,6 +89,7 @@ namespace Panels
 
 			// Because I use the texture from OpenGL, I need to invert the V from the UV.
 			ImGui::Image((ImTextureID)texColorBuffer, renderSize, ImVec2(0, 1), ImVec2(1, 0));
+			
 			ImGui::EndChild();
 		}
 		ImGui::End();
@@ -98,7 +99,7 @@ namespace Panels
 	{
 		// Render Game to framebuffer
 		MyGame->Render();
-
+		
 		// second pass
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); // back to default
 		glClearColor(1.0f, 0, 0, 1.0f);

@@ -47,11 +47,13 @@ public:
 
 	bool mouseMoving;
 
+	void DrawActorsWithPickingShader();
+
 private:
 	unsigned int framebuffer;
 	float deltaTime, lastFrame;
 
-	void DrawActorsWithPickingShader();
+	void Pick();
 	
 };
 

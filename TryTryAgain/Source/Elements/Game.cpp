@@ -16,6 +16,8 @@ Game::Game(unsigned framebuffer)
 	this->framebuffer = framebuffer;
 
 	TransformGizmo = std::make_unique<UTransformGizmo>();
+
+	ResourceManagement::ResourceManager::LoadShader("Assets/Shaders/Picking.vert", "Assets/Shaders/Picking.frag", nullptr, "Picking");
 }
 
 
@@ -74,9 +76,9 @@ void Game::ProcessInput()
 void Game::DrawActorsWithPickingShader()
 {
 	// Picking
-	ResourceManagement::ResourceManager::LoadShader("Assets/Shaders/Picking.vert", "Assets/Shaders/Picking.frag", nullptr, "Picking");
+	
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT);
 	ResourceManagement::ResourceManager::GetShader("Picking").Use();
 
 	// Only positions are needed
@@ -87,6 +89,33 @@ void Game::DrawActorsWithPickingShader()
 		a->toDraw = false;
 		a->DrawPicking();
 	}
+}
+
+void Game::Pick()
+{
+	float h = ImGui::GetWindowHeight();
+	float w = ImGui::GetWindowWidth();
+
+	// 3D Normalized device coordinates
+	glm::vec2 ndcPos = (mouse / (renderSize / 2.0f) - glm::vec2(1.0f));
+	ndcPos.y = -ndcPos.y;
+
+	// Screen coords Framebuffer agnostic
+	ndcPos += glm::vec2(1);
+	ndcPos /= 2;
+	ndcPos *= glm::vec2(w, h);
+	
+	DrawActorsWithPickingShader();
+
+	glFlush();
+	glFinish();
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	unsigned char data[4];
+	glReadPixels(ndcPos.x, ndcPos.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	M_LOG("%x", data[0] + data[1] * 256 + data[2] * 256 * 256);
+	M_LOG("(%f, %f)", ndcPos.x, ndcPos.y);
 }
 
 void Game::ProcessInputEditor()
@@ -102,12 +131,17 @@ void Game::ProcessInputEditor()
 			a->toDraw = true;
 		}
 	}
+	
+	// M_LOG("X: %f Y: %f", gameMousePos.x, gameMousePos.y);
+	
+	if (this->MouseButtonsUp[SDL_BUTTON_LEFT])
+	{
+		Pick();
+	}
+	
 	if (this->MouseButtons[SDL_BUTTON_LEFT])
 	{
-		if (this->MouseButtonsUp[SDL_BUTTON_LEFT])
-		{
-			DrawActorsWithPickingShader();
-		}
+		
 		if (this->MouseButtonsDown[SDL_BUTTON_LEFT])
 		{
 			if (mouse != glm::vec2(-1, -1))
@@ -131,7 +165,7 @@ void Game::ProcessInputEditor()
 				// don't forget to normalise the vector at some point
 				ray_wor = glm::normalize(ray_wor);
 
-				Actors.push_back(std::make_unique<AAwesomeBox>("Awesome Box", MainCamera.Position + ray_wor * 10.0f));
+				// Actors.push_back(std::make_unique<AAwesomeBox>("Awesome Box", MainCamera.Position + ray_wor * 10.0f));
 			}
 			this->MouseButtonsDown[SDL_BUTTON_LEFT] = false;
 		}

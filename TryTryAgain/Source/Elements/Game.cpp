@@ -84,10 +84,12 @@ void Game::DrawActorsWithPickingShader()
 	// Only positions are needed
 	glEnableVertexAttribArray(0);
 
+	int i = 0;
 	for (auto& a : Actors)
 	{
 		a->toDraw = false;
-		a->DrawPicking();
+		a->DrawPicking(i);
+		i++;
 	}
 }
 
@@ -114,8 +116,14 @@ void Game::Pick()
 
 	unsigned char data[4];
 	glReadPixels(ndcPos.x, ndcPos.y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
-	M_LOG("%x", data[0] + data[1] * 256 + data[2] * 256 * 256);
-	M_LOG("(%f, %f)", ndcPos.x, ndcPos.y);
+	int id = data[0] + data[1] * 256 + data[2] * 256 * 256;
+	/*M_LOG("%x", id);
+	M_LOG("(%f, %f)", ndcPos.x, ndcPos.y);*/
+	if (id < Actors.size())
+	{
+		AActor* picked = Actors.at(id).get();
+		M_LOG("Picked: %s ID: 0x%x", picked->name.c_str(), reinterpret_cast<int>(picked));
+	}
 }
 
 void Game::ProcessInputEditor()
@@ -136,7 +144,10 @@ void Game::ProcessInputEditor()
 	
 	if (this->MouseButtonsUp[SDL_BUTTON_LEFT])
 	{
-		Pick();
+		if (mouse != glm::vec2(-1, -1))
+		{
+			Pick();
+		}
 	}
 	
 	if (this->MouseButtons[SDL_BUTTON_LEFT])

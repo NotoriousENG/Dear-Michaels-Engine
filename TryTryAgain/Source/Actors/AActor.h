@@ -25,7 +25,7 @@ public:
 
 	virtual void Draw();
 
-	void DrawPicking();
+	void DrawPicking(int id);
 
 	virtual void Tick(float delta);
 

@@ -1,6 +1,7 @@
 #include "Window.h"
 
 #include <imgui_impl_opengl3.h>
+#include <imguizmo/ImGuizmo.h>
 
 #include "Panels/Hierarchy.h"
 
@@ -170,6 +171,7 @@ void Window::execute() {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL2_NewFrame(window);
         ImGui::NewFrame();
+        ImGuizmo::BeginFrame();
 
         ImGui::DockSpaceOverViewport();
 

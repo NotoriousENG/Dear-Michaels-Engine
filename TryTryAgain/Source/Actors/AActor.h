@@ -29,7 +29,7 @@ public:
 
 	virtual void Tick(float delta);
 
-	glm::mat4 model, view, projection, trans;
+	glm::mat4 model, view, projection;
 
 	unsigned int VBO, VAO, EBO;
 

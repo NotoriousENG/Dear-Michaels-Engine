@@ -27,7 +27,7 @@ void AActor::Tick(float delta)
 
 void AActor::DrawPicking(int id)
 {
-	glm::mat4 MVP = this->projection * this->view * this->trans;
+	glm::mat4 MVP = this->projection * this->view * this->model;
 
 	// Convert id into unique color
 	int r = (id & 0x000000FF) >> 0;

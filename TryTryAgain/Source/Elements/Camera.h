@@ -41,6 +41,7 @@ public:
     float Zoom;
 	// Useful things
     glm::mat4 projection;
+    glm::mat4 view;
 
     // constructor with vectors
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
@@ -63,10 +64,9 @@ public:
         updateCameraVectors();
     	
         projection = glm::perspective(glm::radians(this->Zoom), 1920.0f / 1080.0f, 0.1f, 100.0f);
-    }
 
-    // returns the view matrix calculated using Euler Angles and the LookAt Matrix
-    glm::mat4 GetViewMatrix();
+        view = glm::lookAt(Position, Position + Front, Up);
+    }
 
     // processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
     void ProcessKeyboard(Camera_Movement direction, float deltaTime);

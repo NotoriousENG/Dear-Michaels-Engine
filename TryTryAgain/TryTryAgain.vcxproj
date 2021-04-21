@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\ThirdParty;$(ProjectDir)source\ThirdParty\imgui-docking;$(ProjectDir)source\ThirdParty\imgui-docking\backends;$(ProjectDir)source\ThirdParty\plugins\imgui;$(ProjectDir)source\ThirdParty\imgui-docking\misc\cpp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\ThirdParty;$(ProjectDir)source\ThirdParty\imgui-docking;$(ProjectDir)source\ThirdParty\imgui-docking\backends;$(ProjectDir)source\ThirdParty\plugins\imgui;$(ProjectDir)source\ThirdParty\imgui-docking\misc\cpp;$(ProjectDir)source\ThirdParty\imguizmo</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,7 +135,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\ThirdParty;$(ProjectDir)source\ThirdParty\imgui-docking;$(ProjectDir)source\ThirdParty\imgui-docking\backends;$(ProjectDir)source\ThirdParty\plugins\imgui;$(ProjectDir)source\ThirdParty\imgui-docking\misc\cpp</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\ThirdParty;$(ProjectDir)source\ThirdParty\imgui-docking;$(ProjectDir)source\ThirdParty\imgui-docking\backends;$(ProjectDir)source\ThirdParty\plugins\imgui;$(ProjectDir)source\ThirdParty\imgui-docking\misc\cpp;$(ProjectDir)source\ThirdParty\imguizmo</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -170,6 +170,10 @@
     <ClCompile Include="source\ThirdParty\imgui-docking\imgui_tables.cpp" />
     <ClCompile Include="source\ThirdParty\imgui-docking\imgui_widgets.cpp" />
     <ClCompile Include="Source\ThirdParty\imgui-docking\misc\cpp\imgui_stdlib.cpp" />
+    <ClCompile Include="Source\ThirdParty\imguizmo\ImCurveEdit.cpp" />
+    <ClCompile Include="Source\ThirdParty\imguizmo\ImGradient.cpp" />
+    <ClCompile Include="Source\ThirdParty\imguizmo\ImGuizmo.cpp" />
+    <ClCompile Include="Source\ThirdParty\imguizmo\ImSequencer.cpp" />
     <ClCompile Include="source\Window\Window.cpp" />
     <ClCompile Include="Source\Objects\UTransformGizmo.cpp" />
   </ItemGroup>

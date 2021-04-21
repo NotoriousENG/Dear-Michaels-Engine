@@ -24,6 +24,10 @@
     <ClCompile Include="Source\ThirdParty\imgui-docking\misc\cpp\imgui_stdlib.cpp" />
     <ClCompile Include="Source\Panels\GameWindow.cpp" />
     <ClCompile Include="Source\Elements\Camera.cpp" />
+    <ClCompile Include="Source\ThirdParty\imguizmo\ImCurveEdit.cpp" />
+    <ClCompile Include="Source\ThirdParty\imguizmo\ImGradient.cpp" />
+    <ClCompile Include="Source\ThirdParty\imguizmo\ImGuizmo.cpp" />
+    <ClCompile Include="Source\ThirdParty\imguizmo\ImSequencer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Main.h" />

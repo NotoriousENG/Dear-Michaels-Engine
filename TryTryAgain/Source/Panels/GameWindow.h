@@ -2,6 +2,8 @@
 #include <cstdio>
 #include <glad/glad.h>
 #include <imgui.h>
+#include <ImGuizmo.h>
+
 
 #include "Elements/Game.h"
 #include "Panels/Console.h"
@@ -35,6 +37,44 @@ namespace Panels
 		unsigned int rbo;
 
 		ImVec2 size;
+
+		void EditTransform(const Camera* camera, glm::mat4& matrix);
+
+		float snap[3] = { 1.f, 1.f, 1.f };
+
+		const float identityMatrix[16] =
+		{ 1.f, 0.f, 0.f, 0.f,
+			0.f, 1.f, 0.f, 0.f,
+			0.f, 0.f, 1.f, 0.f,
+			0.f, 0.f, 0.f, 1.f };
+
+		float objectMatrix[4][16] = {
+		  { 1.f, 0.f, 0.f, 0.f,
+			0.f, 1.f, 0.f, 0.f,
+			0.f, 0.f, 1.f, 0.f,
+			0.f, 0.f, 0.f, 1.f },
+
+		  { 1.f, 0.f, 0.f, 0.f,
+		  0.f, 1.f, 0.f, 0.f,
+		  0.f, 0.f, 1.f, 0.f,
+		  2.f, 0.f, 0.f, 1.f },
+
+		  { 1.f, 0.f, 0.f, 0.f,
+		  0.f, 1.f, 0.f, 0.f,
+		  0.f, 0.f, 1.f, 0.f,
+		  2.f, 0.f, 2.f, 1.f },
+
+		  { 1.f, 0.f, 0.f, 0.f,
+		  0.f, 1.f, 0.f, 0.f,
+		  0.f, 0.f, 1.f, 0.f,
+		  0.f, 0.f, 2.f, 1.f }
+		};
+
+		int gizmoCount = 1;
+
+		bool useSnap = false;
+		ImGuizmo::OPERATION mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+		ImGuizmo::MODE mCurrentGizmoMode = ImGuizmo::WORLD;
 		
 	};
 }

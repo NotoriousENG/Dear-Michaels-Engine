@@ -80,7 +80,7 @@ void AAwesomeBox::Draw()
 
 void AAwesomeBox::Tick(float delta)
 {
-	trans = glm::translate(model, transform.position);
+	/*glm::mat4 trans = glm::translate(model, transform.position);
 	
 	trans = glm::rotate (trans, glm::radians(transform.rotation.x), glm::vec3(1, 0, 0));
 	trans = glm::rotate(trans, glm::radians(transform.rotation.y), glm::vec3(0, 1, 0));
@@ -88,11 +88,13 @@ void AAwesomeBox::Tick(float delta)
 
 	trans = glm::scale(trans, transform.scale);
 
+	model = trans;*/
+
 	view = glm::lookAt(Game::MainCamera.Position, Game::MainCamera.Position + Game::MainCamera.Front, Game::MainCamera.Up);
 	projection = glm::perspective(glm::radians(Game::MainCamera.Zoom), 1920.0f / 1080.0f, 0.1f, 100.0f);
 
 	ResourceManagement::ResourceManager::GetShader("Standard").Use();
-	ResourceManagement::ResourceManager::GetShader("Standard").SetMatrix4("model", trans);
+	ResourceManagement::ResourceManager::GetShader("Standard").SetMatrix4("model", model);
 	ResourceManagement::ResourceManager::GetShader("Standard").SetMatrix4("view", view);
 	ResourceManagement::ResourceManager::GetShader("Standard").SetMatrix4("projection", projection);
 }

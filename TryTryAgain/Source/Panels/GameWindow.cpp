@@ -1,4 +1,5 @@
 #include "GameWindow.h"
+#include <imguizmo/ImGuizmo.h>
 
 namespace Panels
 {
@@ -31,6 +32,17 @@ namespace Panels
 		bool wasPlaying = playing;
 		playing = MyGame->playing;
 
+		if (MyGame->Actors.size() > 0)
+		{
+			ImGui::Begin("TestEditor");
+			if (MyGame->Actors.size() > 0)
+			{
+				EditTransform(&MyGame->MainCamera, MyGame->Actors[0]->model);
+			}
+			ImGui::End();
+			
+		}
+
 		ImGui::Begin("GameWindow: 1920 x 1080");
 		{
 			const char* playButtonLabel = playing ? "Press Escape to Exit Play Mode" : "Play (F5)";
@@ -41,6 +53,25 @@ namespace Panels
 			// Using a Child allow to fill all the space of the window.
 			// It also alows customization
 			ImGui::BeginChild("Game");
+			
+			ImGuizmo::SetDrawlist();
+			float windowWidth = (float)ImGui::GetWindowWidth();
+			float windowHeight = (float)ImGui::GetWindowHeight();
+			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+			float viewManipulateRight = ImGui::GetWindowPos().x + windowWidth;
+			float viewManipulateTop = ImGui::GetWindowPos().y;
+
+			ImGuizmo::DrawGrid(reinterpret_cast<float*>(&MyGame->MainCamera.view), reinterpret_cast<float*>(&MyGame->MainCamera.projection), identityMatrix, 100.f);
+			ImGuizmo::DrawCubes(reinterpret_cast<float*>(&MyGame->MainCamera.view), reinterpret_cast<float*>(&MyGame->MainCamera.projection), &objectMatrix[0][0], gizmoCount);
+
+			if (!MyGame->Actors.empty())
+			{
+				ImGuizmo::Manipulate(reinterpret_cast<float*>(&MyGame->MainCamera.view), reinterpret_cast<float*>(&MyGame->MainCamera.projection), mCurrentGizmoOperation, mCurrentGizmoMode, reinterpret_cast<float*>(&MyGame->Actors[0]->model), NULL, useSnap ? snap : NULL);
+			}
+
+			ImGuizmo::ViewManipulate(reinterpret_cast<float*>(&MyGame->MainCamera.view), MyGame->MainCamera.Zoom, ImVec2(viewManipulateRight - 128, viewManipulateTop), ImVec2(128, 128), 0x10101010);
+
+			
 			// Get the size of the child (i.e. the whole draw size of the windows).
 			ImVec2 wsize = ImGui::GetWindowSize();
 			Render(wsize);
@@ -141,5 +172,60 @@ namespace Panels
 		// if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 			// M_LOG("[error]::FRAMEBUFFER:: Framebuffer is not complete!\n");
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	}
+
+	void GameWindow::EditTransform(const Camera* camera, glm::mat4& matrix)
+	{
+		static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
+		static float boundsSnap[] = { 0.1f, 0.1f, 0.1f };
+		static bool boundSizing = false;
+		static bool boundSizingSnap = false;
+
+		if (MyGame->Keys[SDLK_e])
+			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+		if (MyGame->Keys[SDLK_r])
+			mCurrentGizmoOperation = ImGuizmo::ROTATE;
+		if (MyGame->Keys[SDLK_t]) // r Key
+			mCurrentGizmoOperation = ImGuizmo::SCALE;
+		if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
+			mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+		ImGui::SameLine();
+		if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
+			mCurrentGizmoOperation = ImGuizmo::ROTATE;
+		ImGui::SameLine();
+		if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
+			mCurrentGizmoOperation = ImGuizmo::SCALE;
+		float matrixTranslation[3], matrixRotation[3], matrixScale[3];
+		ImGuizmo::DecomposeMatrixToComponents(reinterpret_cast<float*>(&matrix), matrixTranslation, matrixRotation, matrixScale);
+		ImGui::InputFloat3("Tr", matrixTranslation);
+		ImGui::InputFloat3("Rt", matrixRotation);
+		ImGui::InputFloat3("Sc", matrixScale);
+		ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, reinterpret_cast<float*>(&matrix));
+
+		if (mCurrentGizmoOperation != ImGuizmo::SCALE)
+		{
+			if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
+				mCurrentGizmoMode = ImGuizmo::LOCAL;
+			ImGui::SameLine();
+			if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
+				mCurrentGizmoMode = ImGuizmo::WORLD;
+		}
+
+		if (ImGui::IsKeyPressed(83))
+			useSnap = !useSnap;
+		ImGui::Checkbox("", &useSnap);
+		ImGui::SameLine();
+		switch (mCurrentGizmoOperation)
+		{
+		case ImGuizmo::TRANSLATE:
+			ImGui::InputFloat3("Snap", snap);
+			break;
+		case ImGuizmo::ROTATE:
+			ImGui::InputFloat("Angle Snap", snap);
+			break;
+		case ImGuizmo::SCALE:
+			ImGui::InputFloat("Scale Snap", snap);
+			break;
+		}
 	}
 }

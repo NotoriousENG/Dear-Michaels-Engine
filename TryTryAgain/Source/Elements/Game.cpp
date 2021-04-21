@@ -170,7 +170,7 @@ void Game::ProcessInputEditor()
 				ray_eye = glm::vec4(ray_eye.x, ray_eye.y, -1, 0);
 
 				// World Coordinates
-				view = MainCamera.GetViewMatrix();
+				view = MainCamera.view;
 				auto ray_wor4 = (inverse(view) * ray_eye);
 				glm::vec3 ray_wor = glm::vec3(ray_wor4.x, ray_wor4.y, ray_wor4.z);
 				// don't forget to normalise the vector at some point

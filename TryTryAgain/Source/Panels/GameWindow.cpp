@@ -32,17 +32,6 @@ namespace Panels
 		bool wasPlaying = playing;
 		playing = MyGame->playing;
 
-		if (MyGame->Actors.size() > 0)
-		{
-			ImGui::Begin("TestEditor");
-			if (MyGame->Actors.size() > 0)
-			{
-				EditTransform(&MyGame->MainCamera, MyGame->Actors[0]->model);
-			}
-			ImGui::End();
-			
-		}
-
 		ImGui::Begin("GameWindow: 1920 x 1080");
 		{
 			const char* playButtonLabel = playing ? "Press Escape to Exit Play Mode" : "Play (F5)";
@@ -53,24 +42,6 @@ namespace Panels
 			// Using a Child allow to fill all the space of the window.
 			// It also alows customization
 			ImGui::BeginChild("Game");
-			
-			ImGuizmo::SetDrawlist();
-			float windowWidth = (float)ImGui::GetWindowWidth();
-			float windowHeight = (float)ImGui::GetWindowHeight();
-			ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
-			float viewManipulateRight = ImGui::GetWindowPos().x + windowWidth;
-			float viewManipulateTop = ImGui::GetWindowPos().y;
-
-			ImGuizmo::DrawGrid(reinterpret_cast<float*>(&MyGame->MainCamera.view), reinterpret_cast<float*>(&MyGame->MainCamera.projection), identityMatrix, 100.f);
-			ImGuizmo::DrawCubes(reinterpret_cast<float*>(&MyGame->MainCamera.view), reinterpret_cast<float*>(&MyGame->MainCamera.projection), &objectMatrix[0][0], gizmoCount);
-
-			if (!MyGame->Actors.empty())
-			{
-				ImGuizmo::Manipulate(reinterpret_cast<float*>(&MyGame->MainCamera.view), reinterpret_cast<float*>(&MyGame->MainCamera.projection), mCurrentGizmoOperation, mCurrentGizmoMode, reinterpret_cast<float*>(&MyGame->Actors[0]->model), NULL, useSnap ? snap : NULL);
-			}
-
-			ImGuizmo::ViewManipulate(reinterpret_cast<float*>(&MyGame->MainCamera.view), MyGame->MainCamera.Zoom, ImVec2(viewManipulateRight - 128, viewManipulateTop), ImVec2(128, 128), 0x10101010);
-
 			
 			// Get the size of the child (i.e. the whole draw size of the windows).
 			ImVec2 wsize = ImGui::GetWindowSize();
@@ -117,11 +88,43 @@ namespace Panels
 			MyGame->mouse = glm::vec2(gameMousePos.x, gameMousePos.y);
 			MyGame->renderSize = glm::vec2(renderSize.x, renderSize.y);
 
-
+			ImVec2 p = ImGui::GetCursorScreenPos(); //TESTING
+			
 			// Because I use the texture from OpenGL, I need to invert the V from the UV.
 			ImGui::Image((ImTextureID)texColorBuffer, renderSize, ImVec2(0, 1), ImVec2(1, 0));
-			
+
 			ImGui::EndChild();
+
+			ImGui::BeginChild("Game");
+			// ImGui::GetWindowDrawList()->AddLine(p, ImVec2(p.x + 50, p.y + 50), IM_COL32(255, 0, 0, 255), 3.0f);
+			// Gizmos
+			if (!MyGame->Actors.empty() && MyGame->Picked != nullptr)
+			{
+				ImGuizmo::SetOrthographic(false);
+
+				ImGuizmo::SetDrawlist();
+				
+				float windowWidth = static_cast<float>(ImGui::GetWindowWidth());
+				float windowHeight = static_cast<float>(ImGui::GetWindowHeight());
+				ImGuizmo::SetRect(ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, windowWidth, windowHeight);
+
+				// Camera
+				glm::mat4 view = MyGame->MainCamera.view;
+				glm::mat4 proj = MyGame->MainCamera.projection;
+
+				// Transform
+				auto model = MyGame->Picked->model;
+
+				ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(proj), ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::LOCAL, glm::value_ptr(model));
+
+				if (ImGuizmo::IsUsing())
+				{
+					MyGame->Picked->model = model;
+				}
+			}
+
+			ImGui::EndChild();
+			
 		}
 		ImGui::End();
 	}

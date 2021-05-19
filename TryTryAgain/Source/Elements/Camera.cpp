@@ -58,4 +58,8 @@ void Camera::updateCameraVectors()
     // also re-calculate the Right and Up vector
     Right = glm::normalize(glm::cross(Front, WorldUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
     Up = glm::normalize(glm::cross(Right, Front));
+
+    projection = glm::perspective(glm::radians(this->Zoom), 1920.0f / 1080.0f, 0.1f, 100.0f);
+
+    view = glm::lookAt(Position, Position + Front, Up);
 }

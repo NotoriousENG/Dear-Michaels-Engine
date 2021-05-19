@@ -121,8 +121,8 @@ void Game::Pick()
 	M_LOG("(%f, %f)", ndcPos.x, ndcPos.y);*/
 	if (id < Actors.size())
 	{
-		AActor* picked = Actors.at(id).get();
-		M_LOG("Picked: %s ID: 0x%x", picked->name.c_str(), reinterpret_cast<int>(picked));
+		Picked = Actors.at(id).get();
+		M_LOG("Picked: %s ID: 0x%x", Picked->name.c_str(), reinterpret_cast<int>(Picked));
 	}
 }
 

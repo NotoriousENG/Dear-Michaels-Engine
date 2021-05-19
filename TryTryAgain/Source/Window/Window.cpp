@@ -187,6 +187,7 @@ void Window::execute() {
 
         hierarchy->Draw(&show_hierarchy);
 
+
         // Rendering
         ImGui::Render();
         /*glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);

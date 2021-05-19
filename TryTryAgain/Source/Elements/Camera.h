@@ -53,6 +53,8 @@ public:
         updateCameraVectors();
     	
         projection = glm::perspective(glm::radians(this->Zoom), 1920.0f / 1080.0f, 0.1f, 100.0f);
+
+        view = glm::lookAt(Position, Position + Front, Up);
     }
     // constructor with scalar values
     Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)

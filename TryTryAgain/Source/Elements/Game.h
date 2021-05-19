@@ -49,6 +49,8 @@ public:
 
 	void DrawActorsWithPickingShader();
 
+	AActor* Picked;
+
 private:
 	unsigned int framebuffer;
 	float deltaTime, lastFrame;

@@ -1,5 +1,6 @@
 #include "GameWindow.h"
 #include <imguizmo/ImGuizmo.h>
+#include <glm/gtx/matrix_decompose.hpp>
 
 namespace Panels
 {
@@ -98,8 +99,21 @@ namespace Panels
 			ImGui::BeginChild("Game");
 			// ImGui::GetWindowDrawList()->AddLine(p, ImVec2(p.x + 50, p.y + 50), IM_COL32(255, 0, 0, 255), 3.0f);
 			// Gizmos
+			if (!MyGame->MouseButtons[SDL_BUTTON_RIGHT])
+			{
+				if (MyGame->Keys[SDLK_e])
+					mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+				if (MyGame->Keys[SDLK_r])
+					mCurrentGizmoOperation = ImGuizmo::ROTATE;
+				if (MyGame->Keys[SDLK_t]) // r Key
+					mCurrentGizmoOperation = ImGuizmo::SCALE;
+			}
+			
+
 			if (!MyGame->Actors.empty() && MyGame->Picked != nullptr)
 			{
+				auto* SelectedActor = MyGame->Picked;
+
 				ImGuizmo::SetOrthographic(false);
 
 				ImGuizmo::SetDrawlist();
@@ -113,13 +127,19 @@ namespace Panels
 				glm::mat4 proj = MyGame->MainCamera.projection;
 
 				// Transform
-				auto model = MyGame->Picked->model;
+				auto model = SelectedActor->model;
+				auto& transform = SelectedActor->transform;
 
-				ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(proj), ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::LOCAL, glm::value_ptr(model));
+				if (ImGuizmo::Manipulate(glm::value_ptr(view), glm::value_ptr(proj), mCurrentGizmoOperation, ImGuizmo::WORLD, glm::value_ptr(model)));
 
 				if (ImGuizmo::IsUsing())
 				{
-					MyGame->Picked->model = model;
+					SelectedActor->isUsing = true;
+					SelectedActor->model = model;
+					glm::decompose(model, transform.scale, transform.rotation, transform.position, transform.skew, transform.perspective);
+				}
+				else {
+					SelectedActor->isUsing = false;
 				}
 			}
 

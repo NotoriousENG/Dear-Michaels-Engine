@@ -6,24 +6,8 @@
 #include "Elements/Game.h"
 #include "ResourceManagement/ResourceManager.h"
 
-AAwesomeBox::AAwesomeBox(const char* name, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale)
+AAwesomeBox::AAwesomeBox(const char* name, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale) : AActor(name, pos, rot, scale)
 {
-	this->name = name;
-
-	model = glm::mat4(1);
-
-	view = glm::mat4(1.0f);
-	// note that we're translating the scene in the reverse direction of where we want to move
-	view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-
-	projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
-
-	this->transform = FTransform
-	{
-		pos,
-		rot,
-		scale
-	};
 
 	ResourceManagement::ResourceManager::LoadShader("Assets/Shaders/Standard.vert", "Assets/Shaders/Standard.frag", nullptr, "Standard");
 
@@ -80,21 +64,10 @@ void AAwesomeBox::Draw()
 
 void AAwesomeBox::Tick(float delta)
 {
-	/*glm::mat4 trans = glm::translate(model, transform.position);
-	
-	trans = glm::rotate (trans, glm::radians(transform.rotation.x), glm::vec3(1, 0, 0));
-	trans = glm::rotate(trans, glm::radians(transform.rotation.y), glm::vec3(0, 1, 0));
-	trans = glm::rotate(trans, glm::radians(transform.rotation.z), glm::vec3(0, 0, 1));
-
-	trans = glm::scale(trans, transform.scale);
-
-	model = trans;*/
-
-	view = glm::lookAt(Game::MainCamera.Position, Game::MainCamera.Position + Game::MainCamera.Front, Game::MainCamera.Up);
-	projection = glm::perspective(glm::radians(Game::MainCamera.Zoom), 1920.0f / 1080.0f, 0.1f, 100.0f);
+	Super::Tick(delta);
 
 	ResourceManagement::ResourceManager::GetShader("Standard").Use();
 	ResourceManagement::ResourceManager::GetShader("Standard").SetMatrix4("model", model);
-	ResourceManagement::ResourceManager::GetShader("Standard").SetMatrix4("view", view);
-	ResourceManagement::ResourceManager::GetShader("Standard").SetMatrix4("projection", projection);
+	ResourceManagement::ResourceManager::GetShader("Standard").SetMatrix4("view", Game::MainCamera.view);
+	ResourceManagement::ResourceManager::GetShader("Standard").SetMatrix4("projection", Game::MainCamera.projection);
 }

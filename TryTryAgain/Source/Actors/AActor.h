@@ -13,6 +13,7 @@ public:
 	typedef AActor Super;
 
     bool isEditing;
+	bool isUsing = false;
     bool isDead = false;
 
 	bool toDraw = true;
@@ -29,7 +30,7 @@ public:
 
 	virtual void Tick(float delta);
 
-	glm::mat4 model, view, projection;
+	glm::mat4 model;
 
 	unsigned int VBO, VAO, EBO;
 

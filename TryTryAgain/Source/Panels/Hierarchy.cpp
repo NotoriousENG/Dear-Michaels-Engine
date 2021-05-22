@@ -2,7 +2,7 @@
 
 #include <string>
 
-
+#include <glm/gtc/type_ptr.hpp>
 
 #include "Console.h"
 #include "Actors/AAwesomeBox.h"
@@ -116,7 +116,11 @@ namespace Panels
 
                 ImGui::TableSetColumnIndex(1);
                 ImGui::SetNextItemWidth(-FLT_MIN);
-                ImGui::InputFloat3("Rotation", &transform.rotation.x);
+
+                glm::vec3 eulerAngles = glm::degrees(glm::eulerAngles(transform.rotation));
+                if (ImGui::InputFloat3("Rotation", &eulerAngles[0])) {
+                    transform.rotation = glm::quat(glm::radians(eulerAngles));
+                }
 
                 ImGui::NextColumn();
             }

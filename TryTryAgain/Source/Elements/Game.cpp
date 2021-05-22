@@ -144,7 +144,7 @@ void Game::ProcessInputEditor()
 		}
 	}
 
-	if (this->Keys[SDLK_DELETE] && this->Picked)
+	if (this->Keys[SDLK_DELETE] && this->Picked != nullptr)
 	{
 		Destroy(Picked);
 	}

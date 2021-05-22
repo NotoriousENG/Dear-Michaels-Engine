@@ -124,6 +124,10 @@ void Game::Pick()
 		Picked = Actors.at(id).get();
 		M_LOG("Picked: %s ID: 0x%x", Picked->name.c_str(), reinterpret_cast<int>(Picked));
 	}
+	else
+	{
+		Picked = nullptr;
+	}
 }
 
 void Game::ProcessInputEditor()
@@ -138,6 +142,11 @@ void Game::ProcessInputEditor()
 		{
 			a->toDraw = true;
 		}
+	}
+
+	if (this->Keys[SDLK_DELETE] && this->Picked)
+	{
+		Destroy(Picked);
 	}
 	
 	// M_LOG("X: %f Y: %f", gameMousePos.x, gameMousePos.y);

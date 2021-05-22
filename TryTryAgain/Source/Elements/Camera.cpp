@@ -16,7 +16,7 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
     if (direction == DOWN)
         Position -= Up * velocity;
 
-    updateCameraVectors();
+    UpdateCameraVectors();
 }
 
 void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch)
@@ -37,7 +37,7 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constr
     }
 
     // update Front, Right and Up Vectors using the updated Euler angles
-    updateCameraVectors();
+    UpdateCameraVectors();
 }
 
 void Camera::ProcessMouseScroll(float yoffset)
@@ -49,10 +49,10 @@ void Camera::ProcessMouseScroll(float yoffset)
         Zoom = 45.0f;
 }
 
-void Camera::updateCameraVectors()
+void Camera::UpdateCameraVectors()
 {
     // calculate the new Front vector
-    glm::vec3 front;
+    glm::vec3 front = glm::vec3(0);
     front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
     front.y = sin(glm::radians(Pitch));
     front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
@@ -61,7 +61,7 @@ void Camera::updateCameraVectors()
     Right = glm::normalize(glm::cross(Front, WorldUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
     Up = glm::normalize(glm::cross(Right, Front));
 
-    projection = glm::perspective(glm::radians(this->Zoom), 1920.0f / 1080.0f, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(this->Zoom), AspectRatio, 0.1f, 100.0f);
 
     view = glm::lookAt(Position, Position + Front, Up);
 }

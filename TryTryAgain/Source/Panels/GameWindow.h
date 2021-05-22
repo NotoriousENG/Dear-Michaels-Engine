@@ -26,7 +26,7 @@ namespace Panels
 
 	private:
 
-		void Render(ImVec2 size);
+		void Render();
 
 		void init_framebuffer();
 

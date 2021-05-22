@@ -6,6 +6,10 @@ namespace Panels
 {
 	GameWindow::GameWindow()
 	{
+		M_LOG("# Select Actors by clicking on them");
+		M_LOG("# Press E, R, T to toggle between Translate, Rotate, and Scale Tools");
+		M_LOG("# You can also delete selected actors by pressing the delete key");
+
 		ResourceManagement::ResourceManager::LoadShader("Assets/Shaders/Framebuffer.vert", "Assets/Shaders/Framebuffer.frag", nullptr, "Framebuffer");
 
 		size = ImVec2(1920, 1080);
@@ -33,7 +37,7 @@ namespace Panels
 		bool wasPlaying = playing;
 		playing = MyGame->playing;
 
-		ImGui::Begin("GameWindow: 1920 x 1080");
+		ImGui::Begin("GameWindow");
 		{
 			const char* playButtonLabel = playing ? "Press Escape to Exit Play Mode" : "Play (F5)";
 			if (ImGui::Button(playButtonLabel))
@@ -46,25 +50,16 @@ namespace Panels
 			
 			// Get the size of the child (i.e. the whole draw size of the windows).
 			ImVec2 wsize = ImGui::GetWindowSize();
-			Render(wsize);
+
+			Render();
 			if (wsize.x != size.x || wsize.y != size.y)
 			{
+				MyGame->MainCamera.AspectRatio = (wsize.x / 800) / (wsize.y / 800);
+				MyGame->MainCamera.UpdateCameraVectors();
 				size = wsize;
 				init_framebuffer();
 			}
 
-			float windowAspect = size.x / size.y;
-			float renderAspect = 1920.0f / 1080.0f;
-
-			float scaleFactor;
-			if (windowAspect > renderAspect)
-			{
-				scaleFactor = size.y / 1080.0f;
-			}
-			else
-			{
-				scaleFactor = size.x / 1920.0f;
-			}
 			if (playing && !wasPlaying)
 			{
 				MyGame->playing = true;
@@ -76,23 +71,22 @@ namespace Panels
 				SDL_SetRelativeMouseMode(SDL_FALSE);
 			}
 
-			auto renderSize = ImVec2(1920 * scaleFactor, 1080 * scaleFactor);
 			auto mousePos = ImGui::GetMousePos();
 			auto renderPos = ImGui::GetWindowPos();
 
 			auto gameMousePos = ImVec2(mousePos.x - renderPos.x, mousePos.y - renderPos.y);
-			if (gameMousePos.x < 0 || gameMousePos.x > renderSize.x || gameMousePos.y < 0 || gameMousePos.y > renderSize.y)
+			if (gameMousePos.x < 0 || gameMousePos.x > wsize.x || gameMousePos.y < 0 || gameMousePos.y > wsize.y)
 			{
 				gameMousePos.x = -1;
 				gameMousePos.y = -1;
 			}
 			MyGame->mouse = glm::vec2(gameMousePos.x, gameMousePos.y);
-			MyGame->renderSize = glm::vec2(renderSize.x, renderSize.y);
+			MyGame->renderSize = glm::vec2(wsize.x, wsize.y);
 
 			ImVec2 p = ImGui::GetCursorScreenPos(); //TESTING
 			
 			// Because I use the texture from OpenGL, I need to invert the V from the UV.
-			ImGui::Image((ImTextureID)texColorBuffer, renderSize, ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image((ImTextureID)texColorBuffer, wsize, ImVec2(0, 1), ImVec2(1, 0));
 
 			ImGui::EndChild();
 
@@ -149,7 +143,7 @@ namespace Panels
 		ImGui::End();
 	}
 
-	void GameWindow::Render(ImVec2 size)
+	void GameWindow::Render()
 	{
 		// Render Game to framebuffer
 		MyGame->Render();

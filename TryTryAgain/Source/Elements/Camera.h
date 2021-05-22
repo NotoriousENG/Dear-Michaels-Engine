@@ -43,6 +43,8 @@ public:
     glm::mat4 projection;
     glm::mat4 view;
 
+    float AspectRatio = 1920.f / 1080.f;
+
     // constructor with vectors
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
     {
@@ -50,11 +52,7 @@ public:
         WorldUp = up;
         Yaw = yaw;
         Pitch = pitch;
-        updateCameraVectors();
-    	
-        projection = glm::perspective(glm::radians(this->Zoom), 1920.0f / 1080.0f, 0.1f, 100.0f);
-
-        view = glm::lookAt(Position, Position + Front, Up);
+        UpdateCameraVectors();
     }
     // constructor with scalar values
     Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
@@ -63,11 +61,7 @@ public:
         WorldUp = glm::vec3(upX, upY, upZ);
         Yaw = yaw;
         Pitch = pitch;
-        updateCameraVectors();
-    	
-        projection = glm::perspective(glm::radians(this->Zoom), 1920.0f / 1080.0f, 0.1f, 100.0f);
-
-        view = glm::lookAt(Position, Position + Front, Up);
+        UpdateCameraVectors();
     }
 
     // processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
@@ -79,8 +73,7 @@ public:
     // processes input received from a mouseRel scroll-wheel event. Only requires input on the vertical wheel-axis
     void ProcessMouseScroll(float yoffset);
 
-private:
     // calculates the front vector from the Camera's (updated) Euler Angles
-    void updateCameraVectors();
+    void UpdateCameraVectors();
 };
 

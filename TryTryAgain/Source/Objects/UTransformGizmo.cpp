@@ -8,12 +8,6 @@ UTransformGizmo::UTransformGizmo()
 {
 	model = glm::mat4(1);
 
-	view = glm::mat4(1.0f);
-	// note that we're translating the scene in the reverse direction of where we want to move
-	view = glm::translate(view, glm::vec3(0.0f, 0.0f, 0.0f));
-
-	projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
-
 	this->transform = FTransform
 	{
 		glm::vec3(0),
@@ -77,13 +71,10 @@ void UTransformGizmo::Draw()
 
 	trans = glm::scale(trans, transform.scale);
 
-	view = glm::lookAt(Game::MainCamera.Position, Game::MainCamera.Position + Game::MainCamera.Front, Game::MainCamera.Up);
-	projection = glm::perspective(glm::radians(Game::MainCamera.Zoom), 1920.0f / 1080.0f, 0.1f, 100.0f);
-
 	ResourceManagement::ResourceManager::GetShader("Gizmo").Use();
 	ResourceManagement::ResourceManager::GetShader("Gizmo").SetMatrix4("model", trans);
-	ResourceManagement::ResourceManager::GetShader("Gizmo").SetMatrix4("view", view);
-	ResourceManagement::ResourceManager::GetShader("Gizmo").SetMatrix4("projection", projection);
+	ResourceManagement::ResourceManager::GetShader("Gizmo").SetMatrix4("view", Game::MainCamera.view);
+	ResourceManagement::ResourceManager::GetShader("Gizmo").SetMatrix4("projection", Game::MainCamera.projection);
 
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_LINES, 0, 6);

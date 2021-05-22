@@ -22,7 +22,7 @@ private:
 	
 	FTransform transform;
 	
-	glm::mat4 model, view, projection;
+	glm::mat4 model;
 
 	unsigned int VBO, VAO, EBO;
 

@@ -1,6 +1,13 @@
 # Open-GL-Game-Engine
 This is a game Engine I am working on using C++ and OpenGL, inspired by Unity and Unreal Engine. Current requirements are Windows-64 and Visual Studio.
 
+![showcase image](showcase.jpg?raw=true)
+
+## Usage
+* To sample implemented features, you can extract and run the .exe in the zip file. 
+* Scripting and code-reloading is not supported. 
+  * If you wish to add your own actors/game features you must build from source.
+
 ## Motivation
 I've worked on many game projects before and want to create a more performant, minimal, and modifyable code base vs what is availiable in commercial engines.
 * My goal is not to build a perfect engine, but rather reach the minimal amount of features to support my next game idea.

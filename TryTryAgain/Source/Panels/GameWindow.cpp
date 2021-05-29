@@ -1,14 +1,15 @@
-#include "GameWindow.h"
+﻿#include "GameWindow.h"
 #include <imguizmo/ImGuizmo.h>
 #include <glm/gtx/matrix_decompose.hpp>
 #include <glm/gtx/vector_angle.hpp>
+#include "imgui_stdlib.h"
 
 namespace Panels
 {
 	GameWindow::GameWindow()
 	{
 		M_LOG("# Select Actors by clicking on them");
-		M_LOG("# Press E, R, T to toggle between Translate, Rotate, and Scale Tools");
+		M_LOG("# Press W, E, R, T to toggle between Translate, Rotate, Scale, and Bound Tools");
 		M_LOG("# You can also delete selected actors by pressing the delete key");
 
 		ResourceManagement::ResourceManager::LoadShader("Assets/Shaders/Framebuffer.vert", "Assets/Shaders/Framebuffer.frag", nullptr, "Framebuffer");
@@ -92,12 +93,14 @@ namespace Panels
 			// Gizmos
 			if (!MyGame->MouseButtons[SDL_BUTTON_RIGHT])
 			{
-				if (MyGame->Keys[SDLK_e])
+				if (MyGame->Keys[SDLK_w])
 					mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-				if (MyGame->Keys[SDLK_r])
+				if (MyGame->Keys[SDLK_e])
 					mCurrentGizmoOperation = ImGuizmo::ROTATE;
-				if (MyGame->Keys[SDLK_t]) // r Key
+				if (MyGame->Keys[SDLK_r]) // r Key
 					mCurrentGizmoOperation = ImGuizmo::SCALE;
+				if (MyGame->Keys[SDLK_t])
+					mCurrentGizmoOperation = ImGuizmo::BOUNDS;
 			}
 
 			float* model_arr = glm::value_ptr(MyGame->Picked->model);
@@ -105,12 +108,11 @@ namespace Panels
 
 			if (!MyGame->Actors.empty() && MyGame->Picked != nullptr)
 			{
-				auto prev_cam_model = glm::inverse(camera.view);
 
 				ImGuizmo::SetGizmoSizeClipSpace(0.33);
 
-				EditTransform(glm::value_ptr(camera.view), glm::value_ptr(camera.projection), glm::distance(camera.transform.position, MyGame->Picked->transform.position), model_arr, true);
-				
+				EditTransform(glm::value_ptr(camera.view), glm::value_ptr(camera.projection), glm::distance(glm::normalize(camera.transform.position), glm::vec3(0)), model_arr, true);
+
 				auto& pt =  MyGame->Picked->transform;
 				glm::decompose(MyGame->Picked->model, pt.scale, pt.rotation, pt.position, pt.skew, pt.perspective);
 			}
@@ -186,20 +188,40 @@ namespace Panels
 		if (editTransformDecomposition)
 		{
 			ImGui::Begin("Inspector");
+
+			auto actor = MyGame->Picked;
+			ImGui::BeginTable("split", 2, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_Resizable);
+			ImGui::TableNextRow();
+			ImGui::TableSetColumnIndex(0);
+			ImGui::PushItemWidth(ImGui::GetWindowWidth() / 2);
+			ImGui::InputText("", &actor->name);
+			ImGui::PopItemWidth();
+			ImGui::TableSetColumnIndex(1);
+			int uid = reinterpret_cast<unsigned int>(actor);
+			ImGui::Text("ID: 0x%x", uid);
+			ImGui::EndTable();
+
 			if (ImGui::IsKeyPressed(90))
 				mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 			if (ImGui::IsKeyPressed(69))
 				mCurrentGizmoOperation = ImGuizmo::ROTATE;
 			if (ImGui::IsKeyPressed(82)) // r Key
 				mCurrentGizmoOperation = ImGuizmo::SCALE;
-			if (ImGui::RadioButton("Translate", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
+			if (ImGui::RadioButton("Tr", mCurrentGizmoOperation == ImGuizmo::TRANSLATE))
 				mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 			ImGui::SameLine();
-			if (ImGui::RadioButton("Rotate", mCurrentGizmoOperation == ImGuizmo::ROTATE))
+			if (ImGui::RadioButton("Rt", mCurrentGizmoOperation == ImGuizmo::ROTATE))
 				mCurrentGizmoOperation = ImGuizmo::ROTATE;
 			ImGui::SameLine();
-			if (ImGui::RadioButton("Scale", mCurrentGizmoOperation == ImGuizmo::SCALE))
+			if (ImGui::RadioButton("Sc", mCurrentGizmoOperation == ImGuizmo::SCALE))
 				mCurrentGizmoOperation = ImGuizmo::SCALE;
+
+			ImGui::SameLine();
+			if (ImGui::RadioButton("Bd", mCurrentGizmoOperation == ImGuizmo::BOUNDS))
+			{
+				mCurrentGizmoOperation = ImGuizmo::BOUNDS;
+			}
+
 			float matrixTranslation[3], matrixRotation[3], matrixScale[3];
 			ImGuizmo::DecomposeMatrixToComponents(matrix, matrixTranslation, matrixRotation, matrixScale);
 			ImGui::InputFloat3("Tr", matrixTranslation);
@@ -207,7 +229,17 @@ namespace Panels
 			ImGui::InputFloat3("Sc", matrixScale);
 			ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, matrix);
 
-			if (mCurrentGizmoOperation != ImGuizmo::SCALE)
+			if (mCurrentGizmoOperation == ImGuizmo::BOUNDS)
+			{
+				ImGui::PushID(3);
+				ImGui::Checkbox("Snap", &boundSizingSnap);
+				ImGui::SameLine();
+				ImGui::InputFloat3("Bounds", boundsSnap);
+				ImGui::PopID();
+			}
+			boundSizing = mCurrentGizmoOperation == ImGuizmo::BOUNDS;
+
+			if (mCurrentGizmoOperation != ImGuizmo::SCALE && mCurrentGizmoOperation != ImGuizmo::BOUNDS)
 			{
 				if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
 					mCurrentGizmoMode = ImGuizmo::LOCAL;
@@ -217,31 +249,24 @@ namespace Panels
 			}
 			if (ImGui::IsKeyPressed(83))
 				b_useSnap = !b_useSnap;
-			if (ImGui::Checkbox("UseSnap", &b_useSnap))
-			ImGui::SameLine();
+			if (!boundSizing)
+			{
+				if (ImGui::Checkbox("Snap", &b_useSnap));
+				ImGui::SameLine();
+			}
 
 			switch (mCurrentGizmoOperation)
 			{
 			case ImGuizmo::TRANSLATE:
-				ImGui::InputFloat3("Snap", &snap[0]);
+				ImGui::InputFloat3("Pos", &snap[0]);
 				break;
 			case ImGuizmo::ROTATE:
-				ImGui::InputFloat("Angle Snap", &snap[0]);
+				ImGui::InputFloat("Rot", &snap[0]);
 				break;
 			case ImGuizmo::SCALE:
-				ImGui::InputFloat("Scale Snap", &snap[0]);
+				ImGui::InputFloat("Scale", &snap[0]);
 				break;
 			}
-			ImGui::Checkbox("Bound Sizing", &boundSizing);
-			if (boundSizing)
-			{
-				ImGui::PushID(3);
-				ImGui::Checkbox("", &boundSizingSnap);
-				ImGui::SameLine();
-				ImGui::InputFloat3("Snap", boundsSnap);
-				ImGui::PopID();
-			}
-
 			
 			ImGui::Checkbox("Allow Axis Flip", &allowAxisFlip);
 			ImGuizmo::AllowAxisFlip(allowAxisFlip);

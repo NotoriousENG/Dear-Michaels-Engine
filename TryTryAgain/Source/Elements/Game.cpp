@@ -147,8 +147,9 @@ void Game::ProcessInputEditor()
 
 	if (this->Keys[SDLK_DELETE] && this->Picked != nullptr)
 	{
-		Destroy(Picked);
+		auto toDestroy = Picked;
 		Picked = nullptr;
+		Destroy(toDestroy);
 	}
 	
 	// M_LOG("X: %f Y: %f", gameMousePos.x, gameMousePos.y);

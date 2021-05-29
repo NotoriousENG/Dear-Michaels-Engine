@@ -39,10 +39,19 @@ namespace Panels
         ImGui::TableNextRow();
         ImGui::TableSetColumnIndex(0);
         ImGui::AlignTextToFramePadding();
-        const char* actorLabel = actor->isEditing ? "" : actor->name.c_str();
+        const char* actorLabel = actor->name.c_str();
+
+        auto wasEditing = actor->isEditing;
+
+        if (actor == MyGame->Picked)
+            ImGui::PushStyleColor(0, ImVec4(0, 1, 1, 1));
+
         actor->isEditing = ImGui::TreeNode("Object", actorLabel);
 
-        if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), true) && ImGui::IsMouseClicked(0))
+        if (actor == MyGame->Picked)
+            ImGui::PopStyleColor();
+
+        if (actor->isEditing != wasEditing)
         {
             MyGame->Picked = actor;
         }
@@ -51,14 +60,23 @@ namespace Panels
 		{
             ImGui::TableSetColumnIndex(1);
             ImGui::Indent(indent);
-            ImGui::Text("ID: 0x%x", uid);
-            ImGui::Indent(-indent);
 
-            if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), true) && ImGui::IsMouseClicked(0))
-            {
-                MyGame->Picked = actor;
-            }
+            if (actor == MyGame->Picked)
+                ImGui::PushStyleColor(0, ImVec4(0, 1, 1, 1));
+
+            ImGui::Text("ID: 0x%x", uid);
+
+            if (actor == MyGame->Picked)
+                ImGui::PopStyleColor();
+
+            ImGui::Indent(-indent);
 		}
+
+        if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), true) && ImGui::IsMouseClicked(0))
+        {
+            MyGame->Picked = actor;
+        }
+
         
 
         if (actor->isEditing)
@@ -67,7 +85,7 @@ namespace Panels
                 ImGui::TableSetColumnIndex(0);
                 ImGui::PushID("Name");
                 ImGui::Indent(30);
-                ImGui::InputText("", &actor->name);
+                //ImGui::InputText("", &actor->name);
                 ImGui::Indent(-30);
                 ImGui::PopID();
 
@@ -170,6 +188,7 @@ namespace Panels
         {
             int id = MyGame->Actors.size();
             MyGame->Actors.push_back(std::make_unique<AAwesomeBox>(FString("AwesomeBox (%i)", id).Text));
+            MyGame->Picked = MyGame->Actors.back().get();
         }
 	}
 

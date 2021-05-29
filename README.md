@@ -32,7 +32,7 @@ I've worked on many game projects before and want to create a more performant, m
 - [X] ImGui Integration - Hierarchy, Console, Inspector (change values)
 - [X] Picking (Slow Pixel Based)
 - [X] ImGuizmo Integration - Transform Gizmo, Translate, Rotate, Scale, Local, World, Snapping
-- [X] Inspector Prototype
+- [X] Inspector Prototype - Hierarchy and Inspector are seperate
 - [ ] Component Base Class
 - [ ] Static Mesh Component
 - [ ] Saving/Loading Scenes

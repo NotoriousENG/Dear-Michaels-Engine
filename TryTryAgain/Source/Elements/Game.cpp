@@ -128,6 +128,7 @@ void Game::Pick()
 	{
 		Picked = nullptr;
 	}
+	
 }
 
 void Game::ProcessInputEditor()

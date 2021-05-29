@@ -127,7 +127,7 @@ void Window::init_imgui()
 }
 
 void Window::execute() {
-    init_screen("Michael's Game");
+    init_screen("Unreal Engine 7");
     init_imgui();
     ImGuiIO& io = ImGui::GetIO();
     SDL_Event event;

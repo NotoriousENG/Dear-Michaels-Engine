@@ -42,12 +42,22 @@ namespace Panels
         const char* actorLabel = actor->isEditing ? "" : actor->name.c_str();
         actor->isEditing = ImGui::TreeNode("Object", actorLabel);
 
+        if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), true) && ImGui::IsMouseClicked(0))
+        {
+            MyGame->Picked = actor;
+        }
+
         int indent = actor->isEditing ? 20 : 1;
 		{
             ImGui::TableSetColumnIndex(1);
             ImGui::Indent(indent);
             ImGui::Text("ID: 0x%x", uid);
             ImGui::Indent(-indent);
+
+            if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), true) && ImGui::IsMouseClicked(0))
+            {
+                MyGame->Picked = actor;
+            }
 		}
         
 
@@ -61,16 +71,22 @@ namespace Panels
                 ImGui::Indent(-30);
                 ImGui::PopID();
 
+                if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), true) && ImGui::IsMouseClicked(0))
+                {
+                    MyGame->Picked = actor;
+                }
+
                 ImGui::TableSetColumnIndex(1);
                 ImGui::PushID("Remove");
                 if (ImGui::Button("X"))
                 {
+                    MyGame->Picked = nullptr;
                     Destroy(actor);
                 }
                 ImGui::PopID();
             	
                 ImGui::PushID("Transform"); // Use field index as identifier.
-                ShowTransform(actor->transform);
+                // ShowTransform(actor->transform);
                 ImGui::PopID();
             	
             }
@@ -184,6 +200,9 @@ namespace Panels
             }
             AddActor();
             ImGui::PopStyleVar();
+            ImGui::End();
+
+            ImGui::Begin("Inspector");
             ImGui::End();
         }
 	}

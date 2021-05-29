@@ -10,4 +10,9 @@ struct FTransform
 
 	glm::vec3 skew;
 	glm::vec4 perspective;
+
+	glm::vec3 getForward()
+	{
+		return glm::normalize(rotation * glm::vec3(0, 0, 1));
+	}
 };

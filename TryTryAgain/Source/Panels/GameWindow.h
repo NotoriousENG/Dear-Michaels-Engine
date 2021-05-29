@@ -38,8 +38,6 @@ namespace Panels
 
 		ImVec2 size;
 
-		void EditTransform(const Camera* camera, glm::mat4& matrix);
-
 		float snap[3] = { 1.f, 1.f, 1.f };
 
 		const float identityMatrix[16] =
@@ -75,6 +73,8 @@ namespace Panels
 		bool useSnap = false;
 		ImGuizmo::OPERATION mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		ImGuizmo::MODE mCurrentGizmoMode = ImGuizmo::WORLD;
-		
+
+		void EditTransform(float* cameraView, float* cameraProjection, float camDistance, float* matrix, bool editTransformDecomposition);
+
 	};
 }

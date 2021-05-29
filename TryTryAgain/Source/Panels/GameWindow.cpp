@@ -109,7 +109,7 @@ namespace Panels
 			if (!MyGame->Actors.empty() && MyGame->Picked != nullptr)
 			{
 
-				ImGuizmo::SetGizmoSizeClipSpace(0.33);
+				ImGuizmo::SetGizmoSizeClipSpace(0.2);
 
 				EditTransform(glm::value_ptr(camera.view), glm::value_ptr(camera.projection), glm::distance(glm::normalize(camera.transform.position), glm::vec3(0)), model_arr, true);
 
@@ -220,6 +220,11 @@ namespace Panels
 			if (ImGui::RadioButton("Bd", mCurrentGizmoOperation == ImGuizmo::BOUNDS))
 			{
 				mCurrentGizmoOperation = ImGuizmo::BOUNDS;
+			}
+
+			if (mCurrentGizmoOperation == ImGuizmo::SCALE)
+			{
+				mCurrentGizmoMode = ImGuizmo::LOCAL;
 			}
 
 			float matrixTranslation[3], matrixRotation[3], matrixScale[3];

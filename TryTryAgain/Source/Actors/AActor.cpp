@@ -18,6 +18,8 @@ AActor::AActor(const char* name, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale)
 		scale
 	};
 	model = glm::mat4(1);
+
+	rand_num = (float) (std::rand()) / (float) (RAND_MAX);
 }
 
 void AActor::Draw()

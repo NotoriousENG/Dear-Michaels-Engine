@@ -9,6 +9,10 @@
 AAwesomeBox::AAwesomeBox(const char* name, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale) : AActor(name, pos, rot, scale)
 {
 
+	rand_num = (float)(std::rand()) / (float)(RAND_MAX);
+	rand_num2 = (float)(std::rand()) / (float)(RAND_MAX);
+	rand_num3 = (float)(std::rand()) / (float)(RAND_MAX);
+
 	ResourceManagement::ResourceManager::LoadShader("Assets/Shaders/Standard.vert", "Assets/Shaders/Standard.frag", nullptr, "Standard");
 
 	ResourceManagement::ResourceManager::LoadTexture("Assets/Textures/container.jpg", false, "container");
@@ -64,6 +68,8 @@ void AAwesomeBox::Draw()
 
 void AAwesomeBox::Tick(float delta)
 {
+	transform.rotation = glm::rotate(transform.rotation, delta * 1, glm::vec3((rand_num - 0.5), (rand_num2 - 0.5), (rand_num3 - 0.5)));
+
 	Super::Tick(delta);
 
 	ResourceManagement::ResourceManager::GetShader("Standard").Use();

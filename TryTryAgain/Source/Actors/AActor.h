@@ -34,6 +34,8 @@ public:
 
 	unsigned int VBO, VAO, EBO;
 
+	float rand_num, rand_num2, rand_num3;
+
 protected:
 	
 	int numVertices;

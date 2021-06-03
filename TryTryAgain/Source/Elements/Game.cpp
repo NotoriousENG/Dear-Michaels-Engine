@@ -188,7 +188,16 @@ void Game::ProcessInputEditor()
 				// don't forget to normalise the vector at some point
 				ray_wor = glm::normalize(ray_wor);
 
-				// Actors.push_back(std::make_unique<AAwesomeBox>("Awesome Box", MainCamera.Position + ray_wor * 10.0f));
+				
+				for (int i = 0; i < 1000; i++)
+				{
+					auto r1 =  static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+					auto r2 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+					auto r3 = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+					glm::vec3 pos = glm::vec3((100 * r1) - 50, (100 * r2) - 50, (100 * r3) - 50);
+					Actors.push_back(std::make_unique<AAwesomeBox>("Box", pos));
+				}
+				//Actors.push_back(std::make_unique<AAwesomeBox>("Awesome Box", MainCamera.Position + ray_wor * 10.0f));
 			}
 			this->MouseButtonsDown[SDL_BUTTON_LEFT] = false;
 		}

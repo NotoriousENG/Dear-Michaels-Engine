@@ -22,6 +22,34 @@ I've worked on many game projects before and want to create a more performant, m
 * sdl2 - Cross Platform Window Library
 * glm - 3D Math Library
 
+## VCPKG
+First, download and bootstrap vcpkg itself; it can be installed anywhere,
+but generally we recommend using vcpkg as a submodule for CMake projects,
+and installing it globally for Visual Studio projects.
+We recommend somewhere like `C:\src\vcpkg` or `C:\dev\vcpkg`,
+since otherwise you may run into path issues for some port build systems.
+
+### First Time Setup
+```cmd
+> git clone https://github.com/microsoft/vcpkg
+> .\vcpkg\bootstrap-vcpkg.bat
+```
+In order to use vcpkg with Visual Studio, run the following command (may require administrator elevation):
+```cmd
+> .\vcpkg\vcpkg integrate install
+```
+### Usage
+To search for libraries, run:
+```cmd
+> .\vcpkg\vcpkg search package
+```
+
+To install x64 libraries, run:
+
+```cmd
+> .\vcpkg\vcpkg install package:x64-windows
+```
+
 ## Roadmap
 - [X] SDL and OpenGL (glad) integration
 - [X] OpenGL Rendering (basic textures and lighting)

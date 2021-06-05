@@ -51,7 +51,7 @@ public:
 		static_assert(std::is_base_of<UComponent, T>::value, "Component must derive from UComponent");
 		for (auto& c : components)
 		{
-			auto p = static_cast<T*>(c.get());
+			auto p = dynamic_cast<T*>(c.get());
 			if (p != nullptr)
 			{
 				return p;

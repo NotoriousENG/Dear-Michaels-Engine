@@ -18,6 +18,7 @@ Game::Game(unsigned framebuffer)
 	auto mesh_comp = (Actors.back()->AddComponent<UStaticMeshComponent>());
 
 	Actors.push_back(std::make_unique<AAwesomeBox>("Second Box", glm::vec3(1, 1, -1), glm::vec3(45, 45, 0)));
+	auto temp_comp = (Actors.back()->AddComponent<UComponent>());
 
 	MainCamera = Camera(glm::vec3(0,0,4), glm::vec3(0,1,0), -90);
 
@@ -65,7 +66,7 @@ void Game::Render()
 			actor->Tick(deltaTime);
 			auto mesh_comp = actor->GetComponent<UStaticMeshComponent>();
 			if (mesh_comp != nullptr)
-				mesh_comp->Draw();
+				actor->Draw();
 		}
 		TransformGizmo->Draw();
 	}

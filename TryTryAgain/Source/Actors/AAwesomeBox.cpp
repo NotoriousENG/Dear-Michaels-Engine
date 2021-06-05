@@ -9,10 +9,10 @@
 AAwesomeBox::AAwesomeBox(const char* name, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale) : AActor(name, pos, rot, scale)
 {
 
-	ResourceManagement::ResourceManager::LoadShader("Assets/Shaders/Standard.vert", "Assets/Shaders/Standard.frag", nullptr, "Standard");
+	rm::ResourceManager::LoadShader("Assets/Shaders/Standard.vert", "Assets/Shaders/Standard.frag", nullptr, "Standard");
 
-	ResourceManagement::ResourceManager::LoadTexture("Assets/Textures/container.jpg", false, "container");
-	ResourceManagement::ResourceManager::LoadTexture("Assets/Textures/awesomeface.png", true, "awesomeface");
+	rm::ResourceManager::LoadTexture("Assets/Textures/container.jpg", false, "container");
+	rm::ResourceManager::LoadTexture("Assets/Textures/awesomeface.png", true, "awesomeface");
 
 	// -------------------------------------VAO/VBO------------------------------------------------------
 
@@ -46,15 +46,15 @@ void AAwesomeBox::Draw()
 {
 	if (toDraw)
 	{
-		ResourceManagement::ResourceManager::GetShader("Standard").Use();
+		rm::ResourceManager::GetShader("Standard").Use();
 
 		glActiveTexture(GL_TEXTURE0);
-		ResourceManagement::ResourceManager::GetTexture("container").Bind();
+		rm::ResourceManager::GetTexture("container").Bind();
 		glActiveTexture(GL_TEXTURE1);
-		ResourceManagement::ResourceManager::GetTexture("awesomeface").Bind();
+		rm::ResourceManager::GetTexture("awesomeface").Bind();
 
-		ResourceManagement::ResourceManager::GetShader("Standard").SetInteger("texture1", 0);
-		ResourceManagement::ResourceManager::GetShader("Standard").SetInteger("texture2", 1);
+		rm::ResourceManager::GetShader("Standard").SetInteger("texture1", 0);
+		rm::ResourceManager::GetShader("Standard").SetInteger("texture2", 1);
 
 		glBindVertexArray(VAO);
 		glDrawArrays(GL_TRIANGLES, 0, numVertices);
@@ -66,8 +66,8 @@ void AAwesomeBox::Tick(float delta)
 {
 	Super::Tick(delta);
 
-	ResourceManagement::ResourceManager::GetShader("Standard").Use();
-	ResourceManagement::ResourceManager::GetShader("Standard").SetMatrix4("model", model);
-	ResourceManagement::ResourceManager::GetShader("Standard").SetMatrix4("view", Game::MainCamera.view);
-	ResourceManagement::ResourceManager::GetShader("Standard").SetMatrix4("projection", Game::MainCamera.projection);
+	rm::ResourceManager::GetShader("Standard").Use();
+	rm::ResourceManager::GetShader("Standard").SetMatrix4("model", model);
+	rm::ResourceManager::GetShader("Standard").SetMatrix4("view", Game::MainCamera.view);
+	rm::ResourceManager::GetShader("Standard").SetMatrix4("projection", Game::MainCamera.projection);
 }

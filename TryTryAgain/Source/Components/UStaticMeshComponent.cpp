@@ -10,3 +10,9 @@ void UStaticMeshComponent::Tick(float delta)
 {
 	M_LOG("Poop");
 }
+
+void UStaticMeshComponent::Draw()
+{
+	
+}
+

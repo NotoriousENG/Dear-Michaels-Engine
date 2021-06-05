@@ -16,7 +16,7 @@
 #include "Texture.h"
 #include "Shader.h"
 
-namespace ResourceManagement
+namespace rm
 {
     // A static singleton ResourceManager class that hosts several
 	// functions to load Textures and Shaders. Each loaded texture

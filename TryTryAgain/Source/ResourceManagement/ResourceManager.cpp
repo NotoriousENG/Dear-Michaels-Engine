@@ -15,7 +15,7 @@
 #include "stb_image.h"
 #include "Panels/Console.h"
 
-namespace ResourceManagement
+namespace rm
 {
     // Instantiate static variables
     std::map<std::string, Texture2D>    ResourceManager::Textures;
@@ -59,10 +59,10 @@ namespace ResourceManagement
     void ResourceManager::Clear()
     {
         // (properly) delete all shaders	
-        for (auto iter : Shaders)
+        for (auto& iter : Shaders)
             glDeleteProgram(iter.second.ID);
         // (properly) delete all textures
-        for (auto iter : Textures)
+        for (auto& iter : Textures)
             glDeleteTextures(1, &iter.second.ID);
     }
 

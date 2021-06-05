@@ -9,10 +9,12 @@
 #include "Actors/AActor.h"
 #include "Objects/UTransformGizmo.h"
 
+#include <map>
+
 class Game
 {
 public:
-	
+
 	Game(unsigned int framebuffer);
 
 	void ProcessCamera();
@@ -20,7 +22,7 @@ public:
 	void Render();
 
 	void ProcessInput();
-	
+
 	std::vector<std::unique_ptr<AActor>> Actors;
 
 	std::unique_ptr<UTransformGizmo> TransformGizmo;
@@ -56,6 +58,5 @@ private:
 	float deltaTime, lastFrame;
 
 	void Pick();
-	
-};
 
+};

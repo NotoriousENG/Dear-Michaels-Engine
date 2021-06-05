@@ -38,22 +38,23 @@ public:
 	unsigned int VBO, VAO, EBO;
 
 	template <typename T>
-	UComponent* AddComponent()
+	T* AddComponent()
 	{
 		static_assert(std::is_base_of<UComponent, T>::value, "Component must derive from UComponent");
 		components.push_back(std::make_unique<T>(this));
-		return components.back().get();
+		return static_cast<T*>(components.back().get());
 	}
 
 	template <typename T>
-	UComponent* GetComponent()
+	T* GetComponent()
 	{
 		static_assert(std::is_base_of<UComponent, T>::value, "Component must derive from UComponent");
 		for (auto& c : components)
 		{
-			if (typeid(c.get()) == typeid(T))
+			auto p = static_cast<T*>(c.get());
+			if (p != nullptr)
 			{
-				return c.get();
+				return p;
 			}
 		}
 		return nullptr;

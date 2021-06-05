@@ -14,7 +14,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-namespace ResourceManagement
+namespace rm
 {
     // General purpsoe shader object. Compiles from file, generates
 // compile/link-time error messages and hosts several utility 

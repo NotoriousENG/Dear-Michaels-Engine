@@ -50,8 +50,8 @@ void AActor::DrawPicking(int id)
 	int g = (id & 0x0000FF00) >> 8;
 	int b = (id & 0x00FF0000) >> 16;
 
-	ResourceManagement::ResourceManager::GetShader("Picking").SetMatrix4("MVP", MVP);
-	ResourceManagement::ResourceManager::GetShader("Picking").SetVector4f("PickingColor", glm::vec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.f));
+	rm::ResourceManager::GetShader("Picking").SetMatrix4("MVP", MVP);
+	rm::ResourceManager::GetShader("Picking").SetVector4f("PickingColor", glm::vec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.f));
 
 	glBindVertexArray(this->VAO);
 	glDrawArrays(GL_TRIANGLES, 0, numVertices);

@@ -9,8 +9,14 @@ Camera Game::MainCamera;
 
 Game::Game(unsigned framebuffer)
 {
+	rm::ResourceManager::LoadShader("Assets/Shaders/Lit.vert", "Assets/Shaders/Lit.frag", nullptr, "Lit");
+	rm::ResourceManager::LoadShader("Assets/Shaders/Picking.vert", "Assets/Shaders/Picking.frag", nullptr, "Picking");
+
+	//LoadedModels["Box"] = std::make_unique<rm::Model>("Assets/Models/cube.obj");
+
 	Actors.push_back(std::make_unique<AAwesomeBox>("Awesome Box", glm::vec3(0, 0, 1), glm::vec3(0,45,0)));
-	Actors.back()->AddComponent<UStaticMeshComponent>();
+	auto mesh_comp = (Actors.back()->AddComponent<UStaticMeshComponent>());
+
 	Actors.push_back(std::make_unique<AAwesomeBox>("Second Box", glm::vec3(1, 1, -1), glm::vec3(45, 45, 0)));
 
 	MainCamera = Camera(glm::vec3(0,0,4), glm::vec3(0,1,0), -90);
@@ -18,8 +24,6 @@ Game::Game(unsigned framebuffer)
 	this->framebuffer = framebuffer;
 
 	TransformGizmo = std::make_unique<UTransformGizmo>();
-
-	ResourceManagement::ResourceManager::LoadShader("Assets/Shaders/Picking.vert", "Assets/Shaders/Picking.frag", nullptr, "Picking");
 }
 
 
@@ -59,7 +63,9 @@ void Game::Render()
 		{
 			auto* actor = Actors[i].get();
 			actor->Tick(deltaTime);
-			actor->Draw();
+			auto mesh_comp = actor->GetComponent<UStaticMeshComponent>();
+			if (mesh_comp != nullptr)
+				mesh_comp->Draw();
 		}
 		TransformGizmo->Draw();
 	}
@@ -81,7 +87,7 @@ void Game::DrawActorsWithPickingShader()
 	
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-	ResourceManagement::ResourceManager::GetShader("Picking").Use();
+	rm::ResourceManager::GetShader("Picking").Use();
 
 	// Only positions are needed
 	glEnableVertexAttribArray(0);

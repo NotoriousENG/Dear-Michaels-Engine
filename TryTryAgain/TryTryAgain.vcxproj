@@ -149,7 +149,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\ResourceManagement\Mesh.cpp" />
     <ClCompile Include="Source\Actors\AAwesomeBox.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Elements\Camera.cpp" />
@@ -181,7 +180,6 @@
     <ClCompile Include="Source\Components\UStaticMeshComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\ResourceManagement\Mesh.h" />
     <ClInclude Include="Source\Actors\AAwesomeBox.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="source\Elements\Camera.h" />

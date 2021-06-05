@@ -12,7 +12,7 @@ namespace Panels
 		M_LOG("# Press W, E, R, T to toggle between Translate, Rotate, Scale, and Bound Tools");
 		M_LOG("# You can also delete selected actors by pressing the delete key");
 
-		ResourceManagement::ResourceManager::LoadShader("Assets/Shaders/Framebuffer.vert", "Assets/Shaders/Framebuffer.frag", nullptr, "Framebuffer");
+		rm::ResourceManager::LoadShader("Assets/Shaders/Framebuffer.vert", "Assets/Shaders/Framebuffer.frag", nullptr, "Framebuffer");
 
 		size = ImVec2(1920, 1080);
 
@@ -136,7 +136,7 @@ namespace Panels
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		ResourceManagement::ResourceManager::GetShader("Framebuffer").Use();
+		rm::ResourceManager::GetShader("Framebuffer").Use();
 		// glBindVertexArray(quadVAO);
 		glBindTexture(GL_TEXTURE_2D, texColorBuffer);
 		// glDrawArrays(GL_TRIANGLES, 0, 6);

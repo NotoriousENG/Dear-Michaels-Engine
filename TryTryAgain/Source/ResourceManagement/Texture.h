@@ -8,7 +8,7 @@
 ******************************************************************/
 #pragma once
 
-namespace ResourceManagement
+namespace rm
 {
     // Texture2D is able to store and configure a texture in OpenGL.
 // It also hosts utility functions for easy management.

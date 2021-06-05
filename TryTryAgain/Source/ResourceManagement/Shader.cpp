@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-namespace ResourceManagement
+namespace rm
 {
     Shader& Shader::Use()
     {

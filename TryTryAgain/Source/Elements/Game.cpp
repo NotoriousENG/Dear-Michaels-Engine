@@ -26,7 +26,7 @@ Game::Game(unsigned framebuffer)
 
 	char buf[128];
 
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < 1000; i++)
 	{
 		float x = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
 		float y = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;

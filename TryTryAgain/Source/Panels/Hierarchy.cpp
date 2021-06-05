@@ -56,21 +56,15 @@ namespace Panels
             MyGame->Picked = actor;
         }
 
-        int indent = actor->isEditing ? 20 : 1;
-		{
-            ImGui::TableSetColumnIndex(1);
-            ImGui::Indent(indent);
+        ImGui::TableSetColumnIndex(1);
 
-            if (actor == MyGame->Picked)
-                ImGui::PushStyleColor(0, ImVec4(0, 1, 1, 1));
+        if (actor == MyGame->Picked)
+            ImGui::PushStyleColor(0, ImVec4(0, 1, 1, 1));
 
-            ImGui::Text("ID: 0x%x", uid);
-
-            if (actor == MyGame->Picked)
-                ImGui::PopStyleColor();
-
-            ImGui::Indent(-indent);
-		}
+        ImGui::Text("ID: 0x%x", uid);
+        
+        if (actor == MyGame->Picked)
+            ImGui::PopStyleColor();
 
         if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), true) && ImGui::IsMouseClicked(0))
         {
@@ -83,11 +77,6 @@ namespace Panels
         {
             {
                 ImGui::TableSetColumnIndex(0);
-                ImGui::PushID("Name");
-                ImGui::Indent(30);
-                //ImGui::InputText("", &actor->name);
-                ImGui::Indent(-30);
-                ImGui::PopID();
 
                 if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), true) && ImGui::IsMouseClicked(0))
                 {
@@ -95,13 +84,6 @@ namespace Panels
                 }
 
                 ImGui::TableSetColumnIndex(1);
-                ImGui::PushID("Remove");
-                if (ImGui::Button("X"))
-                {
-                    MyGame->Picked = nullptr;
-                    Destroy(actor);
-                }
-                ImGui::PopID();
             	
                 ImGui::PushID("Transform"); // Use field index as identifier.
                 // ShowTransform(actor->transform);

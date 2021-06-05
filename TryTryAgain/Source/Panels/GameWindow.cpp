@@ -108,13 +108,16 @@ namespace Panels
 
 			if (!MyGame->Actors.empty() && MyGame->Picked != nullptr)
 			{
-
+				auto actor = MyGame->Picked;
 				ImGuizmo::SetGizmoSizeClipSpace(0.2);
 
 				EditTransform(glm::value_ptr(camera.view), glm::value_ptr(camera.projection), glm::distance(glm::normalize(camera.transform.position), glm::vec3(0)), model_arr, true);
 
-				auto& pt =  MyGame->Picked->transform;
-				glm::decompose(MyGame->Picked->model, pt.scale, pt.rotation, pt.position, pt.skew, pt.perspective);
+				if (actor != nullptr)
+				{
+					auto& pt = actor->transform;
+					glm::decompose(actor->model, pt.scale, pt.rotation, pt.position, pt.skew, pt.perspective);
+				}
 			}
 
 			Render();
@@ -190,15 +193,31 @@ namespace Panels
 			ImGui::Begin("Inspector");
 
 			auto actor = MyGame->Picked;
-			ImGui::BeginTable("split", 2, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_Resizable);
+			ImGui::BeginTable("split", 3, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_Resizable);
 			ImGui::TableNextRow();
 			ImGui::TableSetColumnIndex(0);
 			ImGui::PushItemWidth(ImGui::GetWindowWidth() / 2);
 			ImGui::InputText("", &actor->name);
 			ImGui::PopItemWidth();
+
 			ImGui::TableSetColumnIndex(1);
 			int uid = reinterpret_cast<unsigned int>(actor);
 			ImGui::Text("ID: 0x%x", uid);
+			ImGui::TableSetColumnIndex(2);
+
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1, 0, 0, 1));
+			
+			if (ImGui::Button("X"))
+			{
+				MyGame->Picked = nullptr;
+				Destroy(actor);
+				ImGui::PopStyleColor();
+				return;
+			}
+			ImGui::PopStyleColor();
+			
+			ImGui::PopItemWidth();
+
 			ImGui::EndTable();
 
 			if (ImGui::IsKeyPressed(90))

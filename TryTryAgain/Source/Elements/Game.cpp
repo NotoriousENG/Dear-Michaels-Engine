@@ -31,9 +31,13 @@ Game::Game(unsigned framebuffer)
 		float x = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
 		float y = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
 		float z = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
+
+		float rx = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
+		float ry = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
+		float rz = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
 		
 		sprintf(buf, "Box [%i]", i);
-		Actors.push_back(std::make_unique<AAwesomeBox>(buf, glm::vec3(x, y, z)));
+		Actors.push_back(std::make_unique<AAwesomeBox>(buf, glm::vec3(x, y, z), glm::vec3(rx, ry, rz)));
 	}
 }
 

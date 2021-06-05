@@ -20,4 +20,6 @@ AAwesomeBox::AAwesomeBox(const char* name, glm::vec3 pos, glm::vec3 rot, glm::ve
 void AAwesomeBox::Tick(float delta)
 {
 	Super::Tick(delta);
+
+	transform.rotation = glm::rotate(transform.rotation, 1 * delta, glm::vec3(1, 0, 0));
 }

@@ -68,7 +68,3 @@ To install x64 libraries, run:
 - [ ] Inspector / Hierarchy Improvements - add support for added features
 - [ ] Physics System Integration
 - [ ] Build Configuration to compile and build without editor tools
-
-## Known Issues
-- Currently each Actor takes about 1MB in RAM, this is due to each actor having unique instances of their mesh, model, VAO, VBO, etc.
-  - I plan to fix this by managing references via smart pointers with a Mesh Class / Component that handles rendering

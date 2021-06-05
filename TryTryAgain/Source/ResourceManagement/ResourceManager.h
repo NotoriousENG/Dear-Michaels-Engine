@@ -15,6 +15,7 @@
 
 #include "Texture.h"
 #include "Shader.h"
+#include "Mesh.h"
 
 namespace rm
 {
@@ -30,14 +31,19 @@ namespace rm
         static std::map<std::string, Shader>    Shaders;
         static std::map<std::string, Texture2D> Textures;
         static std::map<std::string, bool>      ShadersLoaded;
+        static std::map<std::string, Mesh>     Meshes;
         // loads (and generates) a shader program from file loading vertex, fragment (and geometry) shader's source code. If gShaderFile is not nullptr, it also loads a geometry shader
-        static Shader    LoadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile, std::string name);
+        static Shader*    LoadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile, std::string name);
         // retrieves a stored sader
-        static Shader    GetShader(std::string name);
+        static Shader*    GetShader(std::string name);
         // loads (and generates) a texture from file
-        static Texture2D LoadTexture(const char* file, bool alpha, std::string name);
+        static Texture2D* LoadTexture(const char* file, bool alpha, std::string name);
         // retrieves a stored texture
-        static Texture2D GetTexture(std::string name);
+        static Texture2D* GetTexture(std::string name);
+        // creates a mesh
+        static Mesh* CreateMesh(std::string name);
+        // retrieves a mesh
+        static Mesh* GetMesh(std::string name);
         // properly de-allocates all loaded resources
         static void      Clear();
     private:

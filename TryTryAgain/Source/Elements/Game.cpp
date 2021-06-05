@@ -15,16 +15,26 @@ Game::Game(unsigned framebuffer)
 	//LoadedModels["Box"] = std::make_unique<rm::Model>("Assets/Models/cube.obj");
 
 	Actors.push_back(std::make_unique<AAwesomeBox>("Awesome Box", glm::vec3(0, 0, 1), glm::vec3(0,45,0)));
-	auto mesh_comp = (Actors.back()->AddComponent<UStaticMeshComponent>());
 
 	Actors.push_back(std::make_unique<AAwesomeBox>("Second Box", glm::vec3(1, 1, -1), glm::vec3(45, 45, 0)));
-	auto temp_comp = (Actors.back()->AddComponent<UComponent>());
 
 	MainCamera = Camera(glm::vec3(0,0,4), glm::vec3(0,1,0), -90);
 
 	this->framebuffer = framebuffer;
 
 	TransformGizmo = std::make_unique<UTransformGizmo>();
+
+	char buf[128];
+
+	for (int i = 0; i < 100; i++)
+	{
+		float x = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
+		float y = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
+		float z = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
+		
+		sprintf(buf, "Box [%i]", i);
+		Actors.push_back(std::make_unique<AAwesomeBox>(buf, glm::vec3(x, y, z)));
+	}
 }
 
 
@@ -49,6 +59,8 @@ void Game::Render()
 		ProcessInputEditor();
 	}
 
+	TransformGizmo->Draw();
+
 	for (int i = 0; i < Actors.size(); i++)
 	{
 		if (Actors[i]->isDead)
@@ -66,9 +78,8 @@ void Game::Render()
 			actor->Tick(deltaTime);
 			auto mesh_comp = actor->GetComponent<UStaticMeshComponent>();
 			if (mesh_comp != nullptr)
-				actor->Draw();
+				mesh_comp->Draw();
 		}
-		TransformGizmo->Draw();
 	}
 }
 
@@ -88,7 +99,7 @@ void Game::DrawActorsWithPickingShader()
 	
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-	rm::ResourceManager::GetShader("Picking").Use();
+	rm::ResourceManager::GetShader("Picking")->Use();
 
 	// Only positions are needed
 	glEnableVertexAttribArray(0);
@@ -96,8 +107,9 @@ void Game::DrawActorsWithPickingShader()
 	int i = 0;
 	for (auto& a : Actors)
 	{
-		a->toDraw = false;
-		a->DrawPicking(i);
+		auto mesh_comp = a->GetComponent<UStaticMeshComponent>();
+		if (mesh_comp != nullptr)
+			mesh_comp->Mesh->DrawPicking(i, a->GetMVP());
 		i++;
 	}
 }

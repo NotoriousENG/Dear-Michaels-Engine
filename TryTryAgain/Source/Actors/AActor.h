@@ -27,15 +27,9 @@ public:
 
 	AActor(const char* name = "Actor", glm::vec3 pos = glm::vec3(0), glm::vec3 rot = glm::vec3(0), glm::vec3 scale = glm::vec3(1));
 
-	virtual void Draw();
-
-	void DrawPicking(int id);
-
 	virtual void Tick(float delta);
 
 	glm::mat4 model;
-
-	unsigned int VBO, VAO, EBO;
 
 	template <typename T>
 	T* AddComponent()
@@ -79,10 +73,10 @@ public:
 		components.clear();
 	}
 
+	glm::mat4 GetMVP();
+
 
 protected:
-
-	int numVertices;
 
 	std::vector<std::unique_ptr<UComponent>> components;
 };

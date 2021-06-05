@@ -136,7 +136,7 @@ namespace Panels
 		glEnable(GL_DEPTH_TEST);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		rm::ResourceManager::GetShader("Framebuffer").Use();
+		rm::ResourceManager::GetShader("Framebuffer")->Use();
 		// glBindVertexArray(quadVAO);
 		glBindTexture(GL_TEXTURE_2D, texColorBuffer);
 		// glDrawArrays(GL_TRIANGLES, 0, 6);

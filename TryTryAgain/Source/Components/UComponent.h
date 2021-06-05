@@ -16,7 +16,6 @@ public:
 	virtual void Tick(float delta);
 
 protected:
-
 	AActor* owner;
 };
 

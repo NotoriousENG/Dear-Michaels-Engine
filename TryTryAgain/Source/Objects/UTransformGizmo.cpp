@@ -61,7 +61,7 @@ void UTransformGizmo::OnDrag()
 
 void UTransformGizmo::Draw()
 {
-	rm::ResourceManager::GetShader("Gizmo").Use();
+	rm::ResourceManager::GetShader("Gizmo")->Use();
 
 	auto trans = glm::translate(model, transform.position);
 
@@ -71,10 +71,10 @@ void UTransformGizmo::Draw()
 
 	trans = glm::scale(trans, transform.scale);
 
-	rm::ResourceManager::GetShader("Gizmo").Use();
-	rm::ResourceManager::GetShader("Gizmo").SetMatrix4("model", trans);
-	rm::ResourceManager::GetShader("Gizmo").SetMatrix4("view", Game::MainCamera.view);
-	rm::ResourceManager::GetShader("Gizmo").SetMatrix4("projection", Game::MainCamera.projection);
+	rm::ResourceManager::GetShader("Gizmo")->Use();
+	rm::ResourceManager::GetShader("Gizmo")->SetMatrix4("model", trans);
+	rm::ResourceManager::GetShader("Gizmo")->SetMatrix4("view", Game::MainCamera.view);
+	rm::ResourceManager::GetShader("Gizmo")->SetMatrix4("projection", Game::MainCamera.projection);
 
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_LINES, 0, 6);

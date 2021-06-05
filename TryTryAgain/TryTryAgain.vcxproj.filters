@@ -30,6 +30,7 @@
     <ClCompile Include="Source\ThirdParty\imguizmo\ImSequencer.cpp" />
     <ClCompile Include="Source\Components\UComponent.cpp" />
     <ClCompile Include="Source\Components\UStaticMeshComponent.cpp" />
+    <ClCompile Include="Source\ResourceManagement\Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Main.h" />
@@ -50,5 +51,6 @@
     <ClInclude Include="Source\Components\UComponent.h" />
     <ClInclude Include="Source\Components\UStaticMeshComponent.h" />
     <ClInclude Include="Source\Structs\FString.h" />
+    <ClInclude Include="Source\ResourceManagement\Mesh.h" />
   </ItemGroup>
 </Project>

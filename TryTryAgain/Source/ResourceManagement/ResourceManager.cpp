@@ -21,39 +21,58 @@ namespace rm
     std::map<std::string, Texture2D>    ResourceManager::Textures;
     std::map<std::string, Shader>       ResourceManager::Shaders;
     std::map<std::string, bool>         ResourceManager::ShadersLoaded;
+    std::map<std::string, Mesh>         ResourceManager::Meshes;
 
-
-    Shader ResourceManager::LoadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile, std::string name)
+    Shader* ResourceManager::LoadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile, std::string name)
     {
         if (ShadersLoaded[name])
         {
             // M_LOG("[warn] Shader: %s has already been loaded", name.c_str());
-            return  Shaders[name];
+            return  &Shaders[name];
         }
         Shaders[name] = loadShaderFromFile(vShaderFile, fShaderFile, gShaderFile);
         ShadersLoaded[name] = true;
-        return Shaders[name];
+        return &Shaders[name];
     }
 
-    Shader ResourceManager::GetShader(std::string name)
+    Shader* ResourceManager::GetShader(std::string name)
     {
         if (!ShadersLoaded[name])
         {
             M_LOG("[error] Shader: %s has not been loaded", name.c_str());
             abort();
         }
-        return Shaders[name];
+        return &Shaders[name];
     }
 
-    Texture2D ResourceManager::LoadTexture(const char* file, bool alpha, std::string name)
+    Texture2D* ResourceManager::LoadTexture(const char* file, bool alpha, std::string name)
     {
+        if (Textures.find(name) != Textures.end())
+        {
+            return &Textures[name];
+        }
         Textures[name] = loadTextureFromFile(file, alpha);
-        return Textures[name];
+        return &Textures[name];
     }
 
-    Texture2D ResourceManager::GetTexture(std::string name)
+    Texture2D* ResourceManager::GetTexture(std::string name)
     {
-        return Textures[name];
+        return &Textures[name];
+    }
+
+    Mesh* ResourceManager::CreateMesh(std::string name)
+    {
+        if (Meshes.find(name) != Meshes.end())
+        {
+            return &Meshes[name];
+        }
+        Meshes[name] = Mesh();
+        return &Meshes[name];
+    }
+
+    Mesh* ResourceManager::GetMesh(std::string name)
+    {
+        return &Meshes[name];
     }
 
     void ResourceManager::Clear()

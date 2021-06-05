@@ -149,6 +149,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ResourceManagement\Mesh.cpp" />
     <ClCompile Include="Source\Actors\AAwesomeBox.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Elements\Camera.cpp" />
@@ -176,8 +177,11 @@
     <ClCompile Include="Source\ThirdParty\imguizmo\ImSequencer.cpp" />
     <ClCompile Include="source\Window\Window.cpp" />
     <ClCompile Include="Source\Objects\UTransformGizmo.cpp" />
+    <ClCompile Include="Source\Components\UComponent.cpp" />
+    <ClCompile Include="Source\Components\UStaticMeshComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ResourceManagement\Mesh.h" />
     <ClInclude Include="Source\Actors\AAwesomeBox.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="source\Elements\Camera.h" />
@@ -194,6 +198,8 @@
     <ClInclude Include="Source\Structs\FTransform.h" />
     <ClInclude Include="source\Window\Window.h" />
     <ClInclude Include="Source\Objects\UTransformGizmo.h" />
+    <ClInclude Include="Source\Components\UComponent.h" />
+    <ClInclude Include="Source\Components\UStaticMeshComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

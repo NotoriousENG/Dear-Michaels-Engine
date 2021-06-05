@@ -3,12 +3,14 @@
 #include "Actors/AAwesomeBox.h"
 #include "Panels/Console.h"
 #include "ResourceManagement/ResourceManager.h"
+#include <Components/UStaticMeshComponent.h>
 
 Camera Game::MainCamera;
 
 Game::Game(unsigned framebuffer)
 {
 	Actors.push_back(std::make_unique<AAwesomeBox>("Awesome Box", glm::vec3(0, 0, 1), glm::vec3(0,45,0)));
+	Actors.back()->AddComponent<UStaticMeshComponent>();
 	Actors.push_back(std::make_unique<AAwesomeBox>("Second Box", glm::vec3(1, 1, -1), glm::vec3(45, 45, 0)));
 
 	MainCamera = Camera(glm::vec3(0,0,4), glm::vec3(0,1,0), -90);

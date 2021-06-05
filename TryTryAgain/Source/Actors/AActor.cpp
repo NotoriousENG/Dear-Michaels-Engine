@@ -27,6 +27,10 @@ void AActor::Draw()
 
 void AActor::Tick(float delta)
 {
+	for (auto& c : components)
+	{
+		c->Tick(delta);
+	}
 	if (!isUsing)
 	{
 		glm::mat4 translate = glm::translate(glm::mat4(1.0), transform.position);

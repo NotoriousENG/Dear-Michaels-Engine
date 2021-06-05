@@ -5,6 +5,9 @@
 #include <glm/detail/type_quat.hpp>
 
 #include "Structs/FTransform.h"
+#include <vector>
+#include <Components/UComponent.h>
+#include <memory>
 
 class AActor
 {
@@ -34,12 +37,57 @@ public:
 
 	unsigned int VBO, VAO, EBO;
 
+	template <typename T>
+	UComponent* AddComponent()
+	{
+		static_assert(std::is_base_of<UComponent, T>::value, "Component must derive from UComponent");
+		components.push_back(std::make_unique<T>(this));
+		return components.back().get();
+	}
+
+	template <typename T>
+	UComponent* GetComponent()
+	{
+		static_assert(std::is_base_of<UComponent, T>::value, "Component must derive from UComponent");
+		for (auto& c : components)
+		{
+			if (typeid(c.get()) == typeid(T))
+			{
+				return c.get();
+			}
+		}
+		return nullptr;
+	}
+
+	template <typename T>
+	void RemoveComponent()
+	{
+		static_assert(std::is_base_of<UComponent, T>::value, "Component must derive from UComponent");
+		for (int i = 0; i < components.size(); i++)
+		{
+			if (typeid(components[i].get()) == typeid(T))
+			{
+				components.erase(components.begin() + i);
+				return;
+			}
+		}
+	}
+
+	void ClearComponents()
+	{
+		components.clear();
+	}
+
+
 protected:
-	
+
 	int numVertices;
+
+	std::vector<std::unique_ptr<UComponent>> components;
 };
 
 static void Destroy(AActor* actor)
 {
+	actor->ClearComponents();
     actor->isDead = true;
 }

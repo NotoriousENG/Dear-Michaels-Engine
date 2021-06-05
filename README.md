@@ -61,8 +61,8 @@ To install x64 libraries, run:
 - [X] Picking (Slow Pixel Based)
 - [X] ImGuizmo Integration - Transform Gizmo, Translate, Rotate, Scale, Local, World, Snapping
 - [X] Inspector Prototype - Hierarchy and Inspector are seperate
-- [ ] Component Base Class
-- [ ] Static Mesh Component
+- [X] Component Base Class
+- [X] Static Mesh Component
 - [ ] Saving/Loading Scenes
 - [ ] Model Loader and Rendering Refactor
 - [ ] Inspector / Hierarchy Improvements - add support for added features

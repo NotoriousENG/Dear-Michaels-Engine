@@ -38,6 +38,11 @@ void AActor::Tick(float delta)
 	}
 }
 
+void AActor::ClearComponents()
+{
+	components.clear();
+}
+
 glm::mat4 AActor::GetMVP()
 {
 	return Game::MainCamera.projection * Game::MainCamera.view * this->model;

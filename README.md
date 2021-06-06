@@ -1,4 +1,4 @@
-# Open-GL-Game-Engine
+# Dear-Michael's-Engine
 This is a game Engine I am working on using C++ and OpenGL, inspired by Unity and Unreal Engine. Current requirements are Windows-64 and Visual Studio.
 
 ![showcase image](showcase.jpg?raw=true)

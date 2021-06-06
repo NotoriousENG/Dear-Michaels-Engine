@@ -18,8 +18,12 @@ public:
 	Game(unsigned int framebuffer);
 
 	void ProcessCamera();
+
 	void ProcessInputEditor();
+
 	void Render();
+
+	void Init();
 
 	void ProcessInput();
 

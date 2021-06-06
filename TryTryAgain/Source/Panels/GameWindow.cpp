@@ -68,6 +68,7 @@ namespace Panels
 			}
 			else if (!playing && wasPlaying)
 			{
+				MyGame->Init();
 				MyGame->playing = false;
 				SDL_SetRelativeMouseMode(SDL_FALSE);
 			}

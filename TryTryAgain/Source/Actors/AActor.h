@@ -25,6 +25,8 @@ public:
 
 	AActor(const char* name = "Actor", glm::vec3 pos = glm::vec3(0), glm::vec3 rot = glm::vec3(0), glm::vec3 scale = glm::vec3(1));
 
+	virtual void Init();
+
 	virtual void Tick(float delta);
 
 	glm::mat4 model;
@@ -44,6 +46,8 @@ public:
 
 
 protected:
+
+	FTransform InitTransform;
 
 	std::vector<std::unique_ptr<UComponent>> components;
 };

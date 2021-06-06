@@ -37,6 +37,8 @@ Game::Game(unsigned framebuffer)
 		sprintf(buf, "Box [%i]", i);
 		Actors.push_back(std::make_unique<AAwesomeBox>(buf, glm::vec3(x, y, z), glm::vec3(rx, ry, rz)));
 	}
+
+	Init();
 }
 
 
@@ -86,6 +88,14 @@ void Game::Render()
 					mesh_comp->Draw();
 			}
 		}
+	}
+}
+
+void Game::Init()
+{
+	for (auto& actor : Actors)
+	{
+		actor->Init();
 	}
 }
 

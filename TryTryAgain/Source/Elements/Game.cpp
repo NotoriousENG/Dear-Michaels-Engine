@@ -4,6 +4,7 @@
 #include "Panels/Console.h"
 #include "ResourceManagement/ResourceManager.h"
 #include <Components/UStaticMeshComponent.h>
+#include <Structs/FString.h>
 
 Camera Game::MainCamera;
 
@@ -22,8 +23,6 @@ Game::Game(unsigned framebuffer)
 
 	TransformGizmo = std::make_unique<UTransformGizmo>();
 
-	char buf[128];
-
 	for (int i = 0; i < 1000; i++)
 	{
 		float x = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
@@ -34,8 +33,7 @@ Game::Game(unsigned framebuffer)
 		float ry = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
 		float rz = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
 		
-		sprintf(buf, "Box [%i]", i);
-		Actors.push_back(std::make_unique<AAwesomeBox>(buf, glm::vec3(x, y, z), glm::vec3(rx, ry, rz)));
+		Actors.push_back(std::make_unique<AAwesomeBox>(FString("Box [%i]", i).Text, glm::vec3(x, y, z), glm::vec3(rx, ry, rz)));
 	}
 
 	Init();

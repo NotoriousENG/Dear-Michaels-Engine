@@ -1,11 +1,11 @@
 #pragma once
 
-char TempBuffer[255];
-
 struct FString
 {
 	FString(const char* fmt, ...)
 	{
+		char TempBuffer[255];
+
         va_list args;
         va_start(args, fmt);
         const char* label_end = TempBuffer + vsnprintf(TempBuffer, ((int)(sizeof(TempBuffer) / sizeof(*(TempBuffer)))), fmt, args);

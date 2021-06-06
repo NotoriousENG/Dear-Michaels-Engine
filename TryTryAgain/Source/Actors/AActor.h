@@ -18,8 +18,6 @@ public:
     bool isEditing;
 	bool isUsing = false;
     bool isDead = false;
-
-	bool toDraw = true;
 	
     FTransform transform;
 

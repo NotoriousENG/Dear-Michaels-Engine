@@ -252,6 +252,11 @@ void Window::processInputForWindow(SDL_Event event)
             gameWindow->MyGame->MouseButtons[button] = false;
             gameWindow->MyGame->MouseButtonsUp[button] = true;
         }
+        else
+        {
+            gameWindow->MyGame->MouseButtonsDown[button] = false;
+            gameWindow->MyGame->MouseButtonsUp[button] = false;
+        }
 	}
 
 	if (event.type == SDL_KEYDOWN)

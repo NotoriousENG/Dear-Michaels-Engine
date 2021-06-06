@@ -12,8 +12,6 @@ Game::Game(unsigned framebuffer)
 	rm::ResourceManager::LoadShader("Assets/Shaders/Lit.vert", "Assets/Shaders/Lit.frag", nullptr, "Lit");
 	rm::ResourceManager::LoadShader("Assets/Shaders/Picking.vert", "Assets/Shaders/Picking.frag", nullptr, "Picking");
 
-	//LoadedModels["Box"] = std::make_unique<rm::Model>("Assets/Models/cube.obj");
-
 	Actors.push_back(std::make_unique<AAwesomeBox>("Awesome Box", glm::vec3(0, 0, 1), glm::vec3(0,45,0)));
 
 	Actors.push_back(std::make_unique<AAwesomeBox>("Second Box", glm::vec3(1, 1, -1), glm::vec3(45, 45, 0)));
@@ -171,10 +169,6 @@ void Game::ProcessInputEditor()
 	else
 	{
 		usingPickingShader = false;
-		for (auto& a : Actors)
-		{
-			a->toDraw = true;
-		}
 	}
 
 	if (this->Keys[SDLK_DELETE] && this->Picked != nullptr)
@@ -184,8 +178,6 @@ void Game::ProcessInputEditor()
 		Destroy(toDestroy);
 	}
 	
-	// M_LOG("X: %f Y: %f", gameMousePos.x, gameMousePos.y);
-	
 	if (this->MouseButtonsUp[SDL_BUTTON_LEFT])
 	{
 		if (mouse != glm::vec2(-1, -1))
@@ -193,45 +185,10 @@ void Game::ProcessInputEditor()
 			Pick();
 		}
 	}
-	
-	if (this->MouseButtons[SDL_BUTTON_LEFT])
-	{
-		
-		if (this->MouseButtonsDown[SDL_BUTTON_LEFT])
-		{
-			if (mouse != glm::vec2(-1, -1))
-			{
-				// 3D Normalized device coordinates
-				glm::vec2 ndcPos = (mouse / (renderSize / 2.0f) - glm::vec2(1.0f));
-				ndcPos.y = -ndcPos.y;
-
-				// Homogeneous Clip Coordinates
-				glm::vec4 ray_clip = glm::vec4(ndcPos, -1, 1);
-
-				// Camera Coordinates
-				projection = MainCamera.projection;
-				glm::vec4 ray_eye = inverse(projection) * ray_clip;
-				ray_eye = glm::vec4(ray_eye.x, ray_eye.y, -1, 0);
-
-				// World Coordinates
-				view = MainCamera.view;
-				auto ray_wor4 = (inverse(view) * ray_eye);
-				glm::vec3 ray_wor = glm::vec3(ray_wor4.x, ray_wor4.y, ray_wor4.z);
-				// don't forget to normalise the vector at some point
-				ray_wor = glm::normalize(ray_wor);
-
-				// Actors.push_back(std::make_unique<AAwesomeBox>("Awesome Box", MainCamera.Position + ray_wor * 10.0f));
-			}
-			this->MouseButtonsDown[SDL_BUTTON_LEFT] = false;
-		}
-	}
 
 	if (this->MouseButtonsUp[SDL_BUTTON_LEFT])
 	{
-		for (auto& a : Actors)
-		{
-			a->toDraw = true;
-		}
+		usingPickingShader = true;
 	}
 	
 	if (this->MouseButtons[SDL_BUTTON_RIGHT])

@@ -61,14 +61,10 @@ To install x64 libraries, run:
 - [X] Picking (Slow Pixel Based)
 - [X] ImGuizmo Integration - Transform Gizmo, Translate, Rotate, Scale, Local, World, Snapping
 - [X] Inspector Prototype - Hierarchy and Inspector are seperate
-- [ ] Component Base Class
-- [ ] Static Mesh Component
+- [X] Component Base Class
+- [X] Static Mesh Component
 - [ ] Saving/Loading Scenes
 - [ ] Model Loader and Rendering Refactor
 - [ ] Inspector / Hierarchy Improvements - add support for added features
 - [ ] Physics System Integration
 - [ ] Build Configuration to compile and build without editor tools
-
-## Known Issues
-- Currently each Actor takes about 1MB in RAM, this is due to each actor having unique instances of their mesh, model, VAO, VBO, etc.
-  - I plan to fix this by managing references via smart pointers with a Mesh Class / Component that handles rendering

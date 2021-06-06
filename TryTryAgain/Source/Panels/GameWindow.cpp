@@ -220,8 +220,6 @@ namespace Panels
 				return;
 			}
 			ImGui::PopStyleColor();
-			
-			ImGui::PopItemWidth();
 
 			ImGui::EndTable();
 

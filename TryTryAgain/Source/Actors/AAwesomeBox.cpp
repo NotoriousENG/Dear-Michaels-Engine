@@ -21,5 +21,5 @@ void AAwesomeBox::Tick(float delta)
 {
 	Super::Tick(delta);
 
-	transform.rotation = glm::rotate(transform.rotation, 1 * delta, glm::vec3(1, 0, 0));
+	transform.rotation = glm::rotate(transform.rotation, 12 * delta, glm::vec3(1, 0, 0));
 }

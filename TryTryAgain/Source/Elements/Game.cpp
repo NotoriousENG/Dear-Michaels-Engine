@@ -79,10 +79,14 @@ void Game::Render()
 		else
 		{
 			auto* actor = Actors[i].get();
-			actor->Tick(deltaTime);
-			auto mesh_comp = actor->GetComponent<UStaticMeshComponent>();
-			if (mesh_comp != nullptr)
-				mesh_comp->Draw();
+			if (playing)
+				actor->Tick(deltaTime);
+			if (!usingPickingShader)
+			{
+				auto mesh_comp = actor->GetComponent<UStaticMeshComponent>();
+				if (mesh_comp != nullptr)
+					mesh_comp->Draw();
+			}
 		}
 	}
 }
@@ -107,6 +111,7 @@ void Game::DrawActorsWithPickingShader()
 
 	// Only positions are needed
 	glEnableVertexAttribArray(0);
+
 
 	int i = 0;
 	for (auto& a : Actors)
@@ -161,9 +166,11 @@ void Game::ProcessInputEditor()
 	if (this->Keys[SDLK_1])
 	{
 		DrawActorsWithPickingShader();
+		usingPickingShader = true;
 	}
 	else
 	{
+		usingPickingShader = false;
 		for (auto& a : Actors)
 		{
 			a->toDraw = true;

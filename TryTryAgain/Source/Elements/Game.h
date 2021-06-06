@@ -53,6 +53,8 @@ public:
 
 	AActor* Picked;
 
+	bool usingPickingShader = false;
+
 private:
 	unsigned int framebuffer;
 	float deltaTime, lastFrame;

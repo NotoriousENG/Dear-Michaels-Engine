@@ -22,6 +22,11 @@ AActor::AActor(const char* name, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale)
 	this->InitTransform = this->transform;
 }
 
+void AActor::Save()
+{
+	this->InitTransform = this->transform;
+}
+
 void AActor::Init()
 {
 	this->transform = this->InitTransform;

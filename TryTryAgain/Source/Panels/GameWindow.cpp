@@ -63,6 +63,10 @@ namespace Panels
 
 			if (playing && !wasPlaying)
 			{
+				for (auto& a : MyGame->Actors)
+				{
+					a->Save();
+				}
 				MyGame->playing = true;
 				SDL_SetRelativeMouseMode(SDL_TRUE);
 			}

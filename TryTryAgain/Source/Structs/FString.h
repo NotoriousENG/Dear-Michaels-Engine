@@ -4,26 +4,10 @@ struct FString
 {
 	FString(const char* fmt, ...)
 	{
-		char TempBuffer[255];
-
-        va_list args;
-        va_start(args, fmt);
-        const char* label_end = TempBuffer + vsnprintf(TempBuffer, ((int)(sizeof(TempBuffer) / sizeof(*(TempBuffer)))), fmt, args);
-        va_end(args);
-
-		const char* label = TempBuffer;
-
-		char* it = Text;
-
-		while(label <= label_end)
-		{
-			*it = *label;
-
-			label++;
-			it++;
-		}
+		va_list args;
+		va_start(args, fmt);
+		vsnprintf(Text, ((int)(sizeof(Text) / sizeof(*(Text)))), fmt, args);
+		va_end(args);
 	}
 	char Text[255];
 };
-
-

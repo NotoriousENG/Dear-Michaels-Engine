@@ -2,6 +2,7 @@
 
 struct FString
 {
+	// Constructs FString with accessable Text Element (char [255])
 	FString(const char* fmt, ...)
 	{
 		va_list args;

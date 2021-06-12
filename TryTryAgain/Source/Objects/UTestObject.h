@@ -9,6 +9,6 @@ public:
 
 	void Serialize() override;
 
-	REFLECT_NOTED(UTestObject, f, f2, f3)
+	REFLECT_NOTED(UTestObject, f3)
 };
 

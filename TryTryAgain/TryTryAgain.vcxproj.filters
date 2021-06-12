@@ -31,6 +31,8 @@
     <ClCompile Include="Source\Components\UComponent.cpp" />
     <ClCompile Include="Source\Components\UStaticMeshComponent.cpp" />
     <ClCompile Include="Source\ResourceManagement\Mesh.cpp" />
+    <ClCompile Include="Source\Objects\UObject.cpp" />
+    <ClCompile Include="Source\Objects\UTestObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Main.h" />
@@ -52,5 +54,10 @@
     <ClInclude Include="Source\Components\UStaticMeshComponent.h" />
     <ClInclude Include="Source\Structs\FString.h" />
     <ClInclude Include="Source\ResourceManagement\Mesh.h" />
+    <ClInclude Include="Source\Objects\UObject.h" />
+    <ClInclude Include="Source\Objects\UTestObject.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

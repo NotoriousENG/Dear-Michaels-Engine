@@ -116,7 +116,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\ThirdParty;$(ProjectDir)source\ThirdParty\imgui-docking;$(ProjectDir)source\ThirdParty\imgui-docking\backends;$(ProjectDir)source\ThirdParty\plugins\imgui;$(ProjectDir)source\ThirdParty\imgui-docking\misc\cpp;$(ProjectDir)source\ThirdParty\imguizmo</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\ThirdParty;$(ProjectDir)source\ThirdParty\imgui-docking;$(ProjectDir)source\ThirdParty\imgui-docking\backends;$(ProjectDir)source\ThirdParty\plugins\imgui;$(ProjectDir)source\ThirdParty\imgui-docking\misc\cpp;$(ProjectDir)source\ThirdParty\imguizmo;$(ProjectDir)Source\ThirdParty\RareCpp</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,7 +136,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\ThirdParty;$(ProjectDir)source\ThirdParty\imgui-docking;$(ProjectDir)source\ThirdParty\imgui-docking\backends;$(ProjectDir)source\ThirdParty\plugins\imgui;$(ProjectDir)source\ThirdParty\imgui-docking\misc\cpp;$(ProjectDir)source\ThirdParty\imguizmo</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\ThirdParty;$(ProjectDir)source\ThirdParty\imgui-docking;$(ProjectDir)source\ThirdParty\imgui-docking\backends;$(ProjectDir)source\ThirdParty\plugins\imgui;$(ProjectDir)source\ThirdParty\imgui-docking\misc\cpp;$(ProjectDir)source\ThirdParty\imguizmo;$(ProjectDir)Source\ThirdParty\RareCpp</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -179,6 +181,8 @@
     <ClCompile Include="Source\Objects\UTransformGizmo.cpp" />
     <ClCompile Include="Source\Components\UComponent.cpp" />
     <ClCompile Include="Source\Components\UStaticMeshComponent.cpp" />
+    <ClCompile Include="Source\Objects\UObject.cpp" />
+    <ClCompile Include="Source\Objects\UTestObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\ResourceManagement\Mesh.h" />
@@ -200,6 +204,11 @@
     <ClInclude Include="Source\Objects\UTransformGizmo.h" />
     <ClInclude Include="Source\Components\UComponent.h" />
     <ClInclude Include="Source\Components\UStaticMeshComponent.h" />
+    <ClInclude Include="Source\Objects\UObject.h" />
+    <ClInclude Include="Source\Objects\UTestObject.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

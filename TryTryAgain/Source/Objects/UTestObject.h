@@ -6,6 +6,9 @@ class UTestObject : public UObject
 {
 public:
 	float f3;
-	REFLECT_NOTED(UTestObject, f3)
+
+	void Serialize() override;
+
+	REFLECT_NOTED(UTestObject, f, f2, f3)
 };
 

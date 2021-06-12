@@ -8,6 +8,11 @@
 #include "Objects/UTestObject.h"
 
 #include <iostream>
+#include <typeinfo>
+#include <Json.h>
+
+using Reflect::is_reflected;
+using Json::Statics;
 
 #undef main
 
@@ -19,25 +24,29 @@ int main(void)
 	//// Start Application loop
 	//app->Loop();
 
+	std::vector<std::unique_ptr<UObject>> objects;
+
 	UObject test;
-	test.f = 1;
-	test.f2 = 2;
+	test.f = 0;
+	test.f2 = 1;
+
+	objects.push_back(std::make_unique<UObject>(test));
 
 	UTestObject test2;
 	test2.f = 0;
 	test2.f2 = 1;
 	test2.f3 = 4;
 
+	objects.push_back(std::make_unique<UTestObject>(test2));
 
-	UObject::Class::ForEachField(test, [&](auto& field, auto& value) {
-		std::cout << field.name << ": " << value << std::endl;
-		});
+	for (auto& o : objects)
+	{
+		o->Serialize();
+	}
 
-	Reflect::count_supers(test2);
+	
 
-	UObject::Class::ForEachField(test2, [&](auto& field, auto& value) {
-		std::cout << field.name << ": " << value << std::endl;
-		});
+	
 
 	return 0;
 }

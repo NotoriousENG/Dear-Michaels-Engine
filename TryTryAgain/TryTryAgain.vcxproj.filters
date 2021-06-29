@@ -33,6 +33,7 @@
     <ClCompile Include="Source\ResourceManagement\Mesh.cpp" />
     <ClCompile Include="Source\Objects\UObject.cpp" />
     <ClCompile Include="Source\Objects\UTestObject.cpp" />
+    <ClCompile Include="Source\Objects\UTestTestObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Main.h" />
@@ -56,6 +57,8 @@
     <ClInclude Include="Source\ResourceManagement\Mesh.h" />
     <ClInclude Include="Source\Objects\UObject.h" />
     <ClInclude Include="Source\Objects\UTestObject.h" />
+    <ClInclude Include="Source\Serialize.h" />
+    <ClInclude Include="Source\Objects\UTestTestObject.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

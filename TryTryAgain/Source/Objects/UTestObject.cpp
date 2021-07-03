@@ -1,5 +1,10 @@
 #include "UTestObject.h"
 
+namespace
+{
+    UObject::Registrar<UTestObject> Registrar("UTestObject");
+}
+
 //void UTestObject::Serialize(bool isClass)
 //{
 //	using UClass = UTestObject;

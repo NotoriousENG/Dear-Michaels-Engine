@@ -48,6 +48,8 @@ int main(void)
 
 	objects.push_back(std::make_unique<UTestTestObject>(test3));
 
+	auto p = UObject::Instantiate("UTestObject");
+
 	for (auto& o : objects)
 	{
 		o->Serialize();

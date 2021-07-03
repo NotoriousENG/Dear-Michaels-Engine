@@ -8,6 +8,8 @@ class UTestObject : public UObject
 
 public:
 
+	static std::unique_ptr<UObject> create() { return std::make_unique<UTestObject>(); }
+
 	float f3;
 
 	virtual void Serialize() override{

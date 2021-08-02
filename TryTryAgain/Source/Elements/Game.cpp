@@ -13,9 +13,9 @@ Game::Game(unsigned framebuffer)
 	rm::ResourceManager::LoadShader("Assets/Shaders/Lit.vert", "Assets/Shaders/Lit.frag", nullptr, "Lit");
 	rm::ResourceManager::LoadShader("Assets/Shaders/Picking.vert", "Assets/Shaders/Picking.frag", nullptr, "Picking");
 
-	Actors.push_back(std::make_unique<AAwesomeBox>("Awesome Box", glm::vec3(0, 0, 1), glm::vec3(0,45,0)));
+	/*Actors.push_back(std::make_unique<AAwesomeBox>("Awesome Box", glm::vec3(0, 0, 1), glm::vec3(0,45,0)));
 
-	Actors.push_back(std::make_unique<AAwesomeBox>("Second Box", glm::vec3(1, 1, -1), glm::vec3(45, 45, 0)));
+	Actors.push_back(std::make_unique<AAwesomeBox>("Second Box", glm::vec3(1, 1, -1), glm::vec3(45, 45, 0)));*/
 
 	MainCamera = Camera(glm::vec3(0,0,4), glm::vec3(0,1,0), -90);
 
@@ -23,7 +23,7 @@ Game::Game(unsigned framebuffer)
 
 	TransformGizmo = std::make_unique<UTransformGizmo>();
 
-	for (int i = 0; i < 1000; i++)
+	/*for (int i = 0; i < 1000; i++)
 	{
 		float x = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
 		float y = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
@@ -34,7 +34,7 @@ Game::Game(unsigned framebuffer)
 		float rz = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
 		
 		Actors.push_back(std::make_unique<AAwesomeBox>(FString("Box [%i]", i).Text, glm::vec3(x, y, z), glm::vec3(rx, ry, rz)));
-	}
+	}*/
 
 	Init();
 }

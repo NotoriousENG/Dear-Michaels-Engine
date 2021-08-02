@@ -1,5 +1,6 @@
 #pragma once
 
+#include<Objects/UObject.h>
 #include <string>
 #include <glm/fwd.hpp>
 #include <glm/detail/type_quat.hpp>
@@ -9,7 +10,7 @@
 #include <Components/UComponent.h>
 #include <memory>
 
-class AActor
+class AActor : public UObject
 {
 public:
 
@@ -46,6 +47,11 @@ public:
 
 	glm::mat4 GetMVP();
 
+	template <class Archive>
+	void serialize(Archive& ar)
+	{
+		ar(name);
+	}
 
 protected:
 
@@ -96,3 +102,5 @@ inline void AActor::RemoveComponent()
 		}
 	}
 }
+
+CEREAL_REGISTER_TYPE(AActor);

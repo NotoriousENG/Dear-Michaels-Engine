@@ -1,11 +1,15 @@
 #pragma once
 
+#include "Objects/UObject.h"
+
 class AActor;
 
-class UComponent
+class UComponent : public UObject
 {
 
 public:
+
+	UComponent() {}
 
 	UComponent(AActor* owner);
 
@@ -18,4 +22,3 @@ public:
 protected:
 	AActor* owner;
 };
-

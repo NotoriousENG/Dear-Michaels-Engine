@@ -179,6 +179,7 @@
     <ClCompile Include="Source\Objects\UTransformGizmo.cpp" />
     <ClCompile Include="Source\Components\UComponent.cpp" />
     <ClCompile Include="Source\Components\UStaticMeshComponent.cpp" />
+    <ClCompile Include="Source\Objects\UObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\ResourceManagement\Mesh.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="Source\Objects\UTransformGizmo.h" />
     <ClInclude Include="Source\Components\UComponent.h" />
     <ClInclude Include="Source\Components\UStaticMeshComponent.h" />
+    <ClInclude Include="Source\Objects\UObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

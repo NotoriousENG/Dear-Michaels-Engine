@@ -16,6 +16,8 @@ public:
 	rm::Mesh* Mesh;
 	rm::Shader* Shader;
 
+	UStaticMeshComponent() {}
+
 	UStaticMeshComponent(AActor* owner);
 
 	void Tick(float delta) override;
@@ -24,4 +26,3 @@ public:
 
 	bool bDraw = true;
 };
-

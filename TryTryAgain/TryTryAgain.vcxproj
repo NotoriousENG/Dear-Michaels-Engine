@@ -195,6 +195,7 @@
     <ClInclude Include="source\Main.h" />
     <ClInclude Include="source\Panels\GameWindow.h" />
     <ClInclude Include="source\Panels\Hierarchy.h" />
+    <ClInclude Include="Source\Serialization\CerealGLM.h" />
     <ClInclude Include="Source\Structs\FString.h" />
     <ClInclude Include="Source\Structs\FTransform.h" />
     <ClInclude Include="source\Window\Window.h" />

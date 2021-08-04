@@ -169,8 +169,10 @@ namespace Panels
         if (ImGui::Button("Add Actor"))
         {
             int id = MyGame->Actors.size();
-            MyGame->Actors.push_back(std::make_unique<AAwesomeBox>(FString("AwesomeBox (%i)", id).Text));
+            MyGame->Actors.push_back(std::make_unique<AAwesomeBox>());
             MyGame->Picked = MyGame->Actors.back().get();
+            MyGame->Picked->name = FString("AwesomeBox (%i)", id).Text;
+            MyGame->Picked->UpdateMatrix();
         }
 	}
 

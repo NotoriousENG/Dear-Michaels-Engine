@@ -8,34 +8,21 @@
 
 #include "ResourceManagement/ResourceManager.h"
 
-AActor::AActor(const char* name, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale)
+AActor::AActor()
 {
-	this->name = name;
-	this->transform = FTransform
-	{
-		pos,
-		glm::radians(rot),
-		scale
-	};
-	model = glm::mat4(1);
-
-	this->InitTransform = this->transform;
-}
-
-void AActor::Save()
-{
-	this->InitTransform = this->transform;
+	Init();
 }
 
 void AActor::Init()
 {
-	this->transform = this->InitTransform;
-
 	for (auto& c : components)
 	{
 		c->Init();
 	}
+}
 
+void AActor::UpdateMatrix()
+{
 	glm::mat4 translate = glm::translate(glm::mat4(1.0), transform.position);
 	glm::mat4 rotate = glm::mat4_cast(transform.rotation);
 	glm::mat4 scale = glm::scale(glm::mat4(1.0), transform.scale);

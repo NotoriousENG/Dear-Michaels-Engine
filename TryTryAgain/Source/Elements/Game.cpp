@@ -6,6 +6,14 @@
 #include <Components/UStaticMeshComponent.h>
 #include <Structs/FString.h>
 
+#include <cereal/cereal.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/string.hpp>
+#include <cereal/types/complex.hpp>
+
+#include <iostream>
+#include <fstream>
+
 Camera Game::MainCamera;
 
 Game::Game(unsigned framebuffer)
@@ -13,28 +21,11 @@ Game::Game(unsigned framebuffer)
 	rm::ResourceManager::LoadShader("Assets/Shaders/Lit.vert", "Assets/Shaders/Lit.frag", nullptr, "Lit");
 	rm::ResourceManager::LoadShader("Assets/Shaders/Picking.vert", "Assets/Shaders/Picking.frag", nullptr, "Picking");
 
-	/*Actors.push_back(std::make_unique<AAwesomeBox>("Awesome Box", glm::vec3(0, 0, 1), glm::vec3(0,45,0)));
-
-	Actors.push_back(std::make_unique<AAwesomeBox>("Second Box", glm::vec3(1, 1, -1), glm::vec3(45, 45, 0)));*/
-
 	MainCamera = Camera(glm::vec3(0,0,4), glm::vec3(0,1,0), -90);
 
 	this->framebuffer = framebuffer;
 
 	TransformGizmo = std::make_unique<UTransformGizmo>();
-
-	/*for (int i = 0; i < 1000; i++)
-	{
-		float x = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
-		float y = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
-		float z = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
-
-		float rx = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
-		float ry = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
-		float rz = (static_cast <float> (rand()) / static_cast <float> (RAND_MAX) * 100) - 50;
-		
-		Actors.push_back(std::make_unique<AAwesomeBox>(FString("Box [%i]", i).Text, glm::vec3(x, y, z), glm::vec3(rx, ry, rz)));
-	}*/
 
 	Init();
 }
@@ -129,6 +120,28 @@ void Game::DrawActorsWithPickingShader()
 	}
 }
 
+void Game::LoadScene()
+{
+	std::ifstream is("Assets/Scenes/TestScene.json");
+	cereal::JSONInputArchive iarchive(is);
+	Picked = nullptr;
+	Actors.clear();
+	iarchive(Actors);
+	for (auto& a : Actors)
+	{
+		a->UpdateMatrix();
+	}
+}
+
+void Game::SaveScene()
+{
+	// save actors
+	std::ofstream os("Assets/Scenes/TestScene.json");
+	cereal::JSONOutputArchive oarchive(os);
+
+	oarchive(CEREAL_NVP(Actors));
+}
+
 void Game::Pick()
 {
 	float h = ImGui::GetWindowHeight();
@@ -209,6 +222,15 @@ void Game::ProcessInputEditor()
 	{
 		SDL_SetRelativeMouseMode(SDL_FALSE);
 		SDL_ShowCursor(1);
+	}
+
+	if (this->Keys[SDLK_9])
+	{
+		SaveScene();
+	}
+	else if (this->Keys[SDLK_0])
+	{
+		LoadScene();
 	}
 }
 

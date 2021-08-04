@@ -5,10 +5,18 @@
 class AAwesomeBox : public AActor
 {
 public:
-	
-	AAwesomeBox(const char* name = "AwesomeBox", glm::vec3 pos = glm::vec3(0), glm::vec3 rot = glm::vec3(0), glm::vec3 scale = glm::vec3(1));
+	AAwesomeBox();
+
+	void Init() override;
 
 	void Tick(float delta) override;
 
+	template <class Archive>
+	void serialize(Archive& ar)
+	{
+		ar(cereal::make_nvp("AActor", cereal::virtual_base_class<AActor>(this)));
+	}
 };
+
+CEREAL_REGISTER_TYPE(AAwesomeBox);
 

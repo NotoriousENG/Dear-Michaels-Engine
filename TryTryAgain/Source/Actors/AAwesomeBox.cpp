@@ -6,7 +6,12 @@
 #include "ResourceManagement/ResourceManager.h"
 #include <Components/UStaticMeshComponent.h>
 
-AAwesomeBox::AAwesomeBox(const char* name, glm::vec3 pos, glm::vec3 rot, glm::vec3 scale) : AActor(name, pos, rot, scale)
+AAwesomeBox::AAwesomeBox() : AActor()
+{
+	AAwesomeBox::Init();
+}
+
+void AAwesomeBox::Init()
 {
 	rm::ResourceManager::LoadTexture("Assets/Textures/container.jpg", false, "container");
 	rm::ResourceManager::LoadTexture("Assets/Textures/awesomeface.png", true, "awesomeface");

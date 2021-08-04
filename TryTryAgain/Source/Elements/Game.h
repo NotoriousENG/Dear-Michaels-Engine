@@ -59,6 +59,10 @@ public:
 
 	bool usingPickingShader = false;
 
+	void LoadScene();
+
+	void SaveScene();
+
 private:
 	unsigned int framebuffer;
 	float deltaTime, lastFrame;

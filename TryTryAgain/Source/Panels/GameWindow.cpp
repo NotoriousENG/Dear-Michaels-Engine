@@ -63,16 +63,12 @@ namespace Panels
 
 			if (playing && !wasPlaying)
 			{
-				for (auto& a : MyGame->Actors)
-				{
-					a->Save();
-				}
 				MyGame->playing = true;
+				MyGame->Picked = nullptr;
 				SDL_SetRelativeMouseMode(SDL_TRUE);
 			}
 			else if (!playing && wasPlaying)
 			{
-				MyGame->Init();
 				MyGame->playing = false;
 				SDL_SetRelativeMouseMode(SDL_FALSE);
 			}

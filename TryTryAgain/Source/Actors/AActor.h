@@ -24,11 +24,11 @@ public:
 
     std::string name = "Actor";
 
-	AActor(const char* name = "Actor", glm::vec3 pos = glm::vec3(0), glm::vec3 rot = glm::vec3(0), glm::vec3 scale = glm::vec3(1));
-
-	virtual void Save();
+	AActor();
 
 	virtual void Init();
+
+	void UpdateMatrix();
 
 	virtual void Tick(float delta);
 
@@ -50,7 +50,7 @@ public:
 	template <class Archive>
 	void serialize(Archive& ar)
 	{
-		ar(name);
+		ar(CEREAL_NVP(name), CEREAL_NVP(transform));
 	}
 
 protected:

@@ -15,6 +15,7 @@ I've worked on many game projects before and want to create a more performant, m
 ## Included Dependencies
 * ImGui - for building tools and dockable windows
 * ImGuizmo - Layer on top of ImGui to draw gizmos such as transform tools
+* ImGuiFileDialog - ImGui Cross platform file dialog tools
 * stb_image.h - Image file library
 
 ## External Dependencies (Reccomend to Install through VCPKG for now)
@@ -63,7 +64,7 @@ To install x64 libraries, run:
 - [X] Inspector Prototype - Hierarchy and Inspector are seperate
 - [X] Component Base Class
 - [X] Static Mesh Component
-- [ ] Saving/Loading Scenes
+- [X] Saving/Loading Scenes
 - [ ] Model Loader and Rendering Refactor
 - [ ] Inspector / Hierarchy Improvements - add support for added features
 - [ ] Physics System Integration

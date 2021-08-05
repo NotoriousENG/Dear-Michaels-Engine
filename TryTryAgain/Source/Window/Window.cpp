@@ -5,6 +5,8 @@
 
 #include "Panels/Hierarchy.h"
 
+#include <ImGuiFileDialog.h>
+
 void Window::sdl_die(const char* message) {
     fprintf(stderr, "%s: %s\n", message, SDL_GetError());
     exit(2);
@@ -181,6 +183,8 @@ void Window::execute() {
 
         ShowAppMainMenuBar();
 
+        ShowFileDialog();
+
         ShowConsole(&show_console);
 
         gameWindow->Draw();
@@ -280,6 +284,20 @@ void Window::ShowAppMainMenuBar()
 {
     if (ImGui::BeginMainMenuBar())
     {
+        if (ImGui::BeginMenu("File"))
+        {
+            if (ImGui::MenuItem("Load Scene", ""))
+            {
+                ImGuiFileDialog::Instance()->OpenDialog("Open Scene", "Open Scene File", ".json", "Assets/Scenes/");
+            }
+            
+            if (ImGui::MenuItem("Save Scene", ""))
+            {
+                ImGuiFileDialog::Instance()->OpenDialog("Save Scene", "Save Scene File", ".json", "Assets/Scenes/");
+            }
+
+            ImGui::EndMenu();
+        }
     	if (ImGui::BeginMenu("Window"))
     	{
             ImGui::MenuItem("Demo Window", "", &show_demo_window);
@@ -289,6 +307,39 @@ void Window::ShowAppMainMenuBar()
             ImGui::EndMenu();
     	}
         ImGui::EndMainMenuBar();
+    }
+}
+
+void Window::ShowFileDialog()
+{
+    // display
+    if (ImGuiFileDialog::Instance()->Display("Open Scene"))
+    {
+        // action if OK
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+            std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+            gameWindow->MyGame->LoadScene(filePathName.c_str());
+        }
+
+        // close
+        ImGuiFileDialog::Instance()->Close();
+    }
+
+    // display
+    if (ImGuiFileDialog::Instance()->Display("Save Scene"))
+    {
+        // action if OK
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+            std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+            gameWindow->MyGame->SaveScene(filePathName.c_str());
+        }
+
+        // close
+        ImGuiFileDialog::Instance()->Close();
     }
 }
 

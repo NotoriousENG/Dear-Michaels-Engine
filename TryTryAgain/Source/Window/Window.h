@@ -21,7 +21,7 @@ public:
 
 	void ShowAppMainMenuBar();
 
-	void ShowExampleMenuFile();
+	void ShowFileDialog();
 
 	void ShowConsole(bool* p_open)
 	{
@@ -63,6 +63,8 @@ private:
 	bool show_demo_window = false;
 	bool show_console = true;
 	bool show_hierarchy = true;
+	bool load_scene = false;
+	bool save_scene = false;
 
 	std::unique_ptr<Panels::GameWindow> gameWindow;
 

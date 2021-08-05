@@ -120,9 +120,9 @@ void Game::DrawActorsWithPickingShader()
 	}
 }
 
-void Game::LoadScene()
+void Game::LoadScene(const char* path)
 {
-	std::ifstream is("Assets/Scenes/TestScene.json");
+	std::ifstream is(path);
 	cereal::JSONInputArchive iarchive(is);
 	Picked = nullptr;
 	Actors.clear();
@@ -133,10 +133,10 @@ void Game::LoadScene()
 	}
 }
 
-void Game::SaveScene()
+void Game::SaveScene(const char* path)
 {
 	// save actors
-	std::ofstream os("Assets/Scenes/TestScene.json");
+	std::ofstream os(path);
 	cereal::JSONOutputArchive oarchive(os);
 
 	oarchive(CEREAL_NVP(Actors));
@@ -222,15 +222,6 @@ void Game::ProcessInputEditor()
 	{
 		SDL_SetRelativeMouseMode(SDL_FALSE);
 		SDL_ShowCursor(1);
-	}
-
-	if (this->Keys[SDLK_9])
-	{
-		SaveScene();
-	}
-	else if (this->Keys[SDLK_0])
-	{
-		LoadScene();
 	}
 }
 

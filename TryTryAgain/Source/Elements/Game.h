@@ -59,9 +59,9 @@ public:
 
 	bool usingPickingShader = false;
 
-	void LoadScene();
+	void LoadScene(const char* path);
 
-	void SaveScene();
+	void SaveScene(const char* path);
 
 private:
 	unsigned int framebuffer;

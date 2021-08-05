@@ -32,6 +32,7 @@
     <ClCompile Include="Source\Components\UStaticMeshComponent.cpp" />
     <ClCompile Include="Source\ResourceManagement\Mesh.cpp" />
     <ClCompile Include="Source\Objects\UObject.cpp" />
+    <ClCompile Include="Source\ThirdParty\ImGuiFileDialog\ImGuiFileDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Main.h" />

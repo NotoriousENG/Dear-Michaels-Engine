@@ -22,6 +22,7 @@ I've worked on many game projects before and want to create a more performant, m
 * glad - OpenGL Function Library
 * sdl2 - Cross Platform Window Library
 * glm - 3D Math Library
+* cereal - Fast Serialization Library
 
 ## VCPKG
 First, download and bootstrap vcpkg itself; it can be installed anywhere,

@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\ThirdParty;$(ProjectDir)source\ThirdParty\imgui-docking;$(ProjectDir)source\ThirdParty\imgui-docking\backends;$(ProjectDir)source\ThirdParty\plugins\imgui;$(ProjectDir)source\ThirdParty\imgui-docking\misc\cpp;$(ProjectDir)source\ThirdParty\imguizmo;C:\Users\ryuoo\source\repos\NotoriousENG\TryTryAgain\TryTryAgain\Source\ThirdParty\ImGuiFileDialog</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\ThirdParty;$(ProjectDir)source\ThirdParty\imgui-docking;$(ProjectDir)source\ThirdParty\imgui-docking\backends;$(ProjectDir)source\ThirdParty\plugins\imgui;$(ProjectDir)source\ThirdParty\imgui-docking\misc\cpp;$(ProjectDir)source\ThirdParty\imguizmo;$(ProjectDir)source\ThirdParty\ImGuiFileDialog</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,7 +135,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\ThirdParty;$(ProjectDir)source\ThirdParty\imgui-docking;$(ProjectDir)source\ThirdParty\imgui-docking\backends;$(ProjectDir)source\ThirdParty\plugins\imgui;$(ProjectDir)source\ThirdParty\imgui-docking\misc\cpp;$(ProjectDir)source\ThirdParty\imguizmo;C:\Users\ryuoo\source\repos\NotoriousENG\TryTryAgain\TryTryAgain\Source\ThirdParty\ImGuiFileDialog</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\ThirdParty;$(ProjectDir)source\ThirdParty\imgui-docking;$(ProjectDir)source\ThirdParty\imgui-docking\backends;$(ProjectDir)source\ThirdParty\plugins\imgui;$(ProjectDir)source\ThirdParty\imgui-docking\misc\cpp;$(ProjectDir)source\ThirdParty\imguizmo;$(ProjectDir)source\ThirdParty\ImGuiFileDialog</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

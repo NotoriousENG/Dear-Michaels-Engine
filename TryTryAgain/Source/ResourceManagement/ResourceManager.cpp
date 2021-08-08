@@ -14,6 +14,7 @@
 
 #include "stb_image.h"
 #include "Panels/Console.h"
+#include "Model.h"
 
 namespace rm
 {
@@ -22,6 +23,7 @@ namespace rm
     std::map<std::string, Shader>       ResourceManager::Shaders;
     std::map<std::string, bool>         ResourceManager::ShadersLoaded;
     std::map<std::string, Mesh>         ResourceManager::Meshes;
+    std::map<std::string, Model>        ResourceManager::Models;
 
     Shader* ResourceManager::LoadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile, std::string name)
     {
@@ -74,6 +76,24 @@ namespace rm
     Mesh* ResourceManager::GetMesh(std::string name)
     {
         return &Meshes[name];
+    }
+
+    Model* ResourceManager::LoadModel(const char* file, bool alpha, std::string name)
+    {
+        if (Models.find(name) != Models.end())
+        {
+            return &Models[name];
+        }
+        rm::Model model;
+        model.gammaCorrection = alpha;
+        model.loadModel(file);
+        Models[name] = model;
+        return &Models[name];
+    }
+
+    Model* ResourceManager::GetModel(std::string name)
+    {
+        return &Models[name];
     }
 
     void ResourceManager::Clear()

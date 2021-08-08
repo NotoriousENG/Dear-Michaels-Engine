@@ -18,10 +18,6 @@
 
 namespace rm
 {
-    rm::Model::Model(string const& path, bool gamma)
-    {
-        loadModel(path);
-    }
 
     void rm::Model::Draw(Shader* shader)
     {

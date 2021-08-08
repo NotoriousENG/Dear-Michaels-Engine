@@ -3,7 +3,7 @@
 #include "Actors/AAwesomeBox.h"
 #include "Panels/Console.h"
 #include "ResourceManagement/ResourceManager.h"
-#include <Components/UStaticMeshComponent.h>
+#include <Components/UStaticModelComponent.h>
 #include <Structs/FString.h>
 
 #include <cereal/cereal.hpp>
@@ -16,9 +16,10 @@
 
 Camera Game::MainCamera;
 
-Game::Game(unsigned framebuffer) : testModel("Assets/Models/backpack/backpack.obj")
+Game::Game(unsigned framebuffer)
 {
 	rm::ResourceManager::LoadShader("Assets/Shaders/Lit.vert", "Assets/Shaders/Lit.frag", nullptr, "Lit");
+	rm::ResourceManager::LoadShader("Assets/Shaders/LoadModel.vert", "Assets/Shaders/LoadModel.frag", nullptr, "LoadModel");
 	rm::ResourceManager::LoadShader("Assets/Shaders/Picking.vert", "Assets/Shaders/Picking.frag", nullptr, "Picking");
 
 	MainCamera = Camera(glm::vec3(0,0,4), glm::vec3(0,1,0), -90);
@@ -52,21 +53,6 @@ void Game::Render()
 		ProcessInputEditor();
 	}
 
-	auto* ourShader = rm::ResourceManager::GetShader("Lit");
-	// don't forget to enable shader before setting uniforms
-	ourShader->Use();
-
-	// view/projection transformations
-	ourShader->SetMatrix4("projection", MainCamera.projection);
-	ourShader->SetMatrix4("view", MainCamera.view);
-
-	// render the loaded model
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
-	ourShader->SetMatrix4("model", model);
-	testModel.Draw(ourShader);
-
 	TransformGizmo->Draw();
 
 	for (int i = 0; i < Actors.size(); i++)
@@ -85,18 +71,19 @@ void Game::Render()
 			auto* actor = Actors[i].get();
 			if (playing)
 				actor->Tick(deltaTime);
-			//if (!usingPickingShader)
-			//{
-			//	auto mesh_comp = actor->GetComponent<UStaticMeshComponent>();
-			//	if (mesh_comp != nullptr)
-			//		//mesh_comp->Draw();
-			//}
+			if (!usingPickingShader)
+			{
+				auto model_comp = actor->GetComponent<UStaticModelComponent>();
+				if (model_comp != nullptr)
+					model_comp->Draw();
+			}
 		}
 	}
 }
 
 void Game::Init()
 {
+
 	for (auto& actor : Actors)
 	{
 		actor->Init();
@@ -119,20 +106,32 @@ void Game::DrawActorsWithPickingShader()
 	
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-	rm::ResourceManager::GetShader("Picking")->Use();
+	auto shader = rm::ResourceManager::GetShader("Picking");
+	shader->Use();
 
 	// Only positions are needed
 	glEnableVertexAttribArray(0);
 
 
 	int i = 0;
-	/*for (auto& a : Actors)
+	for (auto& a : Actors)
 	{
-		auto mesh_comp = a->GetComponent<UStaticMeshComponent>();
-		if (mesh_comp != nullptr)
-			mesh_comp->Mesh->DrawPicking(i, a->GetMVP());
+		auto model_comp = a->GetComponent<UStaticModelComponent>();
+		if (model_comp != nullptr)
+		{
+			// Convert id into unique color
+			int r = (i & 0x000000FF) >> 0;
+			int g = (i & 0x0000FF00) >> 8;
+			int b = (i & 0x00FF0000) >> 16;
+
+			shader->SetMatrix4("MVP", a->GetMVP());
+			shader->SetVector4f("PickingColor", glm::vec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.f));
+
+			model_comp->Model->Draw(shader);
+		}
+			
 		i++;
-	}*/
+	}
 }
 
 void Game::LoadScene(const char* path)

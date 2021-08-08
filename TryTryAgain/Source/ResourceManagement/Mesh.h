@@ -44,8 +44,6 @@ namespace rm
 		Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures);
         Mesh() {};
 
-        void DrawPicking(int id, glm::mat4 MVP);
-
 		void Draw(rm::Shader* shader);
 
     private:

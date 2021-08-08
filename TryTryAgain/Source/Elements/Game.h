@@ -17,7 +17,7 @@ class Game
 {
 public:
 
-	rm::Model testModel;
+	static rm::Model testModel;
 
 	Game(unsigned int framebuffer);
 

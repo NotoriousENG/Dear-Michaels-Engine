@@ -13,20 +13,6 @@ namespace rm
 		setupMesh();
 	}
 
-	void rm::Mesh::DrawPicking(int id, glm::mat4 MVP)
-	{
-		// Convert id into unique color
-		int r = (id & 0x000000FF) >> 0;
-		int g = (id & 0x0000FF00) >> 8;
-		int b = (id & 0x00FF0000) >> 16;
-
-		rm::ResourceManager::GetShader("Picking")->SetMatrix4("MVP", MVP);
-		rm::ResourceManager::GetShader("Picking")->SetVector4f("PickingColor", glm::vec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.f));
-
-		glBindVertexArray(this->VAO);
-        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-	}
-
 	void rm::Mesh::Draw(rm::Shader* shader)
 	{
         // bind appropriate textures

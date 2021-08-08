@@ -3,26 +3,21 @@
 #include <memory>
 
 namespace rm {
-	class Mesh;
-	class Shader;
+    class Shader;
 }
 
+using namespace std;
 
 class UStaticMeshComponent : public UComponent
 {
 
 public:
 
-	rm::Mesh* Mesh;
-	rm::Shader* Shader;
+    UStaticMeshComponent(AActor* owner);
 
-	UStaticMeshComponent() {}
-
-	UStaticMeshComponent(AActor* owner);
-
-	void Tick(float delta) override;
-
-	void Draw(rm::Shader* shader = nullptr);
+	void Draw(rm::Shader* shader);
 
 	bool bDraw = true;
+
+private:
 };

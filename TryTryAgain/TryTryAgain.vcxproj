@@ -149,7 +149,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\ResourceManagement\Mesh.cpp" />
+    <ClCompile Include="Source\ResourceManagement\Model.cpp" />
     <ClCompile Include="Source\Actors\AAwesomeBox.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Elements\Camera.cpp" />
@@ -157,6 +157,7 @@
     <ClCompile Include="Source\Actors\AActor.cpp" />
     <ClCompile Include="Source\Panels\GameWindow.cpp" />
     <ClCompile Include="Source\Panels\Hierarchy.cpp" />
+    <ClCompile Include="Source\ResourceManagement\Mesh.cpp" />
     <ClCompile Include="Source\ResourceManagement\ResourceManager.cpp" />
     <ClCompile Include="Source\ResourceManagement\Shader.cpp" />
     <ClCompile Include="Source\ResourceManagement\Texture.cpp" />
@@ -183,12 +184,13 @@
     <ClCompile Include="Source\Objects\UObject.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\ResourceManagement\Mesh.h" />
+    <ClInclude Include="Source\ResourceManagement\Model.h" />
     <ClInclude Include="Source\Actors\AAwesomeBox.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="source\Elements\Camera.h" />
     <ClInclude Include="source\Elements\Game.h" />
     <ClInclude Include="Source\Actors\AActor.h" />
+    <ClInclude Include="Source\ResourceManagement\Mesh.h" />
     <ClInclude Include="Source\ResourceManagement\ResourceManager.h" />
     <ClInclude Include="Source\ResourceManagement\Shader.h" />
     <ClInclude Include="Source\ResourceManagement\Texture.h" />

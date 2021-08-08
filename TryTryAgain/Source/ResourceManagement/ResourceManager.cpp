@@ -62,12 +62,13 @@ namespace rm
 
     Mesh* ResourceManager::CreateMesh(std::string name)
     {
-        if (Meshes.find(name) != Meshes.end())
+        /*if (Meshes.find(name) != Meshes.end())
         {
             return &Meshes[name];
         }
         Meshes[name] = Mesh();
-        return &Meshes[name];
+        return &Meshes[name];*/
+        return nullptr;
     }
 
     Mesh* ResourceManager::GetMesh(std::string name)

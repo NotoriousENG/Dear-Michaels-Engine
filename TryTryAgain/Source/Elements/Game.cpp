@@ -16,7 +16,7 @@
 
 Camera Game::MainCamera;
 
-Game::Game(unsigned framebuffer)
+Game::Game(unsigned framebuffer) : testModel("Assets/Models/backpack/backpack.obj")
 {
 	rm::ResourceManager::LoadShader("Assets/Shaders/Lit.vert", "Assets/Shaders/Lit.frag", nullptr, "Lit");
 	rm::ResourceManager::LoadShader("Assets/Shaders/Picking.vert", "Assets/Shaders/Picking.frag", nullptr, "Picking");
@@ -52,6 +52,21 @@ void Game::Render()
 		ProcessInputEditor();
 	}
 
+	auto* ourShader = rm::ResourceManager::GetShader("Lit");
+	// don't forget to enable shader before setting uniforms
+	ourShader->Use();
+
+	// view/projection transformations
+	ourShader->SetMatrix4("projection", MainCamera.projection);
+	ourShader->SetMatrix4("view", MainCamera.view);
+
+	// render the loaded model
+	glm::mat4 model = glm::mat4(1.0f);
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
+	model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
+	ourShader->SetMatrix4("model", model);
+	testModel.Draw(ourShader);
+
 	TransformGizmo->Draw();
 
 	for (int i = 0; i < Actors.size(); i++)
@@ -70,12 +85,12 @@ void Game::Render()
 			auto* actor = Actors[i].get();
 			if (playing)
 				actor->Tick(deltaTime);
-			if (!usingPickingShader)
-			{
-				auto mesh_comp = actor->GetComponent<UStaticMeshComponent>();
-				if (mesh_comp != nullptr)
-					mesh_comp->Draw();
-			}
+			//if (!usingPickingShader)
+			//{
+			//	auto mesh_comp = actor->GetComponent<UStaticMeshComponent>();
+			//	if (mesh_comp != nullptr)
+			//		//mesh_comp->Draw();
+			//}
 		}
 	}
 }
@@ -111,13 +126,13 @@ void Game::DrawActorsWithPickingShader()
 
 
 	int i = 0;
-	for (auto& a : Actors)
+	/*for (auto& a : Actors)
 	{
 		auto mesh_comp = a->GetComponent<UStaticMeshComponent>();
 		if (mesh_comp != nullptr)
 			mesh_comp->Mesh->DrawPicking(i, a->GetMVP());
 		i++;
-	}
+	}*/
 }
 
 void Game::LoadScene(const char* path)

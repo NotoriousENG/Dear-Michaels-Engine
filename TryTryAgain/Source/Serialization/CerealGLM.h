@@ -15,4 +15,9 @@ namespace glm
     {
         archive(cereal::make_nvp("x", q.x), cereal::make_nvp("y", q.y), cereal::make_nvp("z", q.z), cereal::make_nvp("w", q.w));
     }
+
+    template<typename Archive> void serialize(Archive& archive, glm::vec4& v)
+    {
+        archive(cereal::make_nvp("x", v.x), cereal::make_nvp("y", v.y), cereal::make_nvp("z", v.z), cereal::make_nvp("w", v.w));
+    }
 }

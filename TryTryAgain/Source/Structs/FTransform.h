@@ -22,6 +22,6 @@ struct FTransform
 	template <class Archive>
 	void serialize(Archive& ar)
 	{
-		ar(CEREAL_NVP(position), CEREAL_NVP(rotation), CEREAL_NVP(scale));
+		ar(CEREAL_NVP(position), CEREAL_NVP(rotation), CEREAL_NVP(scale), CEREAL_NVP(skew), CEREAL_NVP(perspective));
 	}
 };

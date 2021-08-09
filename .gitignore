@@ -340,3 +340,5 @@ ASALocalRun/
 healthchecksdb
 
 TryTryAgain/imgui.ini
+
+*.zip

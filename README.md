@@ -17,6 +17,7 @@ I've worked on many game projects before and want to create a more performant, m
 * ImGuizmo - Layer on top of ImGui to draw gizmos such as transform tools
 * ImGuiFileDialog - ImGui Cross platform file dialog tools
 * stb_image.h - Image file library
+* assimp - Multi Format Asset importer for 3D Models
 
 ## External Dependencies (Reccomend to Install through VCPKG for now)
 * glad - OpenGL Function Library

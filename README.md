@@ -66,7 +66,7 @@ To install x64 libraries, run:
 - [X] Component Base Class
 - [X] Static Mesh Component
 - [X] Saving/Loading Scenes
-- [ ] Model Loader and Rendering Refactor
-- [ ] Inspector / Hierarchy Improvements - add support for added features
+- [X] Model Loader and Rendering Refactor - obj files (mtl holds relative paths to textures)
+- [ ] Inspector / Hierarchy Improvements
 - [ ] Physics System Integration
 - [ ] Build Configuration to compile and build without editor tools

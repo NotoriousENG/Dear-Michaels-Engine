@@ -9,11 +9,15 @@
 #include "Actors/AActor.h"
 #include "Objects/UTransformGizmo.h"
 
+#include "ResourceManagement/Model.h"
+
 #include <map>
 
 class Game
 {
 public:
+
+	static rm::Model testModel;
 
 	Game(unsigned int framebuffer);
 

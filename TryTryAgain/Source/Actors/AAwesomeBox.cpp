@@ -14,7 +14,7 @@ AAwesomeBox::AAwesomeBox() : AActor()
 void AAwesomeBox::Init()
 {
 	auto model_comp = AddComponent<UStaticModelComponent>();
-	model_comp->Model = rm::ResourceManager::LoadModel("Assets/Models/backpack/backpack.obj", false, "Backpack");
+	model_comp->Model = rm::ResourceManager::LoadModel("Assets/Models/mario/mario-tex.obj", false, "Mario");
 	model_comp->Shader = rm::ResourceManager::LoadShader("Assets/Shaders/LoadModel.vert", "Assets/Shaders/LoadModel.frag", nullptr, "LoadModel");
 }
 

@@ -34,6 +34,7 @@
     <ClCompile Include="Source\ThirdParty\ImGuiFileDialog\ImGuiFileDialog.cpp" />
     <ClCompile Include="Source\ResourceManagement\Mesh.cpp" />
     <ClCompile Include="Source\ResourceManagement\Model.cpp" />
+    <ClCompile Include="Source\Panels\Inspector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Main.h" />
@@ -58,5 +59,6 @@
     <ClInclude Include="Source\Serialization\CerealGLM.h" />
     <ClInclude Include="Source\ResourceManagement\Mesh.h" />
     <ClInclude Include="Source\ResourceManagement\Model.h" />
+    <ClInclude Include="Source\Panels\Inspector.h" />
   </ItemGroup>
 </Project>

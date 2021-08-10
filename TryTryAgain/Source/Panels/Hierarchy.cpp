@@ -204,9 +204,6 @@ namespace Panels
             AddActor();
             ImGui::PopStyleVar();
             ImGui::End();
-
-            ImGui::Begin("Inspector");
-            ImGui::End();
         }
 	}
 }

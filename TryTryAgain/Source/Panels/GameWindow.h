@@ -68,13 +68,5 @@ namespace Panels
 		  0.f, 0.f, 2.f, 1.f }
 		};
 
-		int gizmoCount = 1;
-
-		bool useSnap = false;
-		ImGuizmo::OPERATION mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-		ImGuizmo::MODE mCurrentGizmoMode = ImGuizmo::WORLD;
-
-		void EditTransform(float* cameraView, float* cameraProjection, float camDistance, float* matrix, bool editTransformDecomposition);
-
 	};
 }

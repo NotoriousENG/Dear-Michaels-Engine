@@ -17,8 +17,6 @@ class Game
 {
 public:
 
-	static rm::Model testModel;
-
 	Game(unsigned int framebuffer);
 
 	void ProcessCamera();

@@ -85,6 +85,8 @@ namespace Panels
 				MyGame->Picked = nullptr;
 				Destroy(actor);
 				ImGui::PopStyleColor();
+				ImGui::EndTable();
+				ImGui::End();
 				return;
 			}
 			ImGui::PopStyleColor();

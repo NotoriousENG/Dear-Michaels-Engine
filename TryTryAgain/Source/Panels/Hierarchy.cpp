@@ -85,83 +85,11 @@ namespace Panels
 
                 ImGui::TableSetColumnIndex(1);
             	
-                ImGui::PushID("Transform"); // Use field index as identifier.
-                // ShowTransform(actor->transform);
-                ImGui::PopID();
             	
             }
             ImGui::TreePop();
         }
         ImGui::PopID();
-	}
-
-	void Hierarchy::ShowTransform(FTransform &transform)
-	{
-        ImGui::TableNextRow();
-        ImGui::TableSetColumnIndex(0);
-        ImGui::AlignTextToFramePadding();
-        bool transform_open = ImGui::TreeNode("Transform", "Transform");
-
-		if (transform_open)
-		{
-            ImGui::PushID("Position");
-            {
-                // Here we use a TreeNode to highlight on hover (we could use e.g. Selectable as well)
-                ImGui::TableNextRow();
-                ImGui::TableSetColumnIndex(0);
-                ImGui::AlignTextToFramePadding();
-                ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet;
-                ImGui::TreeNodeEx("Position", flags, "Position: ");
-
-                ImGui::TableSetColumnIndex(1);
-                ImGui::SetNextItemWidth(-FLT_MIN);
-                ImGui::InputFloat3("Position", &transform.position.x);
-
-                ImGui::NextColumn();
-            }
-            ImGui::PopID();
-
-            ImGui::PushID("Rotation");
-            {
-                // Here we use a TreeNode to highlight on hover (we could use e.g. Selectable as well)
-                ImGui::TableNextRow();
-                ImGui::TableSetColumnIndex(0);
-                ImGui::AlignTextToFramePadding();
-                ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet;
-                ImGui::TreeNodeEx("Rotation", flags, "Rotation: ");
-
-                ImGui::TableSetColumnIndex(1);
-                ImGui::SetNextItemWidth(-FLT_MIN);
-
-                glm::vec3 eulerAngles = glm::degrees(glm::eulerAngles(transform.rotation));
-                if (ImGui::InputFloat3("Rotation", &eulerAngles[0])) {
-                    transform.rotation = glm::quat(glm::radians(eulerAngles));
-                }
-
-                ImGui::NextColumn();
-            }
-            ImGui::PopID();
-
-            ImGui::PushID("Scale");
-            {
-                // Here we use a TreeNode to highlight on hover (we could use e.g. Selectable as well)
-                ImGui::TableNextRow();
-                ImGui::TableSetColumnIndex(0);
-                ImGui::AlignTextToFramePadding();
-                ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_Bullet;
-                ImGui::TreeNodeEx("Scale", flags, "Scale: ");
-
-                ImGui::TableSetColumnIndex(1);
-                ImGui::SetNextItemWidth(-FLT_MIN);
-                ImGui::InputFloat3("Scale", &transform.scale.x);
-
-                ImGui::NextColumn();
-            }
-            ImGui::PopID();
-
-            ImGui::TreePop();
-		}
-        
 	}
 
 	void Hierarchy::AddActor()

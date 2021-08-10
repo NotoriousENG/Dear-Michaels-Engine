@@ -4,6 +4,7 @@
 #include <ImGuizmo.h>
 
 class Game; 
+class UStaticModelComponent;
 
 namespace Panels {
 	class Inspector
@@ -13,6 +14,8 @@ namespace Panels {
 		Inspector(Game* game) : MyGame(game) {};
 
 		Game* MyGame;
+
+		UStaticModelComponent* editingMC;
 
 		void Draw();
 
@@ -24,7 +27,11 @@ namespace Panels {
 
 	private:
 
-		void EditTransform(float* cameraView, float* cameraProjection, float camDistance, float* matrix, bool editTransformDecomposition);
+		void EditTransform(float* cameraView, float* cameraProjection, float camDistance, float* matrix);
+
+		void EditUStaticModelComponent(UStaticModelComponent* mc);
+
+		void ShowFileDialog();
 	};
 }
 

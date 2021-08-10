@@ -78,22 +78,22 @@ namespace rm
         return &Meshes[name];
     }
 
-    Model* ResourceManager::LoadModel(const char* file, bool alpha, std::string name)
+    Model* ResourceManager::LoadModel(std::string file, bool alpha)
     {
-        if (Models.find(name) != Models.end())
+        if (Models.find(file) != Models.end())
         {
-            return &Models[name];
+            return &Models[file];
         }
         rm::Model model;
         model.gammaCorrection = alpha;
         model.loadModel(file);
-        Models[name] = model;
-        return &Models[name];
+        Models[file] = model;
+        return &Models[file];
     }
 
-    Model* ResourceManager::GetModel(std::string name)
+    Model* ResourceManager::GetModel(std::string file)
     {
-        return &Models[name];
+        return &Models[file];
     }
 
     void ResourceManager::Clear()

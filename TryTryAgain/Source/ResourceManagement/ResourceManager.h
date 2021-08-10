@@ -47,9 +47,9 @@ namespace rm
         // retrieves a mesh
         static Mesh* GetMesh(std::string name);
         // loads (and stores) a model (supported by assimp)
-        static Model* LoadModel(const char* file, bool alpha, std::string name);
+        static Model* LoadModel(std::string file, bool alpha);
         // retreives a stored model
-        static Model* GetModel(std::string name);
+        static Model* GetModel(std::string file);
         // properly de-allocates all loaded resources
         static void      Clear();
     private:

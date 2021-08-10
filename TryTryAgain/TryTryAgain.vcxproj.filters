@@ -60,5 +60,6 @@
     <ClInclude Include="Source\ResourceManagement\Mesh.h" />
     <ClInclude Include="Source\ResourceManagement\Model.h" />
     <ClInclude Include="Source\Panels\Inspector.h" />
+    <ClInclude Include="Source\Utility\Utility.h" />
   </ItemGroup>
 </Project>

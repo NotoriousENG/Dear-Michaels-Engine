@@ -6,7 +6,10 @@
 #include "Panels/Console.h"
 #include <glm/gtx/matrix_decompose.hpp>
 #include <Panels/GameWindow.h>
+#include "Components/UStaticModelComponent.h"
 #include "imgui_stdlib.h"
+#include <ImGuiFileDialog/ImGuiFileDialog.h>
+#include "Utility/Utility.h"
 
 namespace Panels
 {
@@ -28,28 +31,36 @@ namespace Panels
 				mCurrentGizmoOperation = ImGuizmo::BOUNDS;
 		}
 
+		ImGui::Begin("Inspector");
 
 		if (!MyGame->Actors.empty() && MyGame->Picked != nullptr)
 		{
 			auto actor = MyGame->Picked;
 			ImGuizmo::SetGizmoSizeClipSpace(0.2);
 
-			EditTransform(glm::value_ptr(camera.view), glm::value_ptr(camera.projection), glm::distance(glm::normalize(camera.transform.position), glm::vec3(0)), model_arr, true);
+			EditTransform(glm::value_ptr(camera.view), glm::value_ptr(camera.projection), glm::distance(glm::normalize(camera.transform.position), glm::vec3(0)), model_arr);
 
 			if (actor != nullptr)
 			{
 				auto& pt = actor->transform;
 				glm::decompose(actor->model, pt.scale, pt.rotation, pt.position, pt.skew, pt.perspective);
+
+				auto* mc = actor->GetComponent<UStaticModelComponent>();
+				if (mc != nullptr)
+				{
+					EditUStaticModelComponent(mc);
+				}
+
 			}
 		}
-		else
-		{
-			ImGui::Begin("Inspector");
-			ImGui::End();
-		}
+		ImGui::Text("____________________________________________________________________");
+		ImGui::End();
+
+		ShowFileDialog();
+
 	}
 
-	void Inspector::EditTransform(float* cameraView, float* cameraProjection, float camDistance, float* matrix, bool editTransformDecomposition)
+	void Inspector::EditTransform(float* cameraView, float* cameraProjection, float camDistance, float* matrix)
 	{
 		static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::LOCAL);
 		static bool b_useSnap = false;
@@ -61,10 +72,8 @@ namespace Panels
 
 		static bool allowAxisFlip = true;
 
-		if (editTransformDecomposition)
+		
 		{
-			ImGui::Begin("Inspector");
-
 			auto actor = MyGame->Picked;
 			ImGui::BeginTable("split", 3, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_Resizable);
 			ImGui::TableNextRow();
@@ -86,12 +95,15 @@ namespace Panels
 				Destroy(actor);
 				ImGui::PopStyleColor();
 				ImGui::EndTable();
-				ImGui::End();
+				
 				return;
 			}
 			ImGui::PopStyleColor();
 
 			ImGui::EndTable();
+
+			ImGui::Text("____________________________________________________________________");
+			ImGui::Text("Transform:");
 
 			if (ImGui::IsKeyPressed(90))
 				mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
@@ -168,7 +180,7 @@ namespace Panels
 			ImGui::Checkbox("Allow Axis Flip", &allowAxisFlip);
 			ImGuizmo::AllowAxisFlip(allowAxisFlip);
 
-			ImGui::End();
+			
 		}
 
 		ImGui::Begin("GameWindow");
@@ -203,6 +215,51 @@ namespace Panels
 		ImGui::End();
 
 		
+	}
+
+	void Inspector::EditUStaticModelComponent(UStaticModelComponent* mc)
+	{
+		ImGui::Text("____________________________________________________________________");
+		ImGui::Text("UStaticModelComponent:");
+		if (ImGui::Button("Change Model"))
+		{
+			editingMC = mc;
+			ImGuiFileDialog::Instance()->OpenDialog("Load Model", "Load Model File", ".obj", "Assets/Models/");
+		}
+		ImGui::SameLine();
+		ImGui::Text(mc->Model->Path.c_str());
+		
+	}
+
+	void Inspector::ShowFileDialog()
+	{
+		// display
+		if (ImGuiFileDialog::Instance()->Display("Load Model"))
+		{
+			// action if OK
+			if (ImGuiFileDialog::Instance()->IsOk())
+			{
+				std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+				std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+				// gameWindow->MyGame->LoadScene(filePathName.c_str());
+				if (editingMC != nullptr)
+				{
+					int localIndex = filePathName.find("Assets");
+					if (localIndex != string::npos)
+					{
+						filePathName = filePathName.substr(localIndex);
+					}
+
+					filePathName = StringUtil::ReplaceAll(filePathName, "\\", "/");
+
+					editingMC->Model = rm::ResourceManager::LoadModel(filePathName.c_str(), false);
+					editingMC = nullptr;
+				}
+			}
+
+			// close
+			ImGuiFileDialog::Instance()->Close();
+		}
 	}
 
 }

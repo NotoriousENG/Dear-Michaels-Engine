@@ -6,10 +6,15 @@
 #include "ResourceManagement/ResourceManager.h"
 #include "Actors/AActor.h"
 #include <Elements/Game.h>
+#include <string>
 
-UStaticModelComponent::UStaticModelComponent(AActor* owner) : UComponent(owner)
+UStaticModelComponent::UStaticModelComponent(std::shared_ptr<AActor> owner) : UComponent(owner)
 {
-	
+	this->Shader = rm::ResourceManager::LoadShader("Assets/Shaders/LoadModel.vert", "Assets/Shaders/LoadModel.frag", nullptr, "LoadModel");
+}
+
+void UStaticModelComponent::Init()
+{
 }
 
 void UStaticModelComponent::Draw(rm::Shader* shader)
@@ -18,7 +23,7 @@ void UStaticModelComponent::Draw(rm::Shader* shader)
 	{
 		if (shader == nullptr)
 		{
-			shader = Shader;
+			shader = Shader.get();
 		}
 		shader->Use();
 		shader->SetMatrix4("model", owner->model);

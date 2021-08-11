@@ -5,7 +5,6 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "Console.h"
-#include "Actors/AAwesomeBox.h"
 #include "Elements/Game.h"
 #include "Structs/FString.h"
 #include "imgui_stdlib.h"
@@ -97,9 +96,9 @@ namespace Panels
         if (ImGui::Button("Add Actor"))
         {
             int id = MyGame->Actors.size();
-            MyGame->Actors.push_back(std::make_unique<AAwesomeBox>());
+            MyGame->Actors.push_back(std::make_shared<AActor>());
             MyGame->Picked = MyGame->Actors.back().get();
-            MyGame->Picked->name = FString("AwesomeBox (%i)", id).Text;
+            MyGame->Picked->name = FString("Actor (%i)", id).Text;
             MyGame->Picked->UpdateMatrix();
         }
 	}

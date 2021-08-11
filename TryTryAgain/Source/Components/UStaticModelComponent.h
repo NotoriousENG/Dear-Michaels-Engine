@@ -1,6 +1,7 @@
 #pragma once
 #include "UComponent.h"
 #include <memory>
+#include <string>
 
 namespace rm {
     class Shader;
@@ -14,14 +15,17 @@ class UStaticModelComponent : public UComponent
 
 public:
 
-	rm::Model* Model;
-	rm::Shader* Shader;
+	std::shared_ptr<rm::Model> Model;
+	std::shared_ptr<rm::Shader> Shader;
 
-	UStaticModelComponent(AActor* owner);
+	UStaticModelComponent(std::shared_ptr<AActor> owner);
+
+	UStaticModelComponent() {}
+
+	virtual void Init() override;
 
 	void Draw(rm::Shader* shader = nullptr);
 
 	bool bDraw = true;
 
-private:
 };

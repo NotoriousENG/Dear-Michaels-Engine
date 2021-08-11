@@ -13,6 +13,7 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <cereal/cereal.hpp>
 
 namespace rm
 {
@@ -40,6 +41,7 @@ namespace rm
         void    SetVector4f(const char* name, float x, float y, float z, float w, bool useShader = false);
         void    SetVector4f(const char* name, const glm::vec4& value, bool useShader = false);
         void    SetMatrix4(const char* name, const glm::mat4& matrix, bool useShader = false);
+
     private:
         // checks if compilation or linking failed and if so, print the error logs
         void    checkCompileErrors(unsigned int object, std::string type);

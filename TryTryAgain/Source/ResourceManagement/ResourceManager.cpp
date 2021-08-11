@@ -15,36 +15,37 @@
 #include "stb_image.h"
 #include "Panels/Console.h"
 #include "Model.h"
+#include <memory>
 
 namespace rm
 {
     // Instantiate static variables
     std::map<std::string, Texture2D>    ResourceManager::Textures;
-    std::map<std::string, Shader>       ResourceManager::Shaders;
+    std::map<std::string, std::shared_ptr<Shader>>       ResourceManager::Shaders;
     std::map<std::string, bool>         ResourceManager::ShadersLoaded;
     std::map<std::string, Mesh>         ResourceManager::Meshes;
-    std::map<std::string, Model>        ResourceManager::Models;
+    std::map<std::string, std::shared_ptr<Model>>        ResourceManager::Models;
 
-    Shader* ResourceManager::LoadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile, std::string name)
+    std::shared_ptr<Shader> ResourceManager::LoadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile, std::string name)
     {
         if (ShadersLoaded[name])
         {
             // M_LOG("[warn] Shader: %s has already been loaded", name.c_str());
-            return  &Shaders[name];
+            return  Shaders[name];
         }
-        Shaders[name] = loadShaderFromFile(vShaderFile, fShaderFile, gShaderFile);
+        Shaders[name] = std::make_shared<Shader>(loadShaderFromFile(vShaderFile, fShaderFile, gShaderFile));
         ShadersLoaded[name] = true;
-        return &Shaders[name];
+        return Shaders[name];
     }
 
-    Shader* ResourceManager::GetShader(std::string name)
+    std::shared_ptr<Shader> ResourceManager::GetShader(std::string name)
     {
         if (!ShadersLoaded[name])
         {
             M_LOG("[error] Shader: %s has not been loaded", name.c_str());
             abort();
         }
-        return &Shaders[name];
+        return Shaders[name];
     }
 
     Texture2D* ResourceManager::LoadTexture(const char* file, bool alpha, std::string name)
@@ -78,29 +79,29 @@ namespace rm
         return &Meshes[name];
     }
 
-    Model* ResourceManager::LoadModel(std::string file, bool alpha)
+    std::shared_ptr<Model> ResourceManager::LoadModel(std::string file, bool alpha)
     {
         if (Models.find(file) != Models.end())
         {
-            return &Models[file];
+            return Models[file];
         }
         rm::Model model;
         model.gammaCorrection = alpha;
         model.loadModel(file);
-        Models[file] = model;
-        return &Models[file];
+        Models[file] = std::make_shared<Model>(model);
+        return Models[file];
     }
 
-    Model* ResourceManager::GetModel(std::string file)
+    std::shared_ptr<Model> ResourceManager::GetModel(std::string file)
     {
-        return &Models[file];
+        return Models[file];
     }
 
     void ResourceManager::Clear()
     {
         // (properly) delete all shaders	
         for (auto& iter : Shaders)
-            glDeleteProgram(iter.second.ID);
+            glDeleteProgram(iter.second->ID);
         // (properly) delete all textures
         for (auto& iter : Textures)
             glDeleteTextures(1, &iter.second.ID);

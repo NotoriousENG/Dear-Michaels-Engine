@@ -37,6 +37,7 @@ namespace rm
         // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
         void loadModel(string const& path);
 
+
     private:
         
         // processes a node in a recursive fashion. Processes each individual mesh located at the node and repeats this process on its children nodes (if any).
@@ -48,6 +49,4 @@ namespace rm
         // the required info is returned as a Texture struct.
         vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
     };
-
-
 }

@@ -29,7 +29,7 @@ public:
 
 	void ProcessInput();
 
-	std::vector<std::unique_ptr<AActor>> Actors;
+	std::vector<std::shared_ptr<AActor>> Actors;
 
 	std::unique_ptr<UTransformGizmo> TransformGizmo;
 

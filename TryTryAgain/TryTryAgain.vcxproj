@@ -151,7 +151,6 @@
   <ItemGroup>
     <ClCompile Include="Source\Panels\Inspector.cpp" />
     <ClCompile Include="Source\ResourceManagement\Model.cpp" />
-    <ClCompile Include="Source\Actors\AAwesomeBox.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Elements\Camera.cpp" />
     <ClCompile Include="source\Elements\Game.cpp" />
@@ -187,7 +186,6 @@
   <ItemGroup>
     <ClInclude Include="Source\Panels\Inspector.h" />
     <ClInclude Include="Source\ResourceManagement\Model.h" />
-    <ClInclude Include="Source\Actors\AAwesomeBox.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="source\Elements\Camera.h" />
     <ClInclude Include="source\Elements\Game.h" />

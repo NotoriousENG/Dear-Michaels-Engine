@@ -10,10 +10,14 @@
 #include "imgui_stdlib.h"
 #include <ImGuiFileDialog/ImGuiFileDialog.h>
 #include "Utility/Utility.h"
+#include <vector>
+#include <string>
+
 
 namespace Panels
 {
-
+	static int test = 0;
+	static const char* lines[] = { "UStaticModelComponent","" };
 	void Inspector::Draw()
 	{
 		float* model_arr = glm::value_ptr(MyGame->Picked->model);
@@ -45,15 +49,27 @@ namespace Panels
 				auto& pt = actor->transform;
 				glm::decompose(actor->model, pt.scale, pt.rotation, pt.position, pt.skew, pt.perspective);
 
-				auto* mc = actor->GetComponent<UStaticModelComponent>();
+				UStaticModelComponent* mc = actor->GetComponent<UStaticModelComponent>();
 				if (mc != nullptr)
 				{
 					EditUStaticModelComponent(mc);
 				}
-
+				ImGui::Text("____________________________________________________________________");
+				ImGui::NewLine();
+				if (ImGui::Button("AddComponent"))
+				{
+					if (test == 0 && mc == nullptr)
+					{
+						mc = actor->AddComponent<UStaticModelComponent>();
+						mc->Shader = rm::ResourceManager::LoadShader("Assets/Shaders/LoadModel.vert", "Assets/Shaders/LoadModel.frag", nullptr, "LoadModel");
+						mc->Model = rm::ResourceManager::LoadModel("Assets/Models/mario/mario-tex.obj", false);
+					}
+				}
+				ImGui::SameLine();
+				ImGui::Combo("Component", &test, lines, IM_ARRAYSIZE(lines), 5);
 			}
 		}
-		ImGui::Text("____________________________________________________________________");
+
 		ImGui::End();
 
 		ShowFileDialog();
@@ -221,6 +237,16 @@ namespace Panels
 	{
 		ImGui::Text("____________________________________________________________________");
 		ImGui::Text("UStaticModelComponent:");
+		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1, 0, 0, 1));
+
+		if (ImGui::Button("X"))
+		{
+			mc->GetOwner()->RemoveComponent<UStaticModelComponent>();
+			ImGui::PopStyleColor();
+			return;
+		}
+		ImGui::PopStyleColor();
 		if (ImGui::Button("Change Model"))
 		{
 			editingMC = mc;

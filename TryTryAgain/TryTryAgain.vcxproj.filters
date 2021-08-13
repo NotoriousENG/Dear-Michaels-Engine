@@ -16,7 +16,6 @@
     <ClCompile Include="Source\ResourceManagement\ResourceManager.cpp" />
     <ClCompile Include="Source\ResourceManagement\Shader.cpp" />
     <ClCompile Include="Source\ResourceManagement\Texture.cpp" />
-    <ClCompile Include="Source\Actors\AAwesomeBox.cpp" />
     <ClCompile Include="Source\Actors\AActor.cpp" />
     <ClCompile Include="Source\Panels\Hierarchy.cpp" />
     <ClCompile Include="Source\Application.cpp" />
@@ -34,6 +33,7 @@
     <ClCompile Include="Source\ThirdParty\ImGuiFileDialog\ImGuiFileDialog.cpp" />
     <ClCompile Include="Source\ResourceManagement\Mesh.cpp" />
     <ClCompile Include="Source\ResourceManagement\Model.cpp" />
+    <ClCompile Include="Source\Panels\Inspector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Main.h" />
@@ -46,7 +46,6 @@
     <ClInclude Include="Source\ResourceManagement\ResourceManager.h" />
     <ClInclude Include="Source\ResourceManagement\Shader.h" />
     <ClInclude Include="Source\ResourceManagement\Texture.h" />
-    <ClInclude Include="Source\Actors\AAwesomeBox.h" />
     <ClInclude Include="Source\Actors\AActor.h" />
     <ClInclude Include="Source\Structs\FTransform.h" />
     <ClInclude Include="Source\Application.h" />
@@ -58,5 +57,7 @@
     <ClInclude Include="Source\Serialization\CerealGLM.h" />
     <ClInclude Include="Source\ResourceManagement\Mesh.h" />
     <ClInclude Include="Source\ResourceManagement\Model.h" />
+    <ClInclude Include="Source\Panels\Inspector.h" />
+    <ClInclude Include="Source\Utility\Utility.h" />
   </ItemGroup>
 </Project>

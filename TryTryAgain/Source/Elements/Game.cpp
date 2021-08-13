@@ -1,6 +1,5 @@
 #include "Game.h"
 
-#include "Actors/AAwesomeBox.h"
 #include "Panels/Console.h"
 #include "ResourceManagement/ResourceManager.h"
 #include <Components/UStaticModelComponent.h>
@@ -127,7 +126,7 @@ void Game::DrawActorsWithPickingShader()
 			shader->SetMatrix4("MVP", a->GetMVP());
 			shader->SetVector4f("PickingColor", glm::vec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.f));
 
-			model_comp->Model->Draw(shader);
+			model_comp->Model->Draw(shader.get());
 		}
 			
 		i++;
@@ -144,6 +143,7 @@ void Game::LoadScene(const char* path)
 	for (auto& a : Actors)
 	{
 		a->UpdateMatrix();
+		a->Init();
 	}
 }
 
@@ -219,10 +219,6 @@ void Game::ProcessInputEditor()
 		{
 			Pick();
 		}
-	}
-
-	if (this->MouseButtonsUp[SDL_BUTTON_LEFT])
-	{
 		usingPickingShader = true;
 	}
 	

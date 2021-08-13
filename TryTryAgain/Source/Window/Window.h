@@ -6,9 +6,11 @@
 #include <SDL2/SDL.h>
 
 #include "Panels/Console.h"
-#include "Panels/GameWindow.h"
 #include "Panels/Hierarchy.h"
+#include "Panels/Inspector.h"
+#include "Panels/GameWindow.h"
 
+#include <glm/glm.hpp>
 
 class Window
 {
@@ -69,6 +71,8 @@ private:
 	std::unique_ptr<Panels::GameWindow> gameWindow;
 
 	std::unique_ptr<Panels::Hierarchy> hierarchy;
+
+	std::unique_ptr<Panels::Inspector> inspector;
 
 	glm::vec2 prevMouse;
 };

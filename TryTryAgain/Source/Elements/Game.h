@@ -17,8 +17,6 @@ class Game
 {
 public:
 
-	static rm::Model testModel;
-
 	Game(unsigned int framebuffer);
 
 	void ProcessCamera();
@@ -31,7 +29,7 @@ public:
 
 	void ProcessInput();
 
-	std::vector<std::unique_ptr<AActor>> Actors;
+	std::vector<std::shared_ptr<AActor>> Actors;
 
 	std::unique_ptr<UTransformGizmo> TransformGizmo;
 

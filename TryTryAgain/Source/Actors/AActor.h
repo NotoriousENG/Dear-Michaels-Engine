@@ -10,7 +10,7 @@
 #include <Components/UComponent.h>
 #include <memory>
 
-class AActor : public UObject
+class AActor : public UObject, public std::enable_shared_from_this<AActor>
 {
 public:
 
@@ -50,14 +50,14 @@ public:
 	template <class Archive>
 	void serialize(Archive& ar)
 	{
-		ar(CEREAL_NVP(name), CEREAL_NVP(transform));
+		ar(CEREAL_NVP(name), CEREAL_NVP(transform), CEREAL_NVP(components));
 	}
 
 protected:
 
-	FTransform InitTransform;
-
 	std::vector<std::unique_ptr<UComponent>> components;
+
+	FTransform InitTransform;
 };
 
 static void Destroy(AActor* actor)
@@ -70,7 +70,7 @@ template<typename T>
 inline T* AActor::AddComponent()
 {
 	static_assert(std::is_base_of<UComponent, T>::value, "Component must derive from UComponent");
-	components.push_back(std::make_unique<T>(this));
+	components.push_back(std::make_unique<T>(shared_from_this()));
 	return static_cast<T*>(components.back().get());
 }
 
@@ -95,7 +95,8 @@ inline void AActor::RemoveComponent()
 	static_assert(std::is_base_of<UComponent, T>::value, "Component must derive from UComponent");
 	for (int i = 0; i < components.size(); i++)
 	{
-		if (typeid(components[i].get()) == typeid(T))
+		auto p = dynamic_cast<T*>(components[i].get());
+		if (p != nullptr)
 		{
 			components.erase(components.begin() + i);
 			return;

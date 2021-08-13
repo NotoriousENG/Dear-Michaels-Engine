@@ -68,6 +68,8 @@ To install x64 libraries, run:
 - [X] Static Mesh Component
 - [X] Saving/Loading Scenes
 - [X] Model Loader and Rendering Refactor - obj files (mtl holds relative paths to textures)
-- [ ] Inspector / Hierarchy Improvements
-- [ ] Physics System Integration
+- [X] Inspector / Hierarchy Improvements - Add/Remove Components / Provide a simple component editor for the Model Component
+- [X] Serialize Components - It is now possible to go pure Actor-Component and move more tools into the runtime!
+- [ ] Start planning a simple game to help identify missing features
 - [ ] Build Configuration to compile and build without editor tools
+- [ ] Physics System Integration

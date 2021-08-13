@@ -149,8 +149,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Panels\Inspector.cpp" />
     <ClCompile Include="Source\ResourceManagement\Model.cpp" />
-    <ClCompile Include="Source\Actors\AAwesomeBox.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Elements\Camera.cpp" />
     <ClCompile Include="source\Elements\Game.cpp" />
@@ -184,8 +184,8 @@
     <ClCompile Include="Source\Objects\UObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Panels\Inspector.h" />
     <ClInclude Include="Source\ResourceManagement\Model.h" />
-    <ClInclude Include="Source\Actors\AAwesomeBox.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="source\Elements\Camera.h" />
     <ClInclude Include="source\Elements\Game.h" />
@@ -201,6 +201,7 @@
     <ClInclude Include="Source\Serialization\CerealGLM.h" />
     <ClInclude Include="Source\Structs\FString.h" />
     <ClInclude Include="Source\Structs\FTransform.h" />
+    <ClInclude Include="Source\Utility\Utility.h" />
     <ClInclude Include="source\Window\Window.h" />
     <ClInclude Include="Source\Objects\UTransformGizmo.h" />
     <ClInclude Include="Source\Components\UComponent.h" />

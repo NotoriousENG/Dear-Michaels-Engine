@@ -16,6 +16,7 @@
 #include "Texture.h"
 #include "Shader.h"
 #include "Mesh.h"
+#include <memory>
 
 namespace rm
 {
@@ -29,15 +30,15 @@ namespace rm
     {
     public:
         // resource storage
-        static std::map<std::string, Shader>    Shaders;
+        static std::map<std::string, std::shared_ptr<Shader>> Shaders;
         static std::map<std::string, Texture2D> Textures;
         static std::map<std::string, bool>      ShadersLoaded;
         static std::map<std::string, Mesh>     Meshes;
-        static std::map<std::string, Model>        Models;
+        static std::map<std::string, std::shared_ptr<Model>>        Models;
         // loads (and generates) a shader program from file loading vertex, fragment (and geometry) shader's source code. If gShaderFile is not nullptr, it also loads a geometry shader
-        static Shader*    LoadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile, std::string name);
+        static std::shared_ptr<Shader>    LoadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile, std::string name);
         // retrieves a stored sader
-        static Shader*    GetShader(std::string name);
+        static std::shared_ptr<Shader>    GetShader(std::string name);
         // loads (and generates) a texture from file
         static Texture2D* LoadTexture(const char* file, bool alpha, std::string name);
         // retrieves a stored texture
@@ -47,9 +48,9 @@ namespace rm
         // retrieves a mesh
         static Mesh* GetMesh(std::string name);
         // loads (and stores) a model (supported by assimp)
-        static Model* LoadModel(const char* file, bool alpha, std::string name);
+        static std::shared_ptr<Model> LoadModel(std::string file, bool alpha);
         // retreives a stored model
-        static Model* GetModel(std::string name);
+        static std::shared_ptr<Model> GetModel(std::string file);
         // properly de-allocates all loaded resources
         static void      Clear();
     private:

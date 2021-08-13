@@ -11,7 +11,7 @@ public:
 
 	UComponent() {}
 
-	UComponent(AActor* owner);
+	UComponent(std::shared_ptr<AActor> owner);
 
 	bool isActive = true;
 
@@ -19,6 +19,19 @@ public:
 	
 	virtual void Tick(float delta);
 
+	template <class Archive>
+	void serialize(Archive& ar)
+	{
+		ar( CEREAL_NVP(owner), CEREAL_NVP(isActive));
+	}
+
+	AActor* GetOwner()
+	{
+		return owner.get();
+	}
+
 protected:
-	AActor* owner;
+	std::shared_ptr<AActor> owner;
 };
+
+CEREAL_REGISTER_TYPE(UComponent);

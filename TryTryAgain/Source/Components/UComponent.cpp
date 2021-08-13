@@ -1,7 +1,7 @@
 #include "UComponent.h"
 #include "Actors/AActor.h"
 
-UComponent::UComponent(AActor* owner)
+UComponent::UComponent(std::shared_ptr<AActor> owner)
 {
 	this->owner = owner;
 }

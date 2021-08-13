@@ -3,8 +3,6 @@
 #include <imgui_impl_opengl3.h>
 #include <imguizmo/ImGuizmo.h>
 
-#include "Panels/Hierarchy.h"
-
 #include <ImGuiFileDialog.h>
 #include <ThirdParty/stb_image.h>
 
@@ -147,6 +145,8 @@ void Window::execute() {
     gameWindow = std::make_unique<Panels::GameWindow>();
 
     hierarchy = std::make_unique<Panels::Hierarchy>(gameWindow->MyGame.get());
+
+    inspector = std::make_unique<Panels::Inspector>(gameWindow->MyGame.get());
 	
     while (!quit) {
         gameWindow->MyGame->mouseRel = glm::vec2(0, 0);
@@ -194,6 +194,8 @@ void Window::execute() {
         gameWindow->Draw();
 
         hierarchy->Draw(&show_hierarchy);
+
+        inspector->Draw();
 
 
         // Rendering

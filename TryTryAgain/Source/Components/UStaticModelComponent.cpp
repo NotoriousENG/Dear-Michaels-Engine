@@ -10,11 +10,20 @@
 
 UStaticModelComponent::UStaticModelComponent(std::shared_ptr<AActor> owner) : UComponent(owner)
 {
-	this->Shader = rm::ResourceManager::LoadShader("Assets/Shaders/LoadModel.vert", "Assets/Shaders/LoadModel.frag", nullptr, "LoadModel");
+	Init();
 }
 
 void UStaticModelComponent::Init()
 {
+	if (this->Shader == nullptr)
+	{
+		this->Shader = rm::ResourceManager::LoadShader(ShaderPaths[0].c_str(), ShaderPaths[1].c_str(), 
+			nullptr, ShaderPaths[3].c_str());
+	}
+	if (this->Model == nullptr)
+	{
+		this->Model = rm::ResourceManager::LoadModel(ModelPath, false);
+	}
 }
 
 void UStaticModelComponent::Draw(rm::Shader* shader)

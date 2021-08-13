@@ -8,6 +8,7 @@
 #include "Elements/Game.h"
 #include "Structs/FString.h"
 #include "imgui_stdlib.h"
+#include <Components/UStaticModelComponent.h>
 
 namespace Panels
 {
@@ -93,13 +94,26 @@ namespace Panels
 
 	void Hierarchy::AddActor()
 	{
-        if (ImGui::Button("Add Actor"))
+        ImGui::Text("Add Actor:");
+        if (ImGui::Button("Empty"))
         {
             int id = MyGame->Actors.size();
             MyGame->Actors.push_back(std::make_shared<AActor>());
             MyGame->Picked = MyGame->Actors.back().get();
             MyGame->Picked->name = FString("Actor (%i)", id).Text;
             MyGame->Picked->UpdateMatrix();
+        }
+        if (ImGui::Button("3D Model"))
+        {
+            int id = MyGame->Actors.size();
+            MyGame->Actors.push_back(std::make_shared<AActor>());
+            MyGame->Picked = MyGame->Actors.back().get();
+            MyGame->Picked->name = FString("Actor (%i)", id).Text;
+            MyGame->Picked->UpdateMatrix();
+
+            auto& a = MyGame->Actors.back();
+            a->AddComponent<UStaticModelComponent>();
+            a->Init();
         }
 	}
 

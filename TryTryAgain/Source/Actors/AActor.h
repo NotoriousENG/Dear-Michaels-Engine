@@ -50,7 +50,7 @@ public:
 	template <class Archive>
 	void serialize(Archive& ar)
 	{
-		ar(CEREAL_NVP(name), CEREAL_NVP(transform));
+		ar(CEREAL_NVP(name), CEREAL_NVP(transform), CEREAL_NVP(components));
 	}
 
 protected:

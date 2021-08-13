@@ -61,8 +61,6 @@ namespace Panels
 					if (test == 0 && mc == nullptr)
 					{
 						mc = actor->AddComponent<UStaticModelComponent>();
-						mc->Shader = rm::ResourceManager::LoadShader("Assets/Shaders/LoadModel.vert", "Assets/Shaders/LoadModel.frag", nullptr, "LoadModel");
-						mc->Model = rm::ResourceManager::LoadModel("Assets/Models/mario/mario-tex.obj", false);
 					}
 				}
 				ImGui::SameLine();
@@ -279,6 +277,7 @@ namespace Panels
 					filePathName = StringUtil::ReplaceAll(filePathName, "\\", "/");
 
 					editingMC->Model = rm::ResourceManager::LoadModel(filePathName.c_str(), false);
+					editingMC->ModelPath = filePathName;
 					editingMC = nullptr;
 				}
 			}

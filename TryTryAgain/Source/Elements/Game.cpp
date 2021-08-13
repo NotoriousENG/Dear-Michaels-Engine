@@ -143,6 +143,7 @@ void Game::LoadScene(const char* path)
 	for (auto& a : Actors)
 	{
 		a->UpdateMatrix();
+		a->Init();
 	}
 }
 
@@ -218,10 +219,6 @@ void Game::ProcessInputEditor()
 		{
 			Pick();
 		}
-	}
-
-	if (this->MouseButtonsUp[SDL_BUTTON_LEFT])
-	{
 		usingPickingShader = true;
 	}
 	

@@ -149,6 +149,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Input\Input.cpp" />
     <ClCompile Include="Source\Serialization\ComponentFactory.cpp" />
     <ClCompile Include="Source\Panels\Inspector.cpp" />
     <ClCompile Include="Source\ResourceManagement\Model.cpp" />
@@ -183,8 +184,10 @@
     <ClCompile Include="Source\Components\UComponent.cpp" />
     <ClCompile Include="Source\Components\UStaticModelComponent.cpp" />
     <ClCompile Include="Source\Objects\UObject.cpp" />
+    <ClCompile Include="Source\Components\UPlayerControlComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Input\Input.h" />
     <ClInclude Include="Source\Serialization\ComponentFactory.h" />
     <ClInclude Include="Source\Panels\Inspector.h" />
     <ClInclude Include="Source\ResourceManagement\Model.h" />
@@ -209,6 +212,7 @@
     <ClInclude Include="Source\Components\UComponent.h" />
     <ClInclude Include="Source\Components\UStaticModelComponent.h" />
     <ClInclude Include="Source\Objects\UObject.h" />
+    <ClInclude Include="Source\Components\UPlayerControlComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

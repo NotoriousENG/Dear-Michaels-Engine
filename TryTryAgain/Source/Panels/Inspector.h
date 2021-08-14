@@ -18,7 +18,7 @@ namespace Panels {
 
 		Game* MyGame;
 
-		UStaticModelComponent* editingMC;
+		static UComponent* InspectedComponent;
 
 		void Draw();
 
@@ -32,9 +32,7 @@ namespace Panels {
 
 		void EditTransform(float* cameraView, float* cameraProjection, float camDistance, float* matrix);
 
-		void EditUStaticModelComponent(UStaticModelComponent* mc);
-
-		void ShowFileDialog();
+		void addComponentField();
 	};
 }
 

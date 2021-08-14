@@ -35,6 +35,8 @@
     <ClCompile Include="Source\ResourceManagement\Model.cpp" />
     <ClCompile Include="Source\Panels\Inspector.cpp" />
     <ClCompile Include="Source\Serialization\ComponentFactory.cpp" />
+    <ClCompile Include="Source\Components\UPlayerControlComponent.cpp" />
+    <ClCompile Include="Source\Input\Input.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Main.h" />
@@ -61,5 +63,7 @@
     <ClInclude Include="Source\Panels\Inspector.h" />
     <ClInclude Include="Source\Utility\Utility.h" />
     <ClInclude Include="Source\Serialization\ComponentFactory.h" />
+    <ClInclude Include="Source\Components\UPlayerControlComponent.h" />
+    <ClInclude Include="Source\Input\Input.h" />
   </ItemGroup>
 </Project>

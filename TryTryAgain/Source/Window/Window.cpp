@@ -5,6 +5,7 @@
 
 #include <ImGuiFileDialog.h>
 #include <ThirdParty/stb_image.h>
+#include <Input/Input.h>
 
 void Window::sdl_die(const char* message) {
     fprintf(stderr, "%s: %s\n", message, SDL_GetError());
@@ -153,7 +154,7 @@ void Window::execute() {
 
         for (int i = 0; i < 6; i++)
         {
-            gameWindow->MyGame->MouseButtonsUp[i] = false;
+            Input::MouseButtonsUp[i] = false;
         }
     	
         while (SDL_PollEvent(&event)) {
@@ -238,9 +239,9 @@ void Window::processInputForWindow(SDL_Event event)
     if (key >= 0 && key < 1024)
     {
         if (event.type == SDL_KEYDOWN)
-            gameWindow->MyGame->Keys[key] = true;
+            Input::Keys[key] = true;
         else if (event.type == SDL_KEYUP)
-            gameWindow->MyGame->Keys[key] = false;
+            Input::Keys[key] = false;
     }
 	
 	if (event.type == SDL_MOUSEMOTION)
@@ -254,18 +255,18 @@ void Window::processInputForWindow(SDL_Event event)
 	{
 		if (event.type == SDL_MOUSEBUTTONDOWN)
 		{
-            gameWindow->MyGame->MouseButtons[button] = true;
-            gameWindow->MyGame->MouseButtonsDown[button] = true;
+            Input::MouseButtons[button] = true;
+            Input::MouseButtonsDown[button] = true;
 		}
         else if (event.type == SDL_MOUSEBUTTONUP)
         {
-            gameWindow->MyGame->MouseButtons[button] = false;
-            gameWindow->MyGame->MouseButtonsUp[button] = true;
+            Input::MouseButtons[button] = false;
+            Input::MouseButtonsUp[button] = true;
         }
         else
         {
-            gameWindow->MyGame->MouseButtonsDown[button] = false;
-            gameWindow->MyGame->MouseButtonsUp[button] = false;
+            Input::MouseButtonsDown[button] = false;
+            Input::MouseButtonsUp[button] = false;
         }
 	}
 
@@ -275,7 +276,6 @@ void Window::processInputForWindow(SDL_Event event)
 		{
             gameWindow->playing = true;
             gameWindow->MyGame->playing = true;
-            SDL_SetRelativeMouseMode(SDL_TRUE);
 		}
 	}
 }

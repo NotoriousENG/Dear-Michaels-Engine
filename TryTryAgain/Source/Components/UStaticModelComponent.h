@@ -22,6 +22,8 @@ class UStaticModelComponent : public UComponent
 
 public:
 
+	typedef UComponent Super;
+
 	std::shared_ptr<rm::Model> Model;
 	std::shared_ptr<rm::Shader> Shader;
 
@@ -43,8 +45,12 @@ public:
 
 	std::string ModelPath = "Assets/Models/mario/mario-tex.obj";
 
+	virtual bool ShowInspector() override;
+
 private:
 	std::string ShaderPaths[4] = { "Assets/Shaders/LoadModel.vert", "Assets/Shaders/LoadModel.frag", "", "LoadModel" };
+
+	void showFileDialog();
 };
 
 CEREAL_REGISTER_TYPE(UStaticModelComponent);

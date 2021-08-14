@@ -12,6 +12,7 @@
 
 #include <iostream>
 #include <fstream>
+#include "Input/Input.h"
 
 Camera Game::MainCamera;
 
@@ -73,7 +74,7 @@ void Game::Render()
 			if (!usingPickingShader)
 			{
 				auto model_comp = actor->GetComponent<UStaticModelComponent>();
-				if (model_comp != nullptr)
+				if (model_comp != nullptr && model_comp->isActive)
 					model_comp->Draw();
 			}
 		}
@@ -91,12 +92,10 @@ void Game::Init()
 
 void Game::ProcessInput()
 {
-	if (this->Keys[SDLK_ESCAPE])
+	if (Input::Keys[SDLK_ESCAPE])
 	{
 		playing = false;
 	}
-
-	ProcessCamera();
 }
 
 void Game::DrawActorsWithPickingShader()
@@ -196,7 +195,7 @@ void Game::Pick()
 
 void Game::ProcessInputEditor()
 {
-	if (this->Keys[SDLK_1])
+	if (Input::Keys[SDLK_1])
 	{
 		DrawActorsWithPickingShader();
 		usingPickingShader = true;
@@ -206,14 +205,14 @@ void Game::ProcessInputEditor()
 		usingPickingShader = false;
 	}
 
-	if (this->Keys[SDLK_DELETE] && this->Picked != nullptr)
+	if (Input::Keys[SDLK_DELETE] && this->Picked != nullptr)
 	{
 		auto toDestroy = Picked;
 		Picked = nullptr;
 		Destroy(toDestroy);
 	}
 	
-	if (this->MouseButtonsUp[SDL_BUTTON_LEFT])
+	if (Input::MouseButtonsUp[SDL_BUTTON_LEFT] && ImGui::IsWindowFocused())
 	{
 		if (mouse != glm::vec2(-1, -1))
 		{
@@ -222,7 +221,7 @@ void Game::ProcessInputEditor()
 		usingPickingShader = true;
 	}
 	
-	if (this->MouseButtons[SDL_BUTTON_RIGHT])
+	if (Input::MouseButtons[SDL_BUTTON_RIGHT])
 	{
 		SDL_SetRelativeMouseMode(SDL_TRUE);
 		SDL_ShowCursor(0);
@@ -244,27 +243,27 @@ void Game::ProcessCamera()
 	}
 
 
-	if (this->Keys[SDLK_w])
+	if (Input::Keys[SDLK_w])
 	{
 		MainCamera.ProcessKeyboard(FORWARD, deltaTime);
 	}
-	if (this->Keys[SDLK_s])
+	if (Input::Keys[SDLK_s])
 	{
 		MainCamera.ProcessKeyboard(BACKWARD, deltaTime);
 	}
-	if (this->Keys[SDLK_a])
+	if (Input::Keys[SDLK_a])
 	{
 		MainCamera.ProcessKeyboard(LEFT, deltaTime);
 	}
-	if (this->Keys[SDLK_d])
+	if (Input::Keys[SDLK_d])
 	{
 		MainCamera.ProcessKeyboard(RIGHT, deltaTime);
 	}
-	if (this->Keys[SDLK_q])
+	if (Input::Keys[SDLK_q])
 	{
 		MainCamera.ProcessKeyboard(DOWN, deltaTime);
 	}
-	if (this->Keys[SDLK_e])
+	if (Input::Keys[SDLK_e])
 	{
 		MainCamera.ProcessKeyboard(UP, deltaTime);
 	}

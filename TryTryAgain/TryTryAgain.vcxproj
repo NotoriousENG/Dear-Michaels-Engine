@@ -149,6 +149,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ResourceManagement\Skybox.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
     <ClCompile Include="Source\Serialization\ComponentFactory.cpp" />
     <ClCompile Include="Source\Panels\Inspector.cpp" />
@@ -185,8 +186,10 @@
     <ClCompile Include="Source\Components\UStaticModelComponent.cpp" />
     <ClCompile Include="Source\Objects\UObject.cpp" />
     <ClCompile Include="Source\Components\UPlayerControlComponent.cpp" />
+    <ClCompile Include="Source\Components\UCameraComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ResourceManagement\Skybox.h" />
     <ClInclude Include="Source\Input\Input.h" />
     <ClInclude Include="Source\Serialization\ComponentFactory.h" />
     <ClInclude Include="Source\Panels\Inspector.h" />
@@ -213,6 +216,7 @@
     <ClInclude Include="Source\Components\UStaticModelComponent.h" />
     <ClInclude Include="Source\Objects\UObject.h" />
     <ClInclude Include="Source\Components\UPlayerControlComponent.h" />
+    <ClInclude Include="Source\Components\UCameraComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

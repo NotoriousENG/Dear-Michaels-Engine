@@ -37,6 +37,8 @@
     <ClCompile Include="Source\Serialization\ComponentFactory.cpp" />
     <ClCompile Include="Source\Components\UPlayerControlComponent.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
+    <ClCompile Include="Source\ResourceManagement\Skybox.cpp" />
+    <ClCompile Include="Source\Components\UCameraComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Main.h" />
@@ -65,5 +67,7 @@
     <ClInclude Include="Source\Serialization\ComponentFactory.h" />
     <ClInclude Include="Source\Components\UPlayerControlComponent.h" />
     <ClInclude Include="Source\Input\Input.h" />
+    <ClInclude Include="Source\ResourceManagement\Skybox.h" />
+    <ClInclude Include="Source\Components\UCameraComponent.h" />
   </ItemGroup>
 </Project>

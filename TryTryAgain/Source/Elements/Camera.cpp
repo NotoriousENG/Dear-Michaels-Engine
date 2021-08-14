@@ -2,6 +2,8 @@
 #include <Panels/Console.h>
 #include <glm/gtx/matrix_decompose.hpp>
 
+Camera Camera::Main = Camera(glm::vec3(0, 0, 4), glm::vec3(0, 1, 0), -90);
+
 void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
 {
     float velocity = MovementSpeed * deltaTime;
@@ -73,7 +75,7 @@ void Camera::UpdateCameraVectors()
     Right = glm::normalize(glm::cross(Front, WorldUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
     Up = glm::normalize(glm::cross(Right, Front));
 
-    projection = glm::perspective(glm::radians(this->Zoom), AspectRatio, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(this->Zoom), AspectRatio, 0.1f, 1000.0f);
 
     view = glm::lookAt(transform.position, transform.position + Front, Up);
 }

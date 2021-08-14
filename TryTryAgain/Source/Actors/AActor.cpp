@@ -98,5 +98,5 @@ void AActor::ClearComponents()
 
 glm::mat4 AActor::GetMVP()
 {
-	return Game::MainCamera.projection * Game::MainCamera.view * this->model;
+	return Camera::Main.projection * Camera::Main.view * this->model;
 }

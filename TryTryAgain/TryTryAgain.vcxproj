@@ -149,6 +149,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Serialization\ComponentFactory.cpp" />
     <ClCompile Include="Source\Panels\Inspector.cpp" />
     <ClCompile Include="Source\ResourceManagement\Model.cpp" />
     <ClCompile Include="Source\Application.cpp" />
@@ -184,6 +185,7 @@
     <ClCompile Include="Source\Objects\UObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Serialization\ComponentFactory.h" />
     <ClInclude Include="Source\Panels\Inspector.h" />
     <ClInclude Include="Source\ResourceManagement\Model.h" />
     <ClInclude Include="Source\Application.h" />

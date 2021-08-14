@@ -37,6 +37,8 @@ public:
 	template <typename T>
 	T* AddComponent();
 
+	UComponent* AddComponent(std::unique_ptr<UComponent> comp);
+
 	template <typename T>
 	T* GetComponent();
 

@@ -2,6 +2,7 @@
 
 #include <imgui.h>
 #include <ImGuizmo.h>
+#include "Serialization/ComponentFactory.h"
 
 class Game; 
 class UStaticModelComponent;
@@ -11,7 +12,9 @@ namespace Panels {
 	{
 	public:
 
-		Inspector(Game* game) : MyGame(game) {};
+		Inspector(Game* game);
+
+		ComponentFactory ComponentFactory;
 
 		Game* MyGame;
 

@@ -46,6 +46,15 @@ void AActor::Tick(float delta)
 	}
 }
 
+UComponent* AActor::AddComponent(std::unique_ptr<UComponent> comp)
+{
+	comp->owner = shared_from_this();
+	components.push_back(std::move(comp));
+	auto* p = components.back().get();
+	p->Init();
+	return p;
+}
+
 void AActor::ClearComponents()
 {
 	components.clear();

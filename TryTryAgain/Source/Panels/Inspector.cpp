@@ -13,11 +13,14 @@
 #include <vector>
 #include <string>
 
-
 namespace Panels
 {
-	static int test = 0;
-	static const char* lines[] = { "UStaticModelComponent","" };
+	static int regIndex = 0;
+
+	Inspector::Inspector(Game* game) : MyGame(game), ComponentFactory()
+	{
+	}
+
 	void Inspector::Draw()
 	{
 		float* model_arr = glm::value_ptr(MyGame->Picked->model);
@@ -58,13 +61,10 @@ namespace Panels
 				ImGui::NewLine();
 				if (ImGui::Button("AddComponent"))
 				{
-					if (test == 0 && mc == nullptr)
-					{
-						mc = actor->AddComponent<UStaticModelComponent>();
-					}
+					actor->AddComponent(ComponentFactory.Create(ComponentFactory.Keys[regIndex]));
 				}
 				ImGui::SameLine();
-				ImGui::Combo("Component", &test, lines, IM_ARRAYSIZE(lines), 5);
+				ImGui::Combo("Component", &regIndex, &ComponentFactory.Keys[0], ComponentFactory.Keys.size(), 5);
 			}
 		}
 

@@ -32,6 +32,8 @@ public:
 
 protected:
 	std::shared_ptr<AActor> owner;
+
+	friend class AActor;
 };
 
 CEREAL_REGISTER_TYPE(UComponent);

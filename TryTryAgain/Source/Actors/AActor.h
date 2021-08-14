@@ -37,11 +37,17 @@ public:
 	template <typename T>
 	T* AddComponent();
 
+	UComponent* AddComponent(std::unique_ptr<UComponent> comp);
+
 	template <typename T>
 	T* GetComponent();
 
+	UComponent* GetComponent(std::string name);
+
 	template <typename T>
 	void RemoveComponent();
+
+	void RemoveComponent(std::string name);
 
 	void ClearComponents();
 
@@ -53,11 +59,7 @@ public:
 		ar(CEREAL_NVP(name), CEREAL_NVP(transform), CEREAL_NVP(components));
 	}
 
-protected:
-
 	std::vector<std::unique_ptr<UComponent>> components;
-
-	FTransform InitTransform;
 };
 
 static void Destroy(AActor* actor)

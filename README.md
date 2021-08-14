@@ -70,6 +70,9 @@ To install x64 libraries, run:
 - [X] Model Loader and Rendering Refactor - obj files (mtl holds relative paths to textures)
 - [X] Inspector / Hierarchy Improvements - Add/Remove Components / Provide a simple component editor for the Model Component
 - [X] Serialize Components - It is now possible to go pure Actor-Component and move more tools into the runtime!
-- [ ] Start planning a simple game to help identify missing features
+- [X] Register Components - Components can be registered to be added at run time!
+- [X] Simple Input Manager - Static instance access anywhere, also comes with a cool player controller component
+- [X] Standardized Component Inspection - leverage ImGui to get can't believe it's not unity
+- [ ] Start planning a simple game to help identify missing features - you can probably tell I've been adding more features since adding this :)
 - [ ] Build Configuration to compile and build without editor tools
 - [ ] Physics System Integration

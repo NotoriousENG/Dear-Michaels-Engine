@@ -63,8 +63,6 @@ namespace Panels
 			if (playing && !wasPlaying)
 			{
 				MyGame->playing = true;
-				MyGame->Picked = nullptr;
-				SDL_SetRelativeMouseMode(SDL_TRUE);
 			}
 			else if (!playing && wasPlaying)
 			{

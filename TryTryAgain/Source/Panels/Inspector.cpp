@@ -8,30 +8,35 @@
 #include <Panels/GameWindow.h>
 #include "Components/UStaticModelComponent.h"
 #include "imgui_stdlib.h"
-#include <ImGuiFileDialog/ImGuiFileDialog.h>
 #include "Utility/Utility.h"
 #include <vector>
 #include <string>
-
+#include <Input/Input.h>
 
 namespace Panels
 {
-	static int test = 0;
-	static const char* lines[] = { "UStaticModelComponent","" };
+	static int regIndex = 0;
+
+	UComponent* Inspector::InspectedComponent = nullptr;
+
+	Inspector::Inspector(Game* game) : MyGame(game), ComponentFactory()
+	{
+	}
+
 	void Inspector::Draw()
 	{
 		float* model_arr = glm::value_ptr(MyGame->Picked->model);
 		auto& camera = MyGame->MainCamera;
 
-		if (!MyGame->MouseButtons[SDL_BUTTON_RIGHT])
+		if (!Input::MouseButtons[SDL_BUTTON_RIGHT])
 		{
-			if (MyGame->Keys[SDLK_w])
+			if (Input::Keys[SDLK_w])
 				mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-			if (MyGame->Keys[SDLK_e])
+			if (Input::Keys[SDLK_e])
 				mCurrentGizmoOperation = ImGuizmo::ROTATE;
-			if (MyGame->Keys[SDLK_r]) // r Key
+			if (Input::Keys[SDLK_r]) // r Key
 				mCurrentGizmoOperation = ImGuizmo::SCALE;
-			if (MyGame->Keys[SDLK_t])
+			if (Input::Keys[SDLK_t])
 				mCurrentGizmoOperation = ImGuizmo::BOUNDS;
 		}
 
@@ -49,28 +54,28 @@ namespace Panels
 				auto& pt = actor->transform;
 				glm::decompose(actor->model, pt.scale, pt.rotation, pt.position, pt.skew, pt.perspective);
 
-				UStaticModelComponent* mc = actor->GetComponent<UStaticModelComponent>();
-				if (mc != nullptr)
+				int i = 0;
+				for (auto& comp : actor->components)
 				{
-					EditUStaticModelComponent(mc);
-				}
-				ImGui::Text("____________________________________________________________________");
-				ImGui::NewLine();
-				if (ImGui::Button("AddComponent"))
-				{
-					if (test == 0 && mc == nullptr)
+					ImGui::PushID(i);
+					if (!comp->ShowInspector())
 					{
-						mc = actor->AddComponent<UStaticModelComponent>();
+						ImGui::PopID();
+						ImGui::End();
+						return;
 					}
+					ImGui::PopID();
+					i++;
 				}
-				ImGui::SameLine();
-				ImGui::Combo("Component", &test, lines, IM_ARRAYSIZE(lines), 5);
+
+				addComponentField();
+			}
+			else {
+				InspectedComponent = nullptr;
 			}
 		}
 
 		ImGui::End();
-
-		ShowFileDialog();
 
 	}
 
@@ -213,7 +218,9 @@ namespace Panels
 			// ImGuizmo::DrawCubes(cameraView, cameraProjection, &objectMatrix[0][0], gizmoCount);
 
 			if (!MyGame->playing)
+			{
 				ImGuizmo::Manipulate(cameraView, cameraProjection, mCurrentGizmoOperation, mCurrentGizmoMode, matrix, NULL, b_useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
+			}
 
 			// ImGuizmo::DrawGrid(cameraView, cameraProjection, identityMatrix, 100.f);
 			// ImGuizmo::ViewManipulate(cameraView, camDistance, ImVec2(viewManipulateRight - 128, viewManipulateTop), ImVec2(128, 128), 0x10101010);
@@ -227,64 +234,20 @@ namespace Panels
 			ImGui::EndChild();
 		}
 		ImGui::End();
-
-		
 	}
 
-	void Inspector::EditUStaticModelComponent(UStaticModelComponent* mc)
+	void Inspector::addComponentField()
 	{
+		// Add Component
 		ImGui::Text("____________________________________________________________________");
-		ImGui::Text("UStaticModelComponent:");
-		ImGui::SameLine();
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1, 0, 0, 1));
-
-		if (ImGui::Button("X"))
+		ImGui::NewLine();
+		if (ImGui::Button("AddComponent"))
 		{
-			mc->GetOwner()->RemoveComponent<UStaticModelComponent>();
-			ImGui::PopStyleColor();
-			return;
-		}
-		ImGui::PopStyleColor();
-		if (ImGui::Button("Change Model"))
-		{
-			editingMC = mc;
-			ImGuiFileDialog::Instance()->OpenDialog("Load Model", "Load Model File", ".obj", "Assets/Models/");
+			auto comp = ComponentFactory.Create(ComponentFactory.Keys[regIndex]);
+			comp->Init();
+			MyGame->Picked->AddComponent(std::move(comp));
 		}
 		ImGui::SameLine();
-		ImGui::Text(mc->Model->Path.c_str());
-		
+		ImGui::Combo("Component", &regIndex, &ComponentFactory.Keys[0], ComponentFactory.Keys.size(), 5);
 	}
-
-	void Inspector::ShowFileDialog()
-	{
-		// display
-		if (ImGuiFileDialog::Instance()->Display("Load Model"))
-		{
-			// action if OK
-			if (ImGuiFileDialog::Instance()->IsOk())
-			{
-				std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-				std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-				// gameWindow->MyGame->LoadScene(filePathName.c_str());
-				if (editingMC != nullptr)
-				{
-					int localIndex = filePathName.find("Assets");
-					if (localIndex != string::npos)
-					{
-						filePathName = filePathName.substr(localIndex);
-					}
-
-					filePathName = StringUtil::ReplaceAll(filePathName, "\\", "/");
-
-					editingMC->Model = rm::ResourceManager::LoadModel(filePathName.c_str(), false);
-					editingMC->ModelPath = filePathName;
-					editingMC = nullptr;
-				}
-			}
-
-			// close
-			ImGuiFileDialog::Instance()->Close();
-		}
-	}
-
 }

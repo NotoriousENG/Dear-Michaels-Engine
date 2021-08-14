@@ -2,6 +2,7 @@
 
 #include <imgui.h>
 #include <ImGuizmo.h>
+#include "Serialization/ComponentFactory.h"
 
 class Game; 
 class UStaticModelComponent;
@@ -11,11 +12,13 @@ namespace Panels {
 	{
 	public:
 
-		Inspector(Game* game) : MyGame(game) {};
+		Inspector(Game* game);
+
+		ComponentFactory ComponentFactory;
 
 		Game* MyGame;
 
-		UStaticModelComponent* editingMC;
+		static UComponent* InspectedComponent;
 
 		void Draw();
 
@@ -29,9 +32,7 @@ namespace Panels {
 
 		void EditTransform(float* cameraView, float* cameraProjection, float camDistance, float* matrix);
 
-		void EditUStaticModelComponent(UStaticModelComponent* mc);
-
-		void ShowFileDialog();
+		void addComponentField();
 	};
 }
 

@@ -1,8 +1,10 @@
 #pragma once
 
 #include "Objects/UObject.h"
+#include <string>
 
 class AActor;
+
 
 class UComponent : public UObject
 {
@@ -15,9 +17,11 @@ public:
 
 	bool isActive = true;
 
-	virtual void Init();
+	virtual void Init() override;
 	
-	virtual void Tick(float delta);
+	virtual void Tick(float delta) override;
+
+	virtual bool ShowInspector();
 
 	template <class Archive>
 	void serialize(Archive& ar)
@@ -31,7 +35,12 @@ public:
 	}
 
 protected:
+
+	std::string name = "UComponent";
+
 	std::shared_ptr<AActor> owner;
+
+	friend class AActor;
 };
 
 CEREAL_REGISTER_TYPE(UComponent);

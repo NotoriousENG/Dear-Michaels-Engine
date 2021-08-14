@@ -1,3 +1,5 @@
+#pragma once
+
 #include "UStaticModelComponent.h"
 #include <Panels/Console.h>
 #include "ResourceManagement/Mesh.h"
@@ -7,6 +9,13 @@
 #include "Actors/AActor.h"
 #include <Elements/Game.h>
 #include <string>
+
+// EDITOR
+#include <ImGuiFileDialog/ImGuiFileDialog.h>
+#include <Panels/Inspector.h>
+#include <Utility/Utility.h>
+// EDITOR
+
 
 UStaticModelComponent::UStaticModelComponent(std::shared_ptr<AActor> owner) : UComponent(owner)
 {
@@ -24,6 +33,34 @@ void UStaticModelComponent::Init()
 	{
 		this->Model = rm::ResourceManager::LoadModel(ModelPath, false);
 	}
+	this->name = "UStaticModelComponent";
+}
+
+bool UStaticModelComponent::ShowInspector()
+{
+	if (Super::ShowInspector())
+	{
+		if (ImGui::Button("Change Model"))
+		{
+			Panels::Inspector::InspectedComponent = this;
+			ImGuiFileDialog::Instance()->OpenDialog("Load Model", "Load Model File", ".obj", "Assets/Models/");
+		}
+		ImGui::SameLine();
+		ImGui::Text(this->Model->Path.c_str());
+
+		if (Panels::Inspector::InspectedComponent == this)
+		{
+			showFileDialog();
+		}
+		else if (ImGuiFileDialog::Instance()->IsOpened("Load Model"))
+		{
+			ImGuiFileDialog::Instance()->Close();
+		}
+
+		return true;
+	}
+
+	return false;
 }
 
 void UStaticModelComponent::Draw(rm::Shader* shader)
@@ -40,5 +77,37 @@ void UStaticModelComponent::Draw(rm::Shader* shader)
 		shader->SetMatrix4("projection", Game::MainCamera.projection);
 
 		Model->Draw(shader);
+	}
+}
+
+void UStaticModelComponent::showFileDialog()
+{
+	// display
+	if (ImGuiFileDialog::Instance()->Display("Load Model"))
+	{
+		// action if OK
+		if (ImGuiFileDialog::Instance()->IsOk())
+		{
+			std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+			std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+			
+			if (Panels::Inspector::InspectedComponent == this)
+			{
+				int localIndex = filePathName.find("Assets");
+				if (localIndex != string::npos)
+				{
+					filePathName = filePathName.substr(localIndex);
+				}
+
+				filePathName = StringUtil::ReplaceAll(filePathName, "\\", "/");
+
+				this->Model = rm::ResourceManager::LoadModel(filePathName.c_str(), false);
+				this->ModelPath = filePathName;
+				Panels::Inspector::InspectedComponent = nullptr;
+			}
+		}
+
+		// close
+		ImGuiFileDialog::Instance()->Close();
 	}
 }

@@ -5,12 +5,12 @@
 
 #include <SDL2/SDL.h>
 
-#include "Panels/Console.h"
-#include "Panels/Hierarchy.h"
-#include "Panels/Inspector.h"
+#include "Panels/IPanel.h"
 #include "Panels/GameWindow.h"
 
 #include <glm/glm.hpp>
+
+#include <vector>
 
 class Window
 {
@@ -24,14 +24,6 @@ public:
 	void ShowAppMainMenuBar();
 
 	void ShowFileDialog();
-
-	void ShowConsole(bool* p_open)
-	{
-		if (*p_open)
-		{
-			Panels::Console::instance.Draw("Console", p_open);
-		}
-	}
 	
 private:
 	
@@ -63,16 +55,12 @@ private:
 	GLfloat clear_color[3] = { 0.2f, 0.3f, 0.3f };
 
 	bool show_demo_window = false;
-	bool show_console = true;
-	bool show_hierarchy = true;
 	bool load_scene = false;
 	bool save_scene = false;
 
+	std::vector<std::unique_ptr<Panels::IPanel>> panels;
+
 	std::unique_ptr<Panels::GameWindow> gameWindow;
-
-	std::unique_ptr<Panels::Hierarchy> hierarchy;
-
-	std::unique_ptr<Panels::Inspector> inspector;
 
 	glm::vec2 prevMouse;
 };

@@ -19,13 +19,9 @@ namespace Panels
 
 	UComponent* Inspector::InspectedComponent = nullptr;
 
-	Inspector::Inspector(Game* game) : MyGame(game), ComponentFactory()
-	{
-	}
-
 	void Inspector::Draw()
 	{
-		float* model_arr = glm::value_ptr(MyGame->Picked->model);
+		float* model_arr = glm::value_ptr(Game::instance->Picked->model);
 		auto& camera = Camera::Main;
 
 		if (!Input::MouseButtons[SDL_BUTTON_RIGHT])
@@ -42,9 +38,9 @@ namespace Panels
 
 		ImGui::Begin("Inspector");
 
-		if (!MyGame->Actors.empty() && MyGame->Picked != nullptr)
+		if (!Game::instance->Actors.empty() && Game::instance->Picked != nullptr)
 		{
-			auto actor = MyGame->Picked;
+			auto actor = Game::instance->Picked;
 			ImGuizmo::SetGizmoSizeClipSpace(0.2);
 
 			EditTransform(glm::value_ptr(camera.view), glm::value_ptr(camera.projection), glm::distance(glm::normalize(camera.transform.position), glm::vec3(0)), model_arr);
@@ -79,6 +75,11 @@ namespace Panels
 
 	}
 
+	void Inspector::MenuItem()
+	{
+		ImGui::MenuItem("Inspector", "", &isActive);
+	}
+
 	void Inspector::EditTransform(float* cameraView, float* cameraProjection, float camDistance, float* matrix)
 	{
 		static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::LOCAL);
@@ -93,7 +94,7 @@ namespace Panels
 
 		
 		{
-			auto actor = MyGame->Picked;
+			auto actor = Game::instance->Picked;
 			ImGui::BeginTable("split", 3, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_Resizable);
 			ImGui::TableNextRow();
 			ImGui::TableSetColumnIndex(0);
@@ -110,7 +111,7 @@ namespace Panels
 
 			if (ImGui::Button("X"))
 			{
-				MyGame->Picked = nullptr;
+				Game::instance->Picked = nullptr;
 				Destroy(actor);
 				ImGui::PopStyleColor();
 				ImGui::EndTable();
@@ -217,7 +218,7 @@ namespace Panels
 
 			// ImGuizmo::DrawCubes(cameraView, cameraProjection, &objectMatrix[0][0], gizmoCount);
 
-			if (!MyGame->playing)
+			if (!Game::instance->playing)
 			{
 				ImGuizmo::Manipulate(cameraView, cameraProjection, mCurrentGizmoOperation, mCurrentGizmoMode, matrix, NULL, b_useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
 			}
@@ -243,11 +244,11 @@ namespace Panels
 		ImGui::NewLine();
 		if (ImGui::Button("AddComponent"))
 		{
-			auto comp = ComponentFactory.Create(ComponentFactory.Keys[regIndex]);
+			auto comp = ComponentFactory::instance.Create(ComponentFactory::instance.Keys[regIndex]);
 			comp->Init();
-			MyGame->Picked->AddComponent(std::move(comp));
+			Game::instance->Picked->AddComponent(std::move(comp));
 		}
 		ImGui::SameLine();
-		ImGui::Combo("Component", &regIndex, &ComponentFactory.Keys[0], ComponentFactory.Keys.size(), 5);
+		ImGui::Combo("Component", &regIndex, &ComponentFactory::instance.Keys[0], ComponentFactory::instance.Keys.size(), 5);
 	}
 }

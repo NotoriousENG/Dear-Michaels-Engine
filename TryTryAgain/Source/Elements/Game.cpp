@@ -14,8 +14,12 @@
 #include <fstream>
 #include "Input/Input.h"
 
+Game* Game::instance;
+
 Game::Game(unsigned framebuffer)
 {
+	Game::instance = this;
+
 	rm::ResourceManager::LoadShader("Assets/Shaders/Lit.vert", "Assets/Shaders/Lit.frag", nullptr, "Lit");
 	rm::ResourceManager::LoadShader("Assets/Shaders/LoadModel.vert", "Assets/Shaders/LoadModel.frag", nullptr, "LoadModel");
 	rm::ResourceManager::LoadShader("Assets/Shaders/Picking.vert", "Assets/Shaders/Picking.frag", nullptr, "Picking");

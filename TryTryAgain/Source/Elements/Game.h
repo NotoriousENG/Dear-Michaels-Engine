@@ -18,6 +18,8 @@ class Game
 {
 public:
 
+	static Game* instance;
+
 	Game(unsigned int framebuffer);
 
 	void ProcessCamera();

@@ -6,6 +6,8 @@
 #include "Components/UStaticModelComponent.h"
 #include "Components/UPlayerControlComponent.h"
 
+ComponentFactory ComponentFactory::instance;
+
 ComponentFactory::ComponentFactory()
 {
 	Register("UStaticModelComponent", []() {return std::make_unique<UStaticModelComponent>(); });

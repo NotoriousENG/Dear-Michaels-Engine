@@ -10,6 +10,8 @@ class ComponentFactory
 {
 public:
 
+	static ComponentFactory instance;
+
 	typedef std::function<std::unique_ptr<UComponent>()> CreationFunction;
 
 	ComponentFactory();

@@ -1,8 +1,13 @@
 #include "ContentBrowser.h"
 #include <imgui.h>
 #include <imgui_stdlib.h>
+#include <Structs/FString.h>
 
 const std::filesystem::path Panels::ContentBrowser::assetPath = "Assets";
+
+Panels::ContentBrowser::ContentBrowser()
+{
+}
 
 void Panels::ContentBrowser::Draw()
 {
@@ -28,6 +33,9 @@ void Panels::ContentBrowser::Draw()
 	float panelWidth = ImGui::GetContentRegionAvail().x;
 	int maxColumns = (int)(panelWidth / cellSize);
 
+	ImGui::SameLine();
+	ImGui::Text(currentDirectory.string().c_str());
+
 	ImGui::BeginTable(currentDirectory.string().c_str(), maxColumns);
 	for (auto& directoryEntry : std::filesystem::directory_iterator(currentDirectory))
 	{
@@ -44,15 +52,36 @@ void Panels::ContentBrowser::Draw()
 		const auto& path = directoryEntry.path();
 		auto relativePath = std::filesystem::relative(path, assetPath);
 		auto fileNameString = relativePath.filename().string();
-		ImGui::Button(fileNameString.c_str(), { thumbnailSize, thumbnailSize });
+
+		auto fileType = relativePath.extension().string();
+		fileType = fileType.erase(0, 1);
+
+		ImTextureID id;
+		if (directoryEntry.is_directory()) {
+			id = (ImTextureID) rm::ResourceManager::LoadTexture("Resources/Icons/folder.png", true, "Folder")->ID;
+		}
+		else {
+			if (std::filesystem::exists(FString("Resources/Icons/%s.png", fileType.c_str()).Text))
+			{
+				id = (ImTextureID)rm::ResourceManager::LoadTexture(FString("Resources/Icons/%s.png", fileType.c_str()).Text, true, fileType)->ID;
+			}
+			else
+			{
+				id = (ImTextureID)rm::ResourceManager::LoadTexture("Resources/Icons/file.png", true, "File")->ID;
+			}
+			
+		}
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+		ImGui::ImageButton(id, { thumbnailSize, thumbnailSize });
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 		{
 			if (directoryEntry.is_directory())
 				currentDirectory /= path.filename();
-			
 		}
+		ImGui::PopStyleColor();
 
-		ImGui::Text(fileNameString.c_str());
+		ImGui::TextWrapped(fileNameString.c_str());
 	}
 
 	ImGui::EndTable();

@@ -132,7 +132,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>XCOPY "$(SolutionDir)\TryTryAgain\Assets" "$(TargetDir)\Assets\" /E /Y</Command>
+      <Command>XCOPY "$(SolutionDir)\TryTryAgain\Assets" "$(TargetDir)\Assets\" /E /Y
+XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Command>
       <Message>Copy Assets to Target and Overwrite Every Time</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -156,7 +157,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>XCOPY "$(SolutionDir)\TryTryAgain\Assets" "$(TargetDir)\Assets\" /E /Y</Command>
+      <Command>XCOPY "$(SolutionDir)\TryTryAgain\Assets" "$(TargetDir)\Assets\" /E /Y
+XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Command>
       <Message>Copy Assets to Target and Overwrite Every Time</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>

@@ -54,8 +54,8 @@ namespace Panels
 
 			if (wsize.x != size.x || wsize.y != size.y)
 			{
-				MyGame->MainCamera.AspectRatio = (wsize.x / 800) / (wsize.y / 800);
-				MyGame->MainCamera.UpdateCameraVectors();
+				Camera::Main.AspectRatio = (wsize.x / 800) / (wsize.y / 800);
+				Camera::Main.UpdateCameraVectors();
 				size = wsize;
 				init_framebuffer();
 			}

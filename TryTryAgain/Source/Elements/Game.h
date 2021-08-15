@@ -12,6 +12,7 @@
 #include "ResourceManagement/Model.h"
 
 #include <map>
+#include <ResourceManagement/Skybox.h>
 
 class Game
 {
@@ -32,8 +33,6 @@ public:
 	std::vector<std::shared_ptr<AActor>> Actors;
 
 	std::unique_ptr<UTransformGizmo> TransformGizmo;
-
-	static Camera MainCamera;
 
 	glm::vec2 mouseRel;
 
@@ -58,6 +57,8 @@ public:
 	void LoadScene(const char* path);
 
 	void SaveScene(const char* path);
+
+	std::unique_ptr<Skybox> skybox;
 
 private:
 	unsigned int framebuffer;

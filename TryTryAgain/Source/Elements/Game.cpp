@@ -14,15 +14,13 @@
 #include <fstream>
 #include "Input/Input.h"
 
-Camera Game::MainCamera;
-
 Game::Game(unsigned framebuffer)
 {
 	rm::ResourceManager::LoadShader("Assets/Shaders/Lit.vert", "Assets/Shaders/Lit.frag", nullptr, "Lit");
 	rm::ResourceManager::LoadShader("Assets/Shaders/LoadModel.vert", "Assets/Shaders/LoadModel.frag", nullptr, "LoadModel");
 	rm::ResourceManager::LoadShader("Assets/Shaders/Picking.vert", "Assets/Shaders/Picking.frag", nullptr, "Picking");
 
-	MainCamera = Camera(glm::vec3(0,0,4), glm::vec3(0,1,0), -90);
+	Camera::Main = Camera(glm::vec3(0,0,4), glm::vec3(0,1,0), -90);
 
 	this->framebuffer = framebuffer;
 
@@ -79,6 +77,8 @@ void Game::Render()
 			}
 		}
 	}
+
+	skybox->Render();
 }
 
 void Game::Init()
@@ -88,6 +88,8 @@ void Game::Init()
 	{
 		actor->Init();
 	}
+
+	skybox = std::make_unique<Skybox>();
 }
 
 void Game::ProcessInput()
@@ -238,33 +240,33 @@ void Game::ProcessCamera()
 {
 	if (mouseMoving)
 	{
-		MainCamera.ProcessMouseMovement(mouseRel.x, -mouseRel.y);
+		Camera::Main.ProcessMouseMovement(mouseRel.x, -mouseRel.y);
 		mouseMoving = false;
 	}
 
 
 	if (Input::Keys[SDLK_w])
 	{
-		MainCamera.ProcessKeyboard(FORWARD, deltaTime);
+		Camera::Main.ProcessKeyboard(FORWARD, deltaTime);
 	}
 	if (Input::Keys[SDLK_s])
 	{
-		MainCamera.ProcessKeyboard(BACKWARD, deltaTime);
+		Camera::Main.ProcessKeyboard(BACKWARD, deltaTime);
 	}
 	if (Input::Keys[SDLK_a])
 	{
-		MainCamera.ProcessKeyboard(LEFT, deltaTime);
+		Camera::Main.ProcessKeyboard(LEFT, deltaTime);
 	}
 	if (Input::Keys[SDLK_d])
 	{
-		MainCamera.ProcessKeyboard(RIGHT, deltaTime);
+		Camera::Main.ProcessKeyboard(RIGHT, deltaTime);
 	}
 	if (Input::Keys[SDLK_q])
 	{
-		MainCamera.ProcessKeyboard(DOWN, deltaTime);
+		Camera::Main.ProcessKeyboard(DOWN, deltaTime);
 	}
 	if (Input::Keys[SDLK_e])
 	{
-		MainCamera.ProcessKeyboard(UP, deltaTime);
+		Camera::Main.ProcessKeyboard(UP, deltaTime);
 	}
 }

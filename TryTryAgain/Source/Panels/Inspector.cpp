@@ -26,7 +26,7 @@ namespace Panels
 	void Inspector::Draw()
 	{
 		float* model_arr = glm::value_ptr(MyGame->Picked->model);
-		auto& camera = MyGame->MainCamera;
+		auto& camera = Camera::Main;
 
 		if (!Input::MouseButtons[SDL_BUTTON_RIGHT])
 		{

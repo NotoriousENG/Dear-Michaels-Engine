@@ -73,8 +73,8 @@ void UStaticModelComponent::Draw(rm::Shader* shader)
 		}
 		shader->Use();
 		shader->SetMatrix4("model", owner->model);
-		shader->SetMatrix4("view", Game::MainCamera.view);
-		shader->SetMatrix4("projection", Game::MainCamera.projection);
+		shader->SetMatrix4("view", Camera::Main.view);
+		shader->SetMatrix4("projection", Camera::Main.projection);
 
 		Model->Draw(shader);
 	}

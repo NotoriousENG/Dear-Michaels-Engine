@@ -27,6 +27,8 @@ const float ZOOM = 45.0f;
 class Camera
 {
 public:
+
+    static Camera Main;
     // camera Attributes
 
     FTransform transform;

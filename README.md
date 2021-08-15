@@ -73,6 +73,8 @@ To install x64 libraries, run:
 - [X] Register Components - Components can be registered to be added at run time!
 - [X] Simple Input Manager - Static instance access anywhere, also comes with a cool player controller component
 - [X] Standardized Component Inspection - leverage ImGui to get can't believe it's not unity
-- [ ] Start planning a simple game to help identify missing features - you can probably tell I've been adding more features since adding this :)
+- [X] Skybox - Simple implementation that makes a huge difference
+- [ ] Plan and Develop a New Resource / Content Manager Pipeline
+- [ ] Start planning a simple game to help identify missing features
 - [ ] Build Configuration to compile and build without editor tools
 - [ ] Physics System Integration

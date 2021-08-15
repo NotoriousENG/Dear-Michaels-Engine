@@ -6,6 +6,7 @@
 #include "Panels/Console.h"
 #include "Panels/Hierarchy.h"
 #include "Panels/Inspector.h"
+#include "Panels/ContentBrowser.h"
 #include "Panels/GameWindow.h"
 
 #include <ImGuiFileDialog.h>
@@ -158,6 +159,8 @@ void Window::execute() {
     panels.push_back(std::make_unique<Panels::Inspector>());
 
     panels.push_back(std::make_unique<Panels::Hierarchy>());
+
+    panels.push_back(std::make_unique<Panels::ContentBrowser>());
 	
     while (!quit) {
         Game::instance->mouseRel = glm::vec2(0, 0);

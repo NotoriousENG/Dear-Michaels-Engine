@@ -309,12 +309,12 @@ void Window::ShowAppMainMenuBar()
         {
             if (ImGui::MenuItem("Load Scene", ""))
             {
-                ImGuiFileDialog::Instance()->OpenDialog("Open Scene", "Open Scene File", ".json", "Assets/Scenes/");
+                ImGuiFileDialog::Instance()->OpenDialog("Open Scene", "Open Scene File", ".mscene", "Assets/Scenes/");
             }
             
             if (ImGui::MenuItem("Save Scene", ""))
             {
-                ImGuiFileDialog::Instance()->OpenDialog("Save Scene", "Save Scene File", ".json", "Assets/Scenes/");
+                ImGuiFileDialog::Instance()->OpenDialog("Save Scene", "Save Scene File", ".mscene", "Assets/Scenes/");
             }
 
             ImGui::EndMenu();

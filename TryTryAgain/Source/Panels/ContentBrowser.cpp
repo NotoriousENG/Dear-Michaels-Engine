@@ -2,6 +2,7 @@
 #include <imgui.h>
 #include <imgui_stdlib.h>
 #include <Structs/FString.h>
+#include "Elements/Game.h"
 
 const std::filesystem::path Panels::ContentBrowser::assetPath = "Assets";
 
@@ -76,11 +77,15 @@ void Panels::ContentBrowser::Draw()
 
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
 			// ImGui::Button(fileNameString.c_str(), { thumbnailSize, thumbnailSize });
+
 			ImGui::ImageButton(id, { thumbnailSize, thumbnailSize });
+
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			{
 				if (directoryEntry.is_directory())
 					currentDirectory /= path.filename();
+				else if (fileType == "mscene")
+					Game::instance->LoadScene(path.string().c_str());
 			}
 			ImGui::PopStyleColor();
 

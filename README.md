@@ -1,5 +1,5 @@
 # Dear-Michael's-Engine
-This is a game Engine I am working on using C++ and OpenGL, inspired by Unity and Unreal Engine. Current requirements are Windows-64 and Visual Studio.
+This is a game Engine I am working on using C++17 and OpenGL, inspired by Unity and Unreal Engine. Current requirements are Windows-64 and Visual Studio.
 
 ![showcase image](showcase.jpg?raw=true)
 
@@ -74,7 +74,7 @@ To install x64 libraries, run:
 - [X] Simple Input Manager - Static instance access anywhere, also comes with a cool player controller component
 - [X] Standardized Component Inspection - leverage ImGui to get can't believe it's not unity
 - [X] Skybox - Simple implementation that makes a huge difference
-- [ ] Plan and Develop a New Resource / Content Manager Pipeline
+- [X] Content Browser with Drag and Drop functionality
 - [ ] Start planning a simple game to help identify missing features
 - [ ] Build Configuration to compile and build without editor tools
 - [ ] Physics System Integration

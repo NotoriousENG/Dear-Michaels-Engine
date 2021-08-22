@@ -12,10 +12,6 @@
 
 namespace Panels
 {
-	Hierarchy::Hierarchy(Game* game)
-	{
-		MyGame = game;
-	}
 
 	void Hierarchy::HelpIcon(const char* desc)
 	{
@@ -43,32 +39,32 @@ namespace Panels
 
         auto wasEditing = actor->isEditing;
 
-        if (actor == MyGame->Picked)
+        if (actor == Game::instance->Picked)
             ImGui::PushStyleColor(0, ImVec4(0, 1, 1, 1));
 
         actor->isEditing = ImGui::TreeNode("Object", actorLabel);
 
-        if (actor == MyGame->Picked)
+        if (actor == Game::instance->Picked)
             ImGui::PopStyleColor();
 
         if (actor->isEditing != wasEditing)
         {
-            MyGame->Picked = actor;
+            Game::instance->Picked = actor;
         }
 
         ImGui::TableSetColumnIndex(1);
 
-        if (actor == MyGame->Picked)
+        if (actor == Game::instance->Picked)
             ImGui::PushStyleColor(0, ImVec4(0, 1, 1, 1));
 
         ImGui::Text("ID: 0x%x", uid);
         
-        if (actor == MyGame->Picked)
+        if (actor == Game::instance->Picked)
             ImGui::PopStyleColor();
 
         if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), true) && ImGui::IsMouseClicked(0))
         {
-            MyGame->Picked = actor;
+            Game::instance->Picked = actor;
         }
 
         
@@ -80,7 +76,7 @@ namespace Panels
 
                 if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), true) && ImGui::IsMouseClicked(0))
                 {
-                    MyGame->Picked = actor;
+                    Game::instance->Picked = actor;
                 }
 
                 ImGui::TableSetColumnIndex(1);
@@ -97,54 +93,55 @@ namespace Panels
         ImGui::Text("Add Actor:");
         if (ImGui::Button("Empty"))
         {
-            int id = MyGame->Actors.size();
-            MyGame->Actors.push_back(std::make_shared<AActor>());
-            MyGame->Picked = MyGame->Actors.back().get();
-            MyGame->Picked->name = FString("Actor (%i)", id).Text;
-            MyGame->Picked->UpdateMatrix();
+            int id = Game::instance->Actors.size();
+            Game::instance->Actors.push_back(std::make_shared<AActor>());
+            Game::instance->Picked = Game::instance->Actors.back().get();
+            Game::instance->Picked->name = FString("Actor (%i)", id).Text;
+            Game::instance->Picked->UpdateMatrix();
         }
         if (ImGui::Button("3D Model"))
         {
-            int id = MyGame->Actors.size();
-            MyGame->Actors.push_back(std::make_shared<AActor>());
-            MyGame->Picked = MyGame->Actors.back().get();
-            MyGame->Picked->name = FString("Actor (%i)", id).Text;
-            MyGame->Picked->UpdateMatrix();
+            int id = Game::instance->Actors.size();
+            Game::instance->Actors.push_back(std::make_shared<AActor>());
+            Game::instance->Picked = Game::instance->Actors.back().get();
+            Game::instance->Picked->name = FString("Actor (%i)", id).Text;
+            Game::instance->Picked->UpdateMatrix();
 
-            auto& a = MyGame->Actors.back();
+            auto& a = Game::instance->Actors.back();
             a->AddComponent<UStaticModelComponent>();
             a->Init();
         }
 	}
 
-	void Hierarchy::Draw(bool* p_open)
+	void Hierarchy::Draw()
 	{
-        if (*p_open)
+        ImGui::SetNextWindowSize(ImVec2(430, 450), ImGuiCond_FirstUseEver);
+        if (!ImGui::Begin("Hierarchy"))
         {
-            ImGui::SetNextWindowSize(ImVec2(430, 450), ImGuiCond_FirstUseEver);
-            if (!ImGui::Begin("Hierarchy", p_open))
-            {
-                ImGui::End();
-                return;
-            }
-
-            HelpIcon(
-                "This is a simple property editor");
-
-            ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
-            if (ImGui::BeginTable("split", 2, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_Resizable))
-            {
-                // Iterate placeholder objects (all the same data)
-                for (auto& actor : MyGame->Actors)
-                {
-                    ShowActor(actor.get());
-                    //ImGui::Separator();
-                }
-                ImGui::EndTable();
-            }
-            AddActor();
-            ImGui::PopStyleVar();
             ImGui::End();
+            return;
         }
+
+        HelpIcon(
+            "This is a simple property editor");
+
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
+        if (ImGui::BeginTable("split", 2, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_Resizable))
+        {
+            // Iterate placeholder objects (all the same data)
+            for (auto& actor : Game::instance->Actors)
+            {
+                ShowActor(actor.get());
+                //ImGui::Separator();
+            }
+            ImGui::EndTable();
+        }
+        AddActor();
+        ImGui::PopStyleVar();
+        ImGui::End();
 	}
+    void Hierarchy::MenuItem()
+    {
+        ImGui::MenuItem("Hierarchy", "", &isActive);
+    }
 }

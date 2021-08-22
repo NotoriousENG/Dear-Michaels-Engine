@@ -40,13 +40,34 @@ bool UStaticModelComponent::ShowInspector()
 {
 	if (Super::ShowInspector())
 	{
-		if (ImGui::Button("Change Model"))
+		if (ImGui::Button("Model:"))
 		{
 			Panels::Inspector::InspectedComponent = this;
 			ImGuiFileDialog::Instance()->OpenDialog("Load Model", "Load Model File", ".obj", "Assets/Models/");
 		}
+
+		float margin = 2;
+
 		ImGui::SameLine();
+		auto pos = ImGui::GetCursorScreenPos();
+		ImGui::PushTextWrapPos();
 		ImGui::Text(this->Model->Path.c_str());
+		ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImColor(1.0f, 1.0f, 1.0f, 0.25f));
+		ImGui::PopTextWrapPos();
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			auto payload = ImGui::AcceptDragDropPayload("ASSET_PATH");
+			if (payload != nullptr)
+			{
+				std::string data = (const char*)payload->Data;
+				if (data.find(".obj") != std::string::npos) {
+					this->Model = rm::ResourceManager::LoadModel(data.c_str(), false);
+					this->ModelPath = data;
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
 
 		if (Panels::Inspector::InspectedComponent == this)
 		{

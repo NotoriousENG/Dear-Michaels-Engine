@@ -1,0 +1,89 @@
+{
+    "Actors": [
+        {
+            "polymorphic_id": 1073741824,
+            "ptr_wrapper": {
+                "id": 2147483649,
+                "data": {
+                    "name": "Actor (0)",
+                    "transform": {
+                        "position": {
+                            "x": 1.5961079597473145,
+                            "y": 0.000024490391297149473,
+                            "z": -2.9867167472839357
+                        },
+                        "rotation": {
+                            "x": -0.00000625074380877777,
+                            "y": 0.688761293888092,
+                            "z": 4.632210277577542e-7,
+                            "w": 0.7249882221221924
+                        },
+                        "scale": {
+                            "x": 0.9999966621398926,
+                            "y": 0.9999999403953552,
+                            "z": 0.9999971389770508
+                        },
+                        "skew": {
+                            "x": -3.979050704379372e-13,
+                            "y": 0.0,
+                            "z": -9.094948101931455e-13
+                        },
+                        "perspective": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "w": 1.0
+                        }
+                    },
+                    "components": [
+                        {
+                            "polymorphic_id": 2147483649,
+                            "polymorphic_name": "UStaticModelComponent",
+                            "ptr_wrapper": {
+                                "valid": 1,
+                                "data": {
+                                    "UComponent": {
+                                        "owner": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 1
+                                            }
+                                        },
+                                        "isActive": true
+                                    },
+                                    "ShaderPaths": {
+                                        "value0": "Assets/Shaders/LoadModel.vert",
+                                        "value1": "Assets/Shaders/LoadModel.frag",
+                                        "value2": "",
+                                        "value3": "LoadModel"
+                                    },
+                                    "ModelPath": "Assets/Models/mario/mario-tex.obj"
+                                }
+                            }
+                        },
+                        {
+                            "polymorphic_id": 2147483650,
+                            "polymorphic_name": "UPlayerControlComponent",
+                            "ptr_wrapper": {
+                                "valid": 1,
+                                "data": {
+                                    "UComponent": {
+                                        "owner": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 1
+                                            }
+                                        },
+                                        "isActive": true
+                                    },
+                                    "Speed": 10.0,
+                                    "TurnSpeed": 10.0
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

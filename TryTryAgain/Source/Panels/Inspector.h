@@ -1,26 +1,22 @@
 #pragma once
 
+#include "IPanel.h"
 #include <imgui.h>
 #include <ImGuizmo.h>
 #include "Serialization/ComponentFactory.h"
 
 class Game; 
-class UStaticModelComponent;
 
 namespace Panels {
-	class Inspector
+	class Inspector : public IPanel
 	{
 	public:
 
-		Inspector(Game* game);
-
-		ComponentFactory ComponentFactory;
-
-		Game* MyGame;
-
 		static UComponent* InspectedComponent;
 
-		void Draw();
+		void Draw() override;
+
+		void MenuItem() override;
 
 		int gizmoCount = 1;
 

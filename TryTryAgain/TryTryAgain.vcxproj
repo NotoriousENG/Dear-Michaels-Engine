@@ -88,6 +88,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -102,6 +105,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -117,13 +123,17 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\ThirdParty;$(ProjectDir)source\ThirdParty\imgui-docking;$(ProjectDir)source\ThirdParty\imgui-docking\backends;$(ProjectDir)source\ThirdParty\plugins\imgui;$(ProjectDir)source\ThirdParty\imgui-docking\misc\cpp;$(ProjectDir)source\ThirdParty\imguizmo;$(ProjectDir)source\ThirdParty\ImGuiFileDialog</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>XCOPY "$(SolutionDir)\TryTryAgain\Assets" "$(TargetDir)\Assets\" /E /Y</Command>
+      <Command>XCOPY "$(SolutionDir)\TryTryAgain\Assets" "$(TargetDir)\Assets\" /E /Y
+XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Command>
       <Message>Copy Assets to Target and Overwrite Every Time</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -136,6 +146,9 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)source;$(ProjectDir)source\ThirdParty;$(ProjectDir)source\ThirdParty\imgui-docking;$(ProjectDir)source\ThirdParty\imgui-docking\backends;$(ProjectDir)source\ThirdParty\plugins\imgui;$(ProjectDir)source\ThirdParty\imgui-docking\misc\cpp;$(ProjectDir)source\ThirdParty\imguizmo;$(ProjectDir)source\ThirdParty\ImGuiFileDialog</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,11 +157,13 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>XCOPY "$(SolutionDir)\TryTryAgain\Assets" "$(TargetDir)\Assets\" /E /Y</Command>
+      <Command>XCOPY "$(SolutionDir)\TryTryAgain\Assets" "$(TargetDir)\Assets\" /E /Y
+XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Command>
       <Message>Copy Assets to Target and Overwrite Every Time</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Panels\ContentBrowser.cpp" />
     <ClCompile Include="Source\ResourceManagement\Skybox.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
     <ClCompile Include="Source\Serialization\ComponentFactory.cpp" />
@@ -189,6 +204,8 @@
     <ClCompile Include="Source\Components\UCameraComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Panels\ContentBrowser.h" />
+    <ClInclude Include="Source\Panels\IPanel.h" />
     <ClInclude Include="Source\ResourceManagement\Skybox.h" />
     <ClInclude Include="Source\Input\Input.h" />
     <ClInclude Include="Source\Serialization\ComponentFactory.h" />

@@ -3,6 +3,12 @@
 #include <imgui_impl_opengl3.h>
 #include <imguizmo/ImGuizmo.h>
 
+#include "Panels/Console.h"
+#include "Panels/Hierarchy.h"
+#include "Panels/Inspector.h"
+#include "Panels/ContentBrowser.h"
+#include "Panels/GameWindow.h"
+
 #include <ImGuiFileDialog.h>
 #include <ThirdParty/stb_image.h>
 #include <Input/Input.h>
@@ -145,12 +151,19 @@ void Window::execute() {
     
     gameWindow = std::make_unique<Panels::GameWindow>();
 
-    hierarchy = std::make_unique<Panels::Hierarchy>(gameWindow->MyGame.get());
 
-    inspector = std::make_unique<Panels::Inspector>(gameWindow->MyGame.get());
+    // unique ptr is non copyable only moveable
+
+    panels.push_back(std::make_unique<Panels::Console>(Panels::Console::instance));
+
+    panels.push_back(std::make_unique<Panels::Inspector>());
+
+    panels.push_back(std::make_unique<Panels::Hierarchy>());
+
+    panels.push_back(std::make_unique<Panels::ContentBrowser>());
 	
     while (!quit) {
-        gameWindow->MyGame->mouseRel = glm::vec2(0, 0);
+        Game::instance->mouseRel = glm::vec2(0, 0);
 
         for (int i = 0; i < 6; i++)
         {
@@ -190,13 +203,15 @@ void Window::execute() {
 
         ShowFileDialog();
 
-        ShowConsole(&show_console);
-
         gameWindow->Draw();
 
-        hierarchy->Draw(&show_hierarchy);
-
-        inspector->Draw();
+        for (auto& p : panels)
+        {
+            if (p->isActive)
+            {
+                p->Draw();
+            }
+        }
 
 
         // Rendering
@@ -233,7 +248,7 @@ void Window::execute() {
 void Window::processInputForWindow(SDL_Event event)
 {
     if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
-        gameWindow->MyGame->playing = false;
+        Game::instance->playing = false;
 
     auto key = event.key.keysym.sym;
     if (key >= 0 && key < 1024)
@@ -246,8 +261,8 @@ void Window::processInputForWindow(SDL_Event event)
 	
 	if (event.type == SDL_MOUSEMOTION)
 	{
-		gameWindow->MyGame->mouseRel = glm::vec2(event.motion.xrel, event.motion.yrel);
-        gameWindow->MyGame->mouseMoving = true;
+		Game::instance->mouseRel = glm::vec2(event.motion.xrel, event.motion.yrel);
+        Game::instance->mouseMoving = true;
 	}
 
     auto button = event.button.button;
@@ -275,7 +290,7 @@ void Window::processInputForWindow(SDL_Event event)
 		if (key == SDLK_F5)
 		{
             gameWindow->playing = true;
-            gameWindow->MyGame->playing = true;
+            Game::instance->playing = true;
 		}
 	}
 }
@@ -294,12 +309,12 @@ void Window::ShowAppMainMenuBar()
         {
             if (ImGui::MenuItem("Load Scene", ""))
             {
-                ImGuiFileDialog::Instance()->OpenDialog("Open Scene", "Open Scene File", ".json", "Assets/Scenes/");
+                ImGuiFileDialog::Instance()->OpenDialog("Open Scene", "Open Scene File", ".mscene", "Assets/Scenes/");
             }
             
             if (ImGui::MenuItem("Save Scene", ""))
             {
-                ImGuiFileDialog::Instance()->OpenDialog("Save Scene", "Save Scene File", ".json", "Assets/Scenes/");
+                ImGuiFileDialog::Instance()->OpenDialog("Save Scene", "Save Scene File", ".mscene", "Assets/Scenes/");
             }
 
             ImGui::EndMenu();
@@ -307,8 +322,12 @@ void Window::ShowAppMainMenuBar()
     	if (ImGui::BeginMenu("Window"))
     	{
             ImGui::MenuItem("Demo Window", "", &show_demo_window);
-            ImGui::MenuItem("Console", "", &show_console);
-            ImGui::MenuItem("Hierarchy", "", &show_hierarchy);
+            
+
+            for (auto& p : panels)
+            {
+                p->MenuItem();
+            }
 
             ImGui::EndMenu();
     	}
@@ -326,7 +345,7 @@ void Window::ShowFileDialog()
         {
             std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
             std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-            gameWindow->MyGame->LoadScene(filePathName.c_str());
+            Game::instance->LoadScene(filePathName.c_str());
         }
 
         // close
@@ -341,7 +360,7 @@ void Window::ShowFileDialog()
         {
             std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
             std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-            gameWindow->MyGame->SaveScene(filePathName.c_str());
+            Game::instance->SaveScene(filePathName.c_str());
         }
 
         // close

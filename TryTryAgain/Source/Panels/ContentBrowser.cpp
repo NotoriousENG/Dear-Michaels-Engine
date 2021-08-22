@@ -3,6 +3,7 @@
 #include <imgui_stdlib.h>
 #include <Structs/FString.h>
 #include "Elements/Game.h"
+#include <Utility/Utility.h>
 
 const std::filesystem::path Panels::ContentBrowser::assetPath = "Assets";
 
@@ -87,7 +88,9 @@ void Panels::ContentBrowser::Draw()
 				ImGui::BeginTooltip();
 				ImGui::SetTooltip(path.string().c_str());
 				ImGui::EndTooltip();
-				ImGui::SetDragDropPayload("ASSET_PATH", path.string().c_str(), path.string().length() + 1);
+				std::string data = path.string();
+				data = StringUtil::ReplaceAll(data, "\\", "/");
+				ImGui::SetDragDropPayload("ASSET_PATH", data.c_str(), data.length() + 1);
 				ImGui::EndDragDropSource();
 			}
 

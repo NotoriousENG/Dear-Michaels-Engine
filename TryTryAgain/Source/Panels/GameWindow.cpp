@@ -87,6 +87,19 @@ namespace Panels
 			// Because I use the texture from OpenGL, I need to invert the V from the UV.
 			ImGui::Image((ImTextureID)texColorBuffer, wsize, ImVec2(0, 1), ImVec2(1, 0));
 
+			if (ImGui::BeginDragDropTarget())
+			{
+				auto payload = ImGui::AcceptDragDropPayload("ASSET_PATH");
+				if (payload != nullptr)
+				{
+					std::string data = (const char *)payload->Data;
+					if (data.find(".mscene") != std::string::npos) {
+						Game::instance->LoadScene(data.c_str());
+					}
+				}
+				ImGui::EndDragDropTarget();
+			}
+
 
 			
 			Render();

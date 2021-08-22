@@ -38,8 +38,11 @@ void Panels::ContentBrowser::Draw()
 	ImGui::SameLine();
 	ImGui::Text(currentDirectory.string().c_str());
 
+	int i = 0;
+
 	if (ImGui::BeginTable(currentDirectory.string().c_str(), maxColumns))
 	{
+		ImGui::PushID(i++);
 		for (auto& directoryEntry : std::filesystem::directory_iterator(currentDirectory))
 		{
 			if (c < maxColumns)
@@ -79,6 +82,14 @@ void Panels::ContentBrowser::Draw()
 			// ImGui::Button(fileNameString.c_str(), { thumbnailSize, thumbnailSize });
 
 			ImGui::ImageButton(id, { thumbnailSize, thumbnailSize });
+			if (ImGui::BeginDragDropSource())
+			{
+				ImGui::BeginTooltip();
+				ImGui::SetTooltip(path.string().c_str());
+				ImGui::EndTooltip();
+				ImGui::SetDragDropPayload("ASSET_PATH", path.string().c_str(), path.string().length() + 1);
+				ImGui::EndDragDropSource();
+			}
 
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			{
@@ -90,6 +101,8 @@ void Panels::ContentBrowser::Draw()
 			ImGui::PopStyleColor();
 
 			ImGui::TextWrapped(fileNameString.c_str());
+
+			ImGui::PopID();
 		}
 
 		ImGui::EndTable();

@@ -12,6 +12,7 @@
 #include <ImGuiFileDialog.h>
 #include <ThirdParty/stb_image.h>
 #include <Input/Input.h>
+#include <ResourceManagement/ShaderPeek.h>
 
 void Window::sdl_die(const char* message) {
     fprintf(stderr, "%s: %s\n", message, SDL_GetError());
@@ -161,6 +162,14 @@ void Window::execute() {
     panels.push_back(std::make_unique<Panels::Hierarchy>());
 
     panels.push_back(std::make_unique<Panels::ContentBrowser>());
+
+    std::string ShaderPaths[4] = { "Assets/Shaders/LoadModel.vert", "Assets/Shaders/LoadModel.frag", "", "LoadModel" };
+
+    ShaderPeek ShaderPeek;
+    ShaderPeek.Shader = rm::ResourceManager::LoadShader(ShaderPaths[0].c_str(), ShaderPaths[1].c_str(),
+        nullptr, ShaderPaths[3].c_str());
+
+    ShaderPeek.GetProperties();
 	
     while (!quit) {
         Game::instance->mouseRel = glm::vec2(0, 0);

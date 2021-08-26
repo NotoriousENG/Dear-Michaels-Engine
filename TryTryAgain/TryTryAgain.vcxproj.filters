@@ -40,9 +40,9 @@
     <ClCompile Include="Source\ResourceManagement\Skybox.cpp" />
     <ClCompile Include="Source\Components\UCameraComponent.cpp" />
     <ClCompile Include="Source\Panels\ContentBrowser.cpp" />
+    <ClCompile Include="Source\ResourceManagement\ShaderPeek.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\Main.h" />
     <ClInclude Include="source\Window\Window.h" />
     <ClInclude Include="source\Panels\Console.h" />
     <ClInclude Include="source\Panels\GameWindow.h" />
@@ -72,5 +72,6 @@
     <ClInclude Include="Source\Components\UCameraComponent.h" />
     <ClInclude Include="Source\Panels\ContentBrowser.h" />
     <ClInclude Include="Source\Panels\IPanel.h" />
+    <ClInclude Include="Source\ResourceManagement\ShaderPeek.h" />
   </ItemGroup>
 </Project>

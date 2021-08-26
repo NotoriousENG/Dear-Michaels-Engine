@@ -163,6 +163,7 @@ XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Co
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ResourceManagement\ShaderPeek.cpp" />
     <ClCompile Include="Source\Panels\ContentBrowser.cpp" />
     <ClCompile Include="Source\ResourceManagement\Skybox.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
@@ -204,6 +205,7 @@ XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Co
     <ClCompile Include="Source\Components\UCameraComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\ResourceManagement\ShaderPeek.h" />
     <ClInclude Include="Source\Panels\ContentBrowser.h" />
     <ClInclude Include="Source\Panels\IPanel.h" />
     <ClInclude Include="Source\ResourceManagement\Skybox.h" />
@@ -220,7 +222,6 @@ XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Co
     <ClInclude Include="Source\ResourceManagement\Shader.h" />
     <ClInclude Include="Source\ResourceManagement\Texture.h" />
     <ClInclude Include="source\Panels\Console.h" />
-    <ClInclude Include="source\Main.h" />
     <ClInclude Include="source\Panels\GameWindow.h" />
     <ClInclude Include="source\Panels\Hierarchy.h" />
     <ClInclude Include="Source\Serialization\CerealGLM.h" />

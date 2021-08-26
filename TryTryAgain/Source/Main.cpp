@@ -1,5 +1,3 @@
-#include "Main.h"
-
 #include <memory>
 #include <SDL2/SDL.h>
 

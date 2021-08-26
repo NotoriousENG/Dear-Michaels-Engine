@@ -34,6 +34,10 @@ void UStaticModelComponent::Init()
 		this->Model = rm::ResourceManager::LoadModel(ModelPath, false);
 	}
 	this->name = "UStaticModelComponent";
+
+	ShaderPeek.Shader = this->Shader;
+
+	ShaderPeek.GetProperties();
 }
 
 bool UStaticModelComponent::ShowInspector()
@@ -77,6 +81,8 @@ bool UStaticModelComponent::ShowInspector()
 		{
 			ImGuiFileDialog::Instance()->Close();
 		}
+
+		ShaderPeek.Inspect();
 
 		return true;
 	}

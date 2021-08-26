@@ -1,5 +1,7 @@
 ﻿#include "ShaderPeek.h"
 #include "ResourceManagement/Shader.h"
+#include <imgui.h>
+#include <imgui_stdlib.h>
 
 void ShaderPeek::GetProperties()
 {
@@ -27,5 +29,46 @@ void ShaderPeek::GetProperties()
 		auto type = values[1];
 
 		Properties.push_back(Property(name, type));
+		auto* p = &Properties.back();
+		switch (type)
+		{
+		case GL_FLOAT:
+			p->data = new std::byte[sizeof(float)];
+			break;
+		case GL_FLOAT_VEC4:
+			p->data = new std::byte[sizeof(glm::vec4)];
+			break;
+		}
+	}
+}
+
+void ShaderPeek::Inspect()
+{
+
+	ImGui::Text("Material");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(0, 1, 1, 1), "Shader = LoadModel");
+
+	Shader->Use();
+
+	for (auto& p : Properties)
+	{
+		switch (p.type)
+		{
+		case GL_FLOAT:
+			if (ImGui::InputFloat(p.name.c_str(), (float*)p.data))
+			{
+				auto t = *(float*)p.data;
+				Shader->SetFloat(p.name.c_str(), t);
+			}
+			break;
+		case GL_FLOAT_VEC4:
+			if (ImGui::ColorEdit4(p.name.c_str(), (float*)p.data, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_Float))
+			{
+				auto* t = (float*)p.data;
+				Shader->SetVector4f(p.name.c_str(), glm::vec4(t[0], t[1], t[2], t[3]));
+			}
+			break;
+		}
 	}
 }

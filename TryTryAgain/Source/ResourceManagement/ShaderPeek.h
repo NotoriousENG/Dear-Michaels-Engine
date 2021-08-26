@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <cstddef>
 
 namespace rm {
 	class Shader;
@@ -16,6 +17,7 @@ struct Property
 	}
 	std::string name;
 	int type;
+	std::byte* data;
 };
 
 class ShaderPeek
@@ -26,5 +28,7 @@ public:
 	std::vector<Property> Properties;
 
 	void GetProperties();
+
+	void Inspect();
 };
 

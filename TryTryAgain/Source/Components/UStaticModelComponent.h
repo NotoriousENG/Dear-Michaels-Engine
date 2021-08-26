@@ -2,6 +2,7 @@
 #include "UComponent.h"
 #include <memory>
 #include <string>
+#include <ResourceManagement/ShaderPeek.h>
 
 namespace rm {
     class Shader;
@@ -26,6 +27,8 @@ public:
 
 	std::shared_ptr<rm::Model> Model;
 	std::shared_ptr<rm::Shader> Shader;
+
+	ShaderPeek ShaderPeek;
 
 	UStaticModelComponent(std::shared_ptr<AActor> owner);
 

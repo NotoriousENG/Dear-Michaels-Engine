@@ -43,9 +43,9 @@ void Panels::ContentBrowser::Draw()
 
 	if (ImGui::BeginTable(currentDirectory.string().c_str(), maxColumns))
 	{
-		ImGui::PushID(i++);
 		for (auto& directoryEntry : std::filesystem::directory_iterator(currentDirectory))
 		{
+			ImGui::PushID(i++);
 			if (c < maxColumns)
 			{
 				ImGui::TableNextColumn();
@@ -80,10 +80,11 @@ void Panels::ContentBrowser::Draw()
 			}
 
 			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-			// ImGui::Button(fileNameString.c_str(), { thumbnailSize, thumbnailSize });
+			//ImGui::Button(fileNameString.c_str(), { thumbnailSize, thumbnailSize });
 
 			ImGui::ImageButton(id, { thumbnailSize, thumbnailSize });
-			if (ImGui::BeginDragDropSource())
+			
+			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
 			{
 				ImGui::BeginTooltip();
 				ImGui::SetTooltip(path.string().c_str());
@@ -93,7 +94,6 @@ void Panels::ContentBrowser::Draw()
 				ImGui::SetDragDropPayload("ASSET_PATH", data.c_str(), data.length() + 1);
 				ImGui::EndDragDropSource();
 			}
-
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			{
 				if (directoryEntry.is_directory())

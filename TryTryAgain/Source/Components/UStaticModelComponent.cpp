@@ -35,9 +35,11 @@ void UStaticModelComponent::Init()
 	}
 	this->name = "UStaticModelComponent";
 
-	ShaderPeek.Shader = this->Shader;
+	this->Material = std::make_shared<rm::Material>();
 
-	ShaderPeek.GetProperties();
+	Material->Shader = this->Shader;
+
+	Material->InitUniforms();
 }
 
 bool UStaticModelComponent::ShowInspector()
@@ -82,7 +84,7 @@ bool UStaticModelComponent::ShowInspector()
 			ImGuiFileDialog::Instance()->Close();
 		}
 
-		ShaderPeek.Inspect();
+		Material->ShowInspector();
 
 		return true;
 	}
@@ -98,6 +100,7 @@ void UStaticModelComponent::Draw(rm::Shader* shader)
 		{
 			shader = Shader.get();
 		}
+		Material->SetUniforms();
 		shader->Use();
 		shader->SetMatrix4("model", owner->model);
 		shader->SetMatrix4("view", Camera::Main.view);

@@ -163,7 +163,8 @@ XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Co
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\ResourceManagement\ShaderPeek.cpp" />
+    <ClCompile Include="Source\ResourceManagement\Resource.cpp" />
+    <ClCompile Include="Source\ResourceManagement\Material.cpp" />
     <ClCompile Include="Source\Panels\ContentBrowser.cpp" />
     <ClCompile Include="Source\ResourceManagement\Skybox.cpp" />
     <ClCompile Include="Source\Input\Input.cpp" />
@@ -205,7 +206,8 @@ XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Co
     <ClCompile Include="Source\Components\UCameraComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\ResourceManagement\ShaderPeek.h" />
+    <ClInclude Include="Source\ResourceManagement\Resource.h" />
+    <ClInclude Include="Source\ResourceManagement\Material.h" />
     <ClInclude Include="Source\Panels\ContentBrowser.h" />
     <ClInclude Include="Source\Panels\IPanel.h" />
     <ClInclude Include="Source\ResourceManagement\Skybox.h" />

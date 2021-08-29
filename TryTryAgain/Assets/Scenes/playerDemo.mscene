@@ -8,25 +8,25 @@
                     "name": "Actor (0)",
                     "transform": {
                         "position": {
-                            "x": 1.5961079597473145,
-                            "y": 0.000024490391297149473,
-                            "z": -2.9867167472839357
+                            "x": 7.23267936706543,
+                            "y": 0.00015510582306887954,
+                            "z": -9.657151222229004
                         },
                         "rotation": {
-                            "x": -0.00000625074380877777,
-                            "y": 0.688761293888092,
-                            "z": 4.632210277577542e-7,
-                            "w": 0.7249882221221924
+                            "x": 0.00000458754766441416,
+                            "y": -0.27428653836250307,
+                            "z": 0.0000160840354510583,
+                            "w": 0.9616479873657227
                         },
                         "scale": {
-                            "x": 0.9999966621398926,
-                            "y": 0.9999999403953552,
-                            "z": 0.9999971389770508
+                            "x": 1.0000298023223878,
+                            "y": 0.999983549118042,
+                            "z": 1.0000303983688355
                         },
                         "skew": {
-                            "x": -3.979050704379372e-13,
+                            "x": -3.237867059972116e-13,
                             "y": 0.0,
-                            "z": -9.094948101931455e-13
+                            "z": -6.426423520937419e-13
                         },
                         "perspective": {
                             "x": 0.0,
@@ -60,6 +60,262 @@
                                     "ModelPath": "Assets/Models/mario/mario-tex.obj"
                                 }
                             }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "polymorphic_id": 1073741824,
+            "ptr_wrapper": {
+                "id": 2147483650,
+                "data": {
+                    "name": "Actor (1)",
+                    "transform": {
+                        "position": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 2.5759854316711427
+                        },
+                        "rotation": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "w": 1.0
+                        },
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0,
+                            "z": 1.0
+                        },
+                        "skew": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0
+                        },
+                        "perspective": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "w": 1.0
+                        }
+                    },
+                    "components": [
+                        {
+                            "polymorphic_id": 1,
+                            "ptr_wrapper": {
+                                "valid": 1,
+                                "data": {
+                                    "UComponent": {
+                                        "owner": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 2
+                                            }
+                                        },
+                                        "isActive": true
+                                    },
+                                    "ShaderPaths": {
+                                        "value0": "Assets/Shaders/LoadModel.vert",
+                                        "value1": "Assets/Shaders/LoadModel.frag",
+                                        "value2": "",
+                                        "value3": "LoadModel"
+                                    },
+                                    "ModelPath": "Assets/Models/mario/mario-tex.obj"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "polymorphic_id": 1073741824,
+            "ptr_wrapper": {
+                "id": 2147483651,
+                "data": {
+                    "name": "Actor (2)",
+                    "transform": {
+                        "position": {
+                            "x": -2.4490275382995607,
+                            "y": -0.000018257331248605625,
+                            "z": -7.607423782348633
+                        },
+                        "rotation": {
+                            "x": -0.0000021189100607443835,
+                            "y": 0.33547791838645937,
+                            "z": 0.0000010728340384957847,
+                            "w": 0.9420480728149414
+                        },
+                        "scale": {
+                            "x": 0.9999985098838806,
+                            "y": 0.9999999403953552,
+                            "z": 0.9999985098838806
+                        },
+                        "skew": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0
+                        },
+                        "perspective": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "w": 1.0
+                        }
+                    },
+                    "components": [
+                        {
+                            "polymorphic_id": 1,
+                            "ptr_wrapper": {
+                                "valid": 1,
+                                "data": {
+                                    "UComponent": {
+                                        "owner": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 3
+                                            }
+                                        },
+                                        "isActive": true
+                                    },
+                                    "ShaderPaths": {
+                                        "value0": "Assets/Shaders/LoadModel.vert",
+                                        "value1": "Assets/Shaders/LoadModel.frag",
+                                        "value2": "",
+                                        "value3": "LoadModel"
+                                    },
+                                    "ModelPath": "Assets/Models/mario/mario-tex.obj"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "polymorphic_id": 1073741824,
+            "ptr_wrapper": {
+                "id": 2147483652,
+                "data": {
+                    "name": "Actor (3)",
+                    "transform": {
+                        "position": {
+                            "x": 11.67198371887207,
+                            "y": 0.0,
+                            "z": 0.0
+                        },
+                        "rotation": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "w": 1.0
+                        },
+                        "scale": {
+                            "x": 1.0,
+                            "y": 1.0,
+                            "z": 1.0
+                        },
+                        "skew": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0
+                        },
+                        "perspective": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "w": 1.0
+                        }
+                    },
+                    "components": [
+                        {
+                            "polymorphic_id": 1,
+                            "ptr_wrapper": {
+                                "valid": 1,
+                                "data": {
+                                    "UComponent": {
+                                        "owner": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 4
+                                            }
+                                        },
+                                        "isActive": true
+                                    },
+                                    "ShaderPaths": {
+                                        "value0": "Assets/Shaders/LoadModel.vert",
+                                        "value1": "Assets/Shaders/LoadModel.frag",
+                                        "value2": "",
+                                        "value3": "LoadModel"
+                                    },
+                                    "ModelPath": "Assets/Models/mario/mario-tex.obj"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "polymorphic_id": 1073741824,
+            "ptr_wrapper": {
+                "id": 2147483653,
+                "data": {
+                    "name": "Actor (4)",
+                    "transform": {
+                        "position": {
+                            "x": 7.065593719482422,
+                            "y": 0.0000793282306403853,
+                            "z": 6.63347864151001
+                        },
+                        "rotation": {
+                            "x": -0.000015064713807078079,
+                            "y": 0.08489694446325302,
+                            "z": 0.000007758952051517554,
+                            "w": 0.9963897466659546
+                        },
+                        "scale": {
+                            "x": 1.0000022649765015,
+                            "y": 0.9999998211860657,
+                            "z": 1.0000015497207642
+                        },
+                        "skew": {
+                            "x": -3.637973169240416e-12,
+                            "y": 0.0,
+                            "z": -9.094949186133627e-13
+                        },
+                        "perspective": {
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0,
+                            "w": 1.0
+                        }
+                    },
+                    "components": [
+                        {
+                            "polymorphic_id": 1,
+                            "ptr_wrapper": {
+                                "valid": 1,
+                                "data": {
+                                    "UComponent": {
+                                        "owner": {
+                                            "polymorphic_id": 1073741824,
+                                            "ptr_wrapper": {
+                                                "id": 5
+                                            }
+                                        },
+                                        "isActive": true
+                                    },
+                                    "ShaderPaths": {
+                                        "value0": "Assets/Shaders/LoadModel.vert",
+                                        "value1": "Assets/Shaders/LoadModel.frag",
+                                        "value2": "",
+                                        "value3": "LoadModel"
+                                    },
+                                    "ModelPath": "Assets/Models/mario/mario-tex.obj"
+                                }
+                            }
                         },
                         {
                             "polymorphic_id": 2147483650,
@@ -71,7 +327,7 @@
                                         "owner": {
                                             "polymorphic_id": 1073741824,
                                             "ptr_wrapper": {
-                                                "id": 1
+                                                "id": 5
                                             }
                                         },
                                         "isActive": true

@@ -12,7 +12,6 @@
 #include <ImGuiFileDialog.h>
 #include <ThirdParty/stb_image.h>
 #include <Input/Input.h>
-#include <ResourceManagement/ShaderPeek.h>
 
 void Window::sdl_die(const char* message) {
     fprintf(stderr, "%s: %s\n", message, SDL_GetError());

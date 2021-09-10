@@ -13,6 +13,13 @@ namespace rm
 		setupMesh();
 	}
 
+    Mesh::~Mesh()
+    {
+        /*glDeleteBuffers(1, &EBO);
+        glDeleteBuffers(1, &VBO);
+        glDeleteVertexArrays(1, &VAO);*/
+    }
+
 	void rm::Mesh::Draw(rm::Shader* shader)
 	{
         // bind appropriate textures

@@ -18,7 +18,13 @@
 
 namespace rm
 {
-
+    Model::~Model()
+    {
+        for (auto& t : textures_loaded)
+        {
+            glDeleteTextures(1, &t.id);
+        }
+    }
     void rm::Model::Draw(Shader* shader)
     {
         for (unsigned int i = 0; i < meshes.size(); i++)

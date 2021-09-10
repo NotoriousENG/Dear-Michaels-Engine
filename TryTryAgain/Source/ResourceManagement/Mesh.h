@@ -43,6 +43,7 @@ namespace rm
 
 		Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures);
         Mesh() {};
+        ~Mesh();
 
 		void Draw(rm::Shader* shader);
 

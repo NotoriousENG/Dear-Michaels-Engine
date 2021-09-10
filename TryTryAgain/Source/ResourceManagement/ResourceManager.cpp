@@ -23,8 +23,7 @@ namespace rm
     std::map<std::string, Texture2D>    ResourceManager::Textures;
     std::map<std::string, std::shared_ptr<Shader>>       ResourceManager::Shaders;
     std::map<std::string, bool>         ResourceManager::ShadersLoaded;
-    std::map<std::string, Mesh>         ResourceManager::Meshes;
-    std::map<std::string, std::shared_ptr<Model>>        ResourceManager::Models;
+    std::map<std::string, std::weak_ptr<Model>>        ResourceManager::Models;
 
     std::shared_ptr<Shader> ResourceManager::LoadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile, std::string name)
     {
@@ -35,6 +34,7 @@ namespace rm
         }
         Shaders[name] = std::make_shared<Shader>(loadShaderFromFile(vShaderFile, fShaderFile, gShaderFile));
         ShadersLoaded[name] = true;
+
         return Shaders[name];
     }
 
@@ -63,38 +63,24 @@ namespace rm
         return &Textures[name];
     }
 
-    Mesh* ResourceManager::CreateMesh(std::string name)
-    {
-        /*if (Meshes.find(name) != Meshes.end())
-        {
-            return &Meshes[name];
-        }
-        Meshes[name] = Mesh();
-        return &Meshes[name];*/
-        return nullptr;
-    }
-
-    Mesh* ResourceManager::GetMesh(std::string name)
-    {
-        return &Meshes[name];
-    }
 
     std::shared_ptr<Model> ResourceManager::LoadModel(std::string file, bool alpha)
     {
-        if (Models.find(file) != Models.end())
+        if (Models.find(file) == Models.end() || Models[file].expired())
         {
-            return Models[file];
+            auto sp = std::make_shared<Model>();
+            sp->gammaCorrection = alpha;
+            sp->loadModel(file);
+            Models[file] = sp;
+            return Models[file].lock();
         }
-        rm::Model model;
-        model.gammaCorrection = alpha;
-        model.loadModel(file);
-        Models[file] = std::make_shared<Model>(model);
-        return Models[file];
+
+        return Models[file].lock();
     }
 
     std::shared_ptr<Model> ResourceManager::GetModel(std::string file)
     {
-        return Models[file];
+        return LoadModel(file, true);
     }
 
     void ResourceManager::Clear()
@@ -105,6 +91,24 @@ namespace rm
         // (properly) delete all textures
         for (auto& iter : Textures)
             glDeleteTextures(1, &iter.second.ID);
+    }
+
+    void ResourceManager::CleanModels()
+    {
+        std::vector<string> toFree;
+        for (auto& m : Models)
+        {
+            if (m.second.expired())
+            {
+                m.second.reset();
+                toFree.push_back(m.first);
+                M_LOG("Unloaded %s", m.first.c_str());
+            }
+        }
+        for (auto& s : toFree)
+        {
+            Models.erase(s);
+        }
     }
 
     Shader ResourceManager::loadShaderFromFile(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile)

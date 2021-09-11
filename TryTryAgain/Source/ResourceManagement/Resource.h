@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 
 namespace rm
 {
@@ -7,6 +8,7 @@ namespace rm
 	{
 	public:
 		virtual ~Resource() {};
+		virtual void Init(std::string path) {};
 	};
 }
 

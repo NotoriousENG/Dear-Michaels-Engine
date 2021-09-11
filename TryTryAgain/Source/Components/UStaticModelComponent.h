@@ -43,7 +43,7 @@ public:
 	template <class Archive>
 	void serialize(Archive& ar)
 	{
-		ar(cereal::make_nvp("UComponent", cereal::virtual_base_class<UComponent>(this)), CEREAL_NVP(ShaderPaths), CEREAL_NVP(ModelPath));
+		ar(cereal::make_nvp("UComponent", cereal::virtual_base_class<UComponent>(this)), CEREAL_NVP(ShaderPath), CEREAL_NVP(ModelPath));
 	}
 
 	std::string ModelPath = "Assets/Models/mario/mario-tex.obj";
@@ -51,7 +51,7 @@ public:
 	virtual bool ShowInspector() override;
 
 private:
-	std::string ShaderPaths[4] = { "Assets/Shaders/LoadModel.vert", "Assets/Shaders/LoadModel.frag", "", "LoadModel" };
+	std::string ShaderPath = "Assets/Shaders/LoadModel.glsl";
 
 	void showFileDialog();
 };

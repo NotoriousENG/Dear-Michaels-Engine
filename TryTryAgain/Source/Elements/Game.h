@@ -63,6 +63,9 @@ public:
 	std::unique_ptr<Skybox> skybox;
 
 private:
+
+	std::shared_ptr<rm::Shader> PickingShader;
+
 	unsigned int framebuffer;
 	float deltaTime, lastFrame;
 

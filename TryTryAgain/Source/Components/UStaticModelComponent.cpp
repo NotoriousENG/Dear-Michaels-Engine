@@ -26,12 +26,11 @@ void UStaticModelComponent::Init()
 {
 	if (this->Shader == nullptr)
 	{
-		this->Shader = rm::ResourceManager::LoadShader(ShaderPaths[0].c_str(), ShaderPaths[1].c_str(), 
-			nullptr, ShaderPaths[3].c_str());
+		this->Shader = rm::ResourceManager::Load<rm::Shader>(ShaderPath);
 	}
 	if (this->Model == nullptr)
 	{
-		this->Model = std::static_pointer_cast<rm::Model>(rm::ResourceManager::Load(ModelPath));
+		this->Model = rm::ResourceManager::Load<rm::Model>(ModelPath);
 	}
 	this->name = "UStaticModelComponent";
 
@@ -68,7 +67,7 @@ bool UStaticModelComponent::ShowInspector()
 			{
 				std::string data = (const char*)payload->Data;
 				if (data.find(".obj") != std::string::npos) {
-					this->Model = std::static_pointer_cast<rm::Model>(rm::ResourceManager::Load(data.c_str()));
+					this->Model = rm::ResourceManager::Load<rm::Model>(data.c_str());
 					
 					this->ModelPath = data;
 				}
@@ -132,7 +131,7 @@ void UStaticModelComponent::showFileDialog()
 
 				filePathName = StringUtil::ReplaceAll(filePathName, "\\", "/");
 
-				this->Model = std::static_pointer_cast<rm::Model>(rm::ResourceManager::Load(filePathName.c_str()));
+				this->Model = rm::ResourceManager::Load<rm::Model>(filePathName.c_str());
 				
 				this->ModelPath = filePathName;
 				Panels::Inspector::InspectedComponent = nullptr;

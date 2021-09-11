@@ -1,5 +1,6 @@
 #include "Mesh.h"
 #include <ResourceManagement/ResourceManager.h>
+#include "ResourceManagement/Shader.h"
 
 namespace rm
 {

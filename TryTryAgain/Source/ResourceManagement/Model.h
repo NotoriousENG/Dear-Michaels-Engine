@@ -33,6 +33,8 @@ namespace rm
         Model() {}
         ~Model() override;
 
+        void Init(std::string path) override;
+
         // draws the model, and thus all its meshes
         void Draw(Shader* shader);
 

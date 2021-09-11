@@ -9,49 +9,82 @@
 #include "Shader.h"
 
 #include <iostream>
+#include <sstream>
+#include <fstream>
 
 namespace rm
 {
+    Shader::~Shader()
+    {
+        glDeleteProgram(this->ID);
+    }
     Shader& Shader::Use()
     {
         glUseProgram(this->ID);
         return *this;
     }
 
-    void Shader::Compile(const char* vertexSource, const char* fragmentSource, const char* geometrySource)
+    void Shader::Init(std::string path)
     {
-        unsigned int sVertex, sFragment, gShader;
-        // vertex Shader
-        sVertex = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(sVertex, 1, &vertexSource, NULL);
-        glCompileShader(sVertex);
-        checkCompileErrors(sVertex, "VERTEX");
-        // fragment Shader
-        sFragment = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(sFragment, 1, &fragmentSource, NULL);
-        glCompileShader(sFragment);
-        checkCompileErrors(sFragment, "FRAGMENT");
-        // if geometry shader source code is given, also compile geometry shader
-        if (geometrySource != nullptr)
-        {
-            gShader = glCreateShader(GL_GEOMETRY_SHADER);
-            glShaderSource(gShader, 1, &geometrySource, NULL);
-            glCompileShader(gShader);
-            checkCompileErrors(gShader, "GEOMETRY");
-        }
-        // shader program
+        // Compile Shader
+        unsigned int sVertex, sFragment, sGeometry;
+        
+        //load file
+        std::ifstream t(path);
+        std::stringstream buf;
+        buf << t.rdbuf();
+        std::string src = buf.str();
+        t.close();
+
+        bool hasVertex = src.find("#ifdef VERTEX_SHADER") != std::string::npos;
+        bool hasFragment = src.find("#ifdef FRAGMENT_SHADER") != std::string::npos;
+        bool hasGeometry = src.find("#ifdef GEOMETRY_SHADER") != std::string::npos;
+
         this->ID = glCreateProgram();
-        glAttachShader(this->ID, sVertex);
-        glAttachShader(this->ID, sFragment);
-        if (geometrySource != nullptr)
-            glAttachShader(this->ID, gShader);
+
+        if (hasVertex)
+        {
+            sVertex = glCreateShader(GL_VERTEX_SHADER);
+            std::string vstr = "#version 330\n#define VERTEX_SHADER\n" + src;
+            const char* vertexSource = vstr.c_str();
+            glShaderSource(sVertex, 1, &vertexSource, NULL);
+            glCompileShader(sVertex);
+            checkCompileErrors(sVertex, "VERTEX " + path);
+            glAttachShader(this->ID, sVertex);
+        }
+
+        if (hasFragment)
+        {
+            sFragment = glCreateShader(GL_FRAGMENT_SHADER);
+            std::string fstr = "#version 330\n#define FRAGMENT_SHADER\n" + src;
+            const char* fragmentSource = fstr.c_str();
+            glShaderSource(sFragment, 1, &fragmentSource, NULL);
+            glCompileShader(sFragment);
+            checkCompileErrors(sFragment, "FRAGMENT " + path);
+            glAttachShader(this->ID, sFragment);
+        }
+
+        if (hasGeometry)
+        {
+            sGeometry = glCreateShader(GL_GEOMETRY_SHADER);
+            std::string gstr = "#version 330\n#define GEOMETRY_SHADER\n" + src;
+            const char* geometrySource = gstr.c_str();
+            glShaderSource(sGeometry, 1, &geometrySource, NULL);
+            glCompileShader(sGeometry);
+            checkCompileErrors(sGeometry, "GEOMETRY " + path);
+            glAttachShader(this->ID, sGeometry);
+        }
+            
         glLinkProgram(this->ID);
         checkCompileErrors(this->ID, "PROGRAM");
+
         // delete the shaders as they're linked into our program now and no longer necessary
-        glDeleteShader(sVertex);
-        glDeleteShader(sFragment);
-        if (geometrySource != nullptr)
-            glDeleteShader(gShader);
+        if (hasVertex)
+            glDeleteShader(sVertex);
+        if (hasFragment)
+            glDeleteShader(sFragment);
+        if (hasGeometry)
+            glDeleteShader(sGeometry);
     }
 
     void Shader::SetFloat(const char* name, float value, bool useShader)

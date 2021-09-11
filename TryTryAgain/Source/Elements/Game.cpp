@@ -20,15 +20,13 @@ Game::Game(unsigned framebuffer)
 {
 	Game::instance = this;
 
-	rm::ResourceManager::LoadShader("Assets/Shaders/Lit.vert", "Assets/Shaders/Lit.frag", nullptr, "Lit");
-	rm::ResourceManager::LoadShader("Assets/Shaders/LoadModel.vert", "Assets/Shaders/LoadModel.frag", nullptr, "LoadModel");
-	rm::ResourceManager::LoadShader("Assets/Shaders/Picking.vert", "Assets/Shaders/Picking.frag", nullptr, "Picking");
-
 	Camera::Main = Camera(glm::vec3(0,0,4), glm::vec3(0,1,0), -90);
 
 	this->framebuffer = framebuffer;
 
 	TransformGizmo = std::make_unique<UTransformGizmo>();
+
+	PickingShader = rm::ResourceManager::Load<rm::Shader>("Assets/Shaders/Picking.glsl");
 
 	Init();
 }
@@ -110,8 +108,7 @@ void Game::DrawActorsWithPickingShader()
 	
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-	auto shader = rm::ResourceManager::GetShader("Picking");
-	shader->Use();
+	PickingShader->Use();
 
 	// Only positions are needed
 	glEnableVertexAttribArray(0);
@@ -128,10 +125,10 @@ void Game::DrawActorsWithPickingShader()
 			int g = (i & 0x0000FF00) >> 8;
 			int b = (i & 0x00FF0000) >> 16;
 
-			shader->SetMatrix4("MVP", a->GetMVP());
-			shader->SetVector4f("PickingColor", glm::vec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.f));
+			PickingShader->SetMatrix4("MVP", a->GetMVP());
+			PickingShader->SetVector4f("PickingColor", glm::vec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.f));
 
-			model_comp->Model->Draw(shader.get());
+			model_comp->Model->Draw(PickingShader.get());
 		}
 			
 		i++;

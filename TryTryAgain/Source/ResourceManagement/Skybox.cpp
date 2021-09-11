@@ -10,7 +10,7 @@
 
 Skybox::Skybox()
 {
-    Shader = rm::ResourceManager::LoadShader("Assets/Shaders/Skybox.vert", "Assets/Shaders/Skybox.frag", nullptr, "Skybox");
+    Shader = rm::ResourceManager::Load<rm::Shader>("Assets/Shaders/Skybox.glsl");
     setupAttributes();
     cubemapTexture = loadCubeMap(this->faces);
 }

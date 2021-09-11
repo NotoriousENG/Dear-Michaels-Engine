@@ -9,6 +9,9 @@
 #include "Panels/Console.h"
 #include "ResourceManagement/ResourceManager.h"
 
+namespace rm {
+	class Shader;
+}
 namespace Panels
 {
 	class GameWindow
@@ -25,6 +28,8 @@ namespace Panels
 		bool playing;
 
 	private:
+
+		std::shared_ptr<rm::Shader> FrameBufferShader;
 
 		void Render();
 

@@ -25,6 +25,11 @@ namespace rm
             glDeleteTextures(1, &t.id);
         }
     }
+    void Model::Init(std::string path)
+    {
+        gammaCorrection = false;
+        loadModel(path);
+    }
     void rm::Model::Draw(Shader* shader)
     {
         for (unsigned int i = 0; i < meshes.size(); i++)

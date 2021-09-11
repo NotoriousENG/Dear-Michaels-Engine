@@ -14,7 +14,6 @@
 
 #include "stb_image.h"
 #include "Panels/Console.h"
-#include "Model.h"
 #include <memory>
 
 #include "Resource.h"
@@ -25,52 +24,8 @@ namespace rm
 {
     // Instantiate static variables
     std::map<std::string, Texture2D>    ResourceManager::Textures;
-    std::map<std::string, std::shared_ptr<Shader>>       ResourceManager::Shaders;
-    std::map<std::string, bool>         ResourceManager::ShadersLoaded;
-    std::map<std::string, std::weak_ptr<Model>>        ResourceManager::Models;
 
     std::map<std::string, std::weak_ptr<Resource>>        ResourceManager::Resources;
-
-    std::shared_ptr<Shader> ResourceManager::LoadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile, std::string name)
-    {
-        if (ShadersLoaded[name])
-        {
-            // M_LOG("[warn] Shader: %s has already been loaded", name.c_str());
-            return  Shaders[name];
-        }
-        Shaders[name] = std::make_shared<Shader>(loadShaderFromFile(vShaderFile, fShaderFile, gShaderFile));
-        ShadersLoaded[name] = true;
-
-        return Shaders[name];
-    }
-
-    std::shared_ptr<Resource> ResourceManager::Load(std::string file)
-    {
-        if (Resources.find(file) == Resources.end() || Resources[file].expired())
-        {
-            auto p = std::filesystem::path(file);
-            if (p.extension().string() == ".obj")
-            {
-                auto sp = std::make_shared<Model>();
-                sp->gammaCorrection = false;
-                sp->loadModel(file);
-                Resources[file] = sp;
-                return Resources[file].lock();
-            }
-        }
-
-        return Resources[file].lock();
-    }
-
-    std::shared_ptr<Shader> ResourceManager::GetShader(std::string name)
-    {
-        if (!ShadersLoaded[name])
-        {
-            M_LOG("[error] Shader: %s has not been loaded", name.c_str());
-            abort();
-        }
-        return Shaders[name];
-    }
 
     Texture2D* ResourceManager::LoadTexture(const char* file, bool alpha, std::string name)
     {
@@ -87,96 +42,11 @@ namespace rm
         return &Textures[name];
     }
 
-
-    std::shared_ptr<Model> ResourceManager::LoadModel(std::string file, bool alpha)
-    {
-        if (Models.find(file) == Models.end() || Models[file].expired())
-        {
-            auto sp = std::make_shared<Model>();
-            sp->gammaCorrection = alpha;
-            sp->loadModel(file);
-            Models[file] = sp;
-            return Models[file].lock();
-        }
-
-        return Models[file].lock();
-    }
-
-    std::shared_ptr<Model> ResourceManager::GetModel(std::string file)
-    {
-        return LoadModel(file, true);
-    }
-
     void ResourceManager::Clear()
     {
-        // (properly) delete all shaders	
-        for (auto& iter : Shaders)
-            glDeleteProgram(iter.second->ID);
         // (properly) delete all textures
         for (auto& iter : Textures)
             glDeleteTextures(1, &iter.second.ID);
-    }
-
-    void ResourceManager::CleanModels()
-    {
-        std::vector<string> toFree;
-        for (auto& m : Models)
-        {
-            if (m.second.expired())
-            {
-                m.second.reset();
-                toFree.push_back(m.first);
-                M_LOG("Unloaded %s", m.first.c_str());
-            }
-        }
-        for (auto& s : toFree)
-        {
-            Models.erase(s);
-        }
-    }
-
-    Shader ResourceManager::loadShaderFromFile(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile)
-    {
-        // 1. retrieve the vertex/fragment source code from filePath
-        std::string vertexCode;
-        std::string fragmentCode;
-        std::string geometryCode;
-        try
-        {
-            // open files
-            std::ifstream vertexShaderFile(vShaderFile);
-            std::ifstream fragmentShaderFile(fShaderFile);
-            std::stringstream vShaderStream, fShaderStream;
-            // read file's buffer contents into streams
-            vShaderStream << vertexShaderFile.rdbuf();
-            fShaderStream << fragmentShaderFile.rdbuf();
-            // close file handlers
-            vertexShaderFile.close();
-            fragmentShaderFile.close();
-            // convert stream into string
-            vertexCode = vShaderStream.str();
-            fragmentCode = fShaderStream.str();
-            // if geometry shader path is present, also load a geometry shader
-            if (gShaderFile != nullptr)
-            {
-                std::ifstream geometryShaderFile(gShaderFile);
-                std::stringstream gShaderStream;
-                gShaderStream << geometryShaderFile.rdbuf();
-                geometryShaderFile.close();
-                geometryCode = gShaderStream.str();
-            }
-        }
-        catch (std::exception e)
-        {
-            M_LOG("ERROR::SHADER: Failed to read shader files");
-        }
-        const char* vShaderCode = vertexCode.c_str();
-        const char* fShaderCode = fragmentCode.c_str();
-        const char* gShaderCode = geometryCode.c_str();
-        // 2. now create shader object from source code
-        Shader shader;
-        shader.Compile(vShaderCode, fShaderCode, gShaderFile != nullptr ? gShaderCode : nullptr);
-        return shader;
     }
 
     Texture2D ResourceManager::loadTextureFromFile(const char* file, bool alpha)

@@ -4,6 +4,8 @@
 #include "Elements/Game.h"
 #include "ResourceManagement/ResourceManager.h"
 
+#include <ResourceManagement/Shader.h>
+
 UTransformGizmo::UTransformGizmo()
 {
 	model = glm::mat4(1);
@@ -15,7 +17,7 @@ UTransformGizmo::UTransformGizmo()
 		glm::vec3(1)
 	};
 
-	rm::ResourceManager::LoadShader("Assets/Shaders/Gizmo.vert", "Assets/Shaders/Gizmo.frag", nullptr, "Gizmo");
+	Shader = rm::ResourceManager::Load<rm::Shader>("Assets/Shaders/Gizmo.glsl");
 
 	// -------------------------------------VAO/VBO------------------------------------------------------
 
@@ -61,7 +63,7 @@ void UTransformGizmo::OnDrag()
 
 void UTransformGizmo::Draw()
 {
-	rm::ResourceManager::GetShader("Gizmo")->Use();
+	Shader->Use();
 
 	auto trans = glm::translate(model, transform.position);
 
@@ -71,10 +73,10 @@ void UTransformGizmo::Draw()
 
 	trans = glm::scale(trans, transform.scale);
 
-	rm::ResourceManager::GetShader("Gizmo")->Use();
-	rm::ResourceManager::GetShader("Gizmo")->SetMatrix4("model", trans);
-	rm::ResourceManager::GetShader("Gizmo")->SetMatrix4("view", Camera::Main.view);
-	rm::ResourceManager::GetShader("Gizmo")->SetMatrix4("projection", Camera::Main.projection);
+	Shader->Use();
+	Shader->SetMatrix4("model", trans);
+	Shader->SetMatrix4("view", Camera::Main.view);
+	Shader->SetMatrix4("projection", Camera::Main.projection);
 
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_LINES, 0, 6);

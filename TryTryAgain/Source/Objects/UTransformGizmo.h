@@ -4,6 +4,11 @@
 #include <glm/fwd.hpp>
 #include <glm/detail/type_quat.hpp>
 
+namespace rm
+{
+	class Shader;
+}
+
 class UTransformGizmo
 {
 public :
@@ -25,6 +30,8 @@ private:
 	glm::mat4 model;
 
 	unsigned int VBO, VAO, EBO;
+
+	std::shared_ptr<rm::Shader> Shader;
 
 	float vertices[66] =
 	{

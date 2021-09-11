@@ -34,6 +34,10 @@ namespace rm
         static std::map<std::string, Texture2D> Textures;
         static std::map<std::string, bool>      ShadersLoaded;
         static std::map<std::string, std::weak_ptr<Model>>        Models;
+        static std::map<std::string, std::weak_ptr<Resource>>        Resources;
+
+        static std::shared_ptr<Resource> Load(std::string file);
+
         // loads (and generates) a shader program from file loading vertex, fragment (and geometry) shader's source code. If gShaderFile is not nullptr, it also loads a geometry shader
         static std::shared_ptr<Shader>    LoadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile, std::string name);
         // retrieves a stored sader

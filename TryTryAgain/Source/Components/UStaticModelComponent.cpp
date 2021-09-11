@@ -31,8 +31,7 @@ void UStaticModelComponent::Init()
 	}
 	if (this->Model == nullptr)
 	{
-		this->Model = rm::ResourceManager::LoadModel(ModelPath, false);
-		rm::ResourceManager::CleanModels();
+		this->Model = std::static_pointer_cast<rm::Model>(rm::ResourceManager::Load(ModelPath));
 	}
 	this->name = "UStaticModelComponent";
 
@@ -69,8 +68,8 @@ bool UStaticModelComponent::ShowInspector()
 			{
 				std::string data = (const char*)payload->Data;
 				if (data.find(".obj") != std::string::npos) {
-					this->Model = rm::ResourceManager::LoadModel(data.c_str(), false);
-					rm::ResourceManager::CleanModels();
+					this->Model = std::static_pointer_cast<rm::Model>(rm::ResourceManager::Load(data.c_str()));
+					
 					this->ModelPath = data;
 				}
 			}
@@ -133,8 +132,8 @@ void UStaticModelComponent::showFileDialog()
 
 				filePathName = StringUtil::ReplaceAll(filePathName, "\\", "/");
 
-				this->Model = rm::ResourceManager::LoadModel(filePathName.c_str(), false);
-				rm::ResourceManager::CleanModels();
+				this->Model = std::static_pointer_cast<rm::Model>(rm::ResourceManager::Load(filePathName.c_str()));
+				
 				this->ModelPath = filePathName;
 				Panels::Inspector::InspectedComponent = nullptr;
 			}

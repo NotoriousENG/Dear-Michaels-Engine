@@ -17,6 +17,10 @@
 #include "Model.h"
 #include <memory>
 
+#include "Resource.h"
+
+#include <filesystem>
+
 namespace rm
 {
     // Instantiate static variables
@@ -24,6 +28,8 @@ namespace rm
     std::map<std::string, std::shared_ptr<Shader>>       ResourceManager::Shaders;
     std::map<std::string, bool>         ResourceManager::ShadersLoaded;
     std::map<std::string, std::weak_ptr<Model>>        ResourceManager::Models;
+
+    std::map<std::string, std::weak_ptr<Resource>>        ResourceManager::Resources;
 
     std::shared_ptr<Shader> ResourceManager::LoadShader(const char* vShaderFile, const char* fShaderFile, const char* gShaderFile, std::string name)
     {
@@ -36,6 +42,24 @@ namespace rm
         ShadersLoaded[name] = true;
 
         return Shaders[name];
+    }
+
+    std::shared_ptr<Resource> ResourceManager::Load(std::string file)
+    {
+        if (Resources.find(file) == Resources.end() || Resources[file].expired())
+        {
+            auto p = std::filesystem::path(file);
+            if (p.extension().string() == ".obj")
+            {
+                auto sp = std::make_shared<Model>();
+                sp->gammaCorrection = false;
+                sp->loadModel(file);
+                Resources[file] = sp;
+                return Resources[file].lock();
+            }
+        }
+
+        return Resources[file].lock();
     }
 
     std::shared_ptr<Shader> ResourceManager::GetShader(std::string name)

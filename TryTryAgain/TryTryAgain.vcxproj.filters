@@ -15,7 +15,6 @@
     <ClCompile Include="Source\Panels\Console.cpp" />
     <ClCompile Include="Source\ResourceManagement\ResourceManager.cpp" />
     <ClCompile Include="Source\ResourceManagement\Shader.cpp" />
-    <ClCompile Include="Source\ResourceManagement\Texture.cpp" />
     <ClCompile Include="Source\Actors\AActor.cpp" />
     <ClCompile Include="Source\Panels\Hierarchy.cpp" />
     <ClCompile Include="Source\Application.cpp" />
@@ -41,7 +40,7 @@
     <ClCompile Include="Source\Components\UCameraComponent.cpp" />
     <ClCompile Include="Source\Panels\ContentBrowser.cpp" />
     <ClCompile Include="Source\ResourceManagement\Material.cpp" />
-    <ClCompile Include="Source\ResourceManagement\Resource.cpp" />
+    <ClCompile Include="Source\ResourceManagement\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Window\Window.h" />
@@ -52,7 +51,6 @@
     <ClInclude Include="source\Elements\Camera.h" />
     <ClInclude Include="Source\ResourceManagement\ResourceManager.h" />
     <ClInclude Include="Source\ResourceManagement\Shader.h" />
-    <ClInclude Include="Source\ResourceManagement\Texture.h" />
     <ClInclude Include="Source\Actors\AActor.h" />
     <ClInclude Include="Source\Structs\FTransform.h" />
     <ClInclude Include="Source\Application.h" />
@@ -75,5 +73,6 @@
     <ClInclude Include="Source\Panels\IPanel.h" />
     <ClInclude Include="Source\ResourceManagement\Material.h" />
     <ClInclude Include="Source\ResourceManagement\Resource.h" />
+    <ClInclude Include="Source\ResourceManagement\Texture.h" />
   </ItemGroup>
 </Project>

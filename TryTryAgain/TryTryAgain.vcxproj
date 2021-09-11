@@ -163,7 +163,6 @@ XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Co
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\ResourceManagement\Resource.cpp" />
     <ClCompile Include="Source\ResourceManagement\Material.cpp" />
     <ClCompile Include="Source\Panels\ContentBrowser.cpp" />
     <ClCompile Include="Source\ResourceManagement\Skybox.cpp" />

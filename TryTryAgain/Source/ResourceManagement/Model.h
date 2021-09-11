@@ -10,6 +10,8 @@
 #include "Shader.h"
 #include "Texture.h"
 
+#include "Resource.h"
+
 using namespace std;
 
 namespace rm
@@ -17,7 +19,7 @@ namespace rm
 
     unsigned int TextureFromFile(const char* path, const string& directory, bool gamma = false);
 
-    class Model
+    class Model : public Resource
     {
     public:
         // model data 
@@ -29,14 +31,13 @@ namespace rm
 
         // constructor, expects a filepath to a 3D model.
         Model() {}
-        ~Model();
+        ~Model() override;
 
         // draws the model, and thus all its meshes
         void Draw(Shader* shader);
 
         // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
         void loadModel(string const& path);
-
 
     private:
         

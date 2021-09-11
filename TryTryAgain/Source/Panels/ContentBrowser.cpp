@@ -24,6 +24,7 @@ void Panels::ContentBrowser::Draw()
 		if (ImGui::Button("<-"))
 		{
 			currentDirectory = currentDirectory.parent_path();
+			releaseIconTextures();
 		}
 	}
 
@@ -71,6 +72,12 @@ void Panels::ContentBrowser::Draw()
 				IconTextures["Resources/Icons/folder.png"] = tp;
 				id = (ImTextureID)tp->ID;
 			}
+			else if (fileType == "png" || fileType == "jpg")
+			{
+				auto tp = rm::ResourceManager::Load<rm::Texture2D>(directoryEntry.path().string());
+				IconTextures[fileNameString] = tp;
+				id = (ImTextureID)tp->ID;
+			}
 			else {
 				if (std::filesystem::exists(FString("Resources/Icons/%s.png", fileType.c_str()).Text))
 				{
@@ -105,7 +112,16 @@ void Panels::ContentBrowser::Draw()
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 			{
 				if (directoryEntry.is_directory())
+				{
 					currentDirectory /= path.filename();
+					
+					releaseIconTextures();
+
+					ImGui::PopStyleColor();
+					ImGui::PopID();
+
+					break;
+				}
 				else if (fileType == "mscene")
 					Game::instance->LoadScene(path.string().c_str());
 			}
@@ -129,4 +145,18 @@ void Panels::ContentBrowser::Draw()
 void Panels::ContentBrowser::MenuItem()
 {
 	ImGui::MenuItem("Content Browser", "", &isActive);
+}
+
+void Panels::ContentBrowser::releaseIconTextures()
+{
+	std::vector<std::string> canUnload;
+	for (auto& tex : IconTextures)
+	{
+		if (tex.first.find("Resources/") == std::string::npos)
+			canUnload.push_back(tex.first);
+	}
+	for (auto& p : canUnload)
+	{
+		IconTextures.erase(p);
+	}
 }

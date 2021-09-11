@@ -6,9 +6,12 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <memory>
+
 namespace rm
 {
     class Shader;
+    class Texture2D;
 
     using namespace std;
 
@@ -25,12 +28,6 @@ namespace rm
         glm::vec3 Bitangent;
     };
 
-    struct Texture {
-        unsigned int id;
-        string type;
-        string path;
-    };
-
 
 	class Mesh
 	{
@@ -38,10 +35,10 @@ namespace rm
         // mesh Data
         vector<Vertex>       vertices;
         vector<unsigned int> indices;
-        vector<Texture>      textures;
+        vector<std::shared_ptr<rm::Texture2D>>      textures;
         unsigned int VAO;
 
-		Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures);
+		Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<std::shared_ptr<rm::Texture2D>> textures);
         Mesh() {};
         ~Mesh();
 

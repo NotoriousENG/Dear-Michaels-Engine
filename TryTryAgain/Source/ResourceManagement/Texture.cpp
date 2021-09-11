@@ -8,6 +8,8 @@
 ******************************************************************/
 #include "Texture.h"
 #include <glad/glad.h>
+#include <stb_image.h>
+#include <Panels/Console.h>
 
 namespace rm
 {
@@ -17,6 +19,40 @@ namespace rm
         glGenTextures(1, &this->ID);
     }
 
+    Texture2D::~Texture2D()
+    {
+        glDeleteTextures(1, &this->ID);
+    }
+
+    void Texture2D::Init(std::string path)
+    {
+        this->path = path;
+        // load image
+        int width, height, nrChannels;
+        unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
+        if (data)
+        {
+            if (nrChannels == 1)
+                Image_Format = GL_RED;
+            else if (nrChannels == 3)
+                Image_Format = GL_RGB;
+            else if (nrChannels == 4)
+                Image_Format = GL_RGBA;
+
+            if (path.find(".png") != std::string::npos)
+                Internal_Format = GL_RGBA;
+
+            // now generate texture
+            Generate(width, height, data);
+        }
+        else
+        {
+            M_LOG("Texture failed to load at path %s", path.c_str());
+        }
+        // and finally free image data
+        stbi_image_free(data);
+    }
+
     void Texture2D::Generate(unsigned int width, unsigned int height, unsigned char* data)
     {
         this->Width = width;
@@ -24,6 +60,7 @@ namespace rm
         // create Texture
         glBindTexture(GL_TEXTURE_2D, this->ID);
         glTexImage2D(GL_TEXTURE_2D, 0, this->Internal_Format, width, height, 0, this->Image_Format, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
         // set Texture wrap and filter modes
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, this->Wrap_S);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, this->Wrap_T);

@@ -4,6 +4,7 @@
 #include <Structs/FString.h>
 #include "Elements/Game.h"
 #include <Utility/Utility.h>
+#include "ResourceManagement/Texture.h"
 
 const std::filesystem::path Panels::ContentBrowser::assetPath = "Assets";
 
@@ -65,16 +66,23 @@ void Panels::ContentBrowser::Draw()
 
 			ImTextureID id;
 			if (directoryEntry.is_directory()) {
-				id = (ImTextureID)rm::ResourceManager::LoadTexture("Resources/Icons/folder.png", true, "Folder")->ID;
+				
+				auto tp = rm::ResourceManager::Load<rm::Texture2D>("Resources/Icons/folder.png");
+				IconTextures["Resources/Icons/folder.png"] = tp;
+				id = (ImTextureID)tp->ID;
 			}
 			else {
 				if (std::filesystem::exists(FString("Resources/Icons/%s.png", fileType.c_str()).Text))
 				{
-					id = (ImTextureID)rm::ResourceManager::LoadTexture(FString("Resources/Icons/%s.png", fileType.c_str()).Text, true, fileType)->ID;
+					auto tp = rm::ResourceManager::Load<rm::Texture2D>(FString("Resources/Icons/%s.png", fileType.c_str()).Text);
+					IconTextures[FString("Resources/Icons/%s.png", fileType.c_str()).Text] = tp;
+					id = (ImTextureID)tp->ID;
 				}
 				else
 				{
-					id = (ImTextureID)rm::ResourceManager::LoadTexture("Resources/Icons/file.png", true, "File")->ID;
+					auto tp = rm::ResourceManager::Load<rm::Texture2D>("Resources/Icons/file.png");
+					IconTextures["Resources/Icons/file.png"] = tp;
+					id = (ImTextureID)tp->ID;
 				}
 
 			}

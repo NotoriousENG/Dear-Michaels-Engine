@@ -51,13 +51,8 @@
                                         },
                                         "isActive": true
                                     },
-                                    "ShaderPaths": {
-                                        "value0": "Assets/Shaders/LoadModel.vert",
-                                        "value1": "Assets/Shaders/LoadModel.frag",
-                                        "value2": "",
-                                        "value3": "LoadModel"
-                                    },
-                                    "ModelPath": "Assets/Models/backpack/backpack.obj"
+                                    "ShaderPath": "Assets/Shaders/LoadModel.glsl",
+                                    "ModelPath": "Assets/Models/mario/mario-tex.obj"
                                 }
                             }
                         }

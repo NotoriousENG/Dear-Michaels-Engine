@@ -23,7 +23,7 @@ namespace rm
     {
     public:
         // model data 
-        vector<Texture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
+        vector<std::shared_ptr<rm::Texture2D>> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
         vector<Mesh>    meshes;
         std::string directory;
         std::string Path;
@@ -50,6 +50,6 @@ namespace rm
 
         // checks all material textures of a given type and loads the textures if they're not loaded yet.
         // the required info is returned as a Texture struct.
-        vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
+        vector<std::shared_ptr<rm::Texture2D>> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
     };
 }

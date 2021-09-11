@@ -8,6 +8,7 @@
 ******************************************************************/
 #pragma once
 #include "Resource.h"
+#include <string>
 
 namespace rm
 {
@@ -28,8 +29,13 @@ namespace rm
         unsigned int Wrap_T; // wrapping mode on T axis
         unsigned int Filter_Min; // filtering mode if texture pixels < screen pixels
         unsigned int Filter_Max; // filtering mode if texture pixels > screen pixels
+
+        std::string path;
+        std::string type;
         // constructor (sets default texture modes)
         Texture2D();
+        ~Texture2D() override;
+        void Init(std::string path) override;
         // generates texture from image data
         void Generate(unsigned int width, unsigned int height, unsigned char* data);
         // binds the texture as the current active GL_TEXTURE_2D texture object

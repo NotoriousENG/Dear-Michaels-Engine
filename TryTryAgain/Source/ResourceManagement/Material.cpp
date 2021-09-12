@@ -57,8 +57,8 @@ namespace rm {
 
 	void Material::ShowInspector()
 	{
-
-		ImGui::Text("Material");
+		ImGui::Text("____________________________________________________________________");
+		ImGui::Text("Material: %s", name.c_str());
 		ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0, 1, 1, 1), "Shader = LoadModel");
 
@@ -77,14 +77,11 @@ namespace rm {
 			}
 		}
 
-		ImGui::Text("Textures:");
-		ImGui::Text("_____________________");
 		for (int i = 0; i < Textures.size(); i++)
 		{
 			ImGui::PushID(i);
-			ImGui::Image((ImTextureID)Textures[i]->ID, { 16, 16 });
-			ImGui::SameLine();
-			ImGui::Text(Textures[i]->path.c_str());
+
+			ImGui::Text(Textures[i]->type.c_str());
 			ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImColor(1.0f, 1.0f, 1.0f, 0.25f));
 
 			if (ImGui::BeginDragDropTarget())
@@ -96,14 +93,22 @@ namespace rm {
 					if (data.find(".png") != std::string::npos || data.find(".jpg") != std::string::npos) {
 
 						auto oldPath = Textures[i]->path;
+						auto oldType = Textures[i]->type;
 
 						Textures[i] = rm::ResourceManager::Load<rm::Texture2D>(data.c_str());
-						Textures[i]->type = "texture_diffuse";
-						Textures[i]->path = data;
+						Textures[i]->type = oldType;
 					}
 				}
 				ImGui::EndDragDropTarget();
 			}
+			else
+			{
+				ImGui::SameLine();
+				ImGui::Image((ImTextureID)Textures[i]->ID, { 16, 16 });
+			}
+
+			
+			
 
 			ImGui::PopID();
 		}

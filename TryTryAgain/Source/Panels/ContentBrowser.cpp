@@ -115,7 +115,7 @@ void Panels::ContentBrowser::Draw()
 				{
 					currentDirectory /= path.filename();
 					
-					releaseIconTextures();
+					// releaseIconTextures();
 
 					ImGui::PopStyleColor();
 					ImGui::PopID();

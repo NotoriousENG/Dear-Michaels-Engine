@@ -27,8 +27,6 @@ public:
 
 	std::shared_ptr<rm::Model> Model;
 
-	std::shared_ptr<rm::Material> Material;
-
 	UStaticModelComponent(std::shared_ptr<AActor> owner);
 
 	UStaticModelComponent() {}

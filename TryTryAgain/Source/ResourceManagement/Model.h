@@ -21,7 +21,6 @@ namespace rm
     {
     public:
         // model data 
-        std::shared_ptr<rm::Material> Material;
         vector<Mesh>    meshes;
         std::string directory;
         std::string Path;

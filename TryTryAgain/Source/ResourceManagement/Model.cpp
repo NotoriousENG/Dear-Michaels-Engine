@@ -27,6 +27,7 @@ namespace rm
     void Model::Init(std::string path)
     {
         gammaCorrection = false;
+        loadModel(path);
     }
     void rm::Model::Draw(Shader* shader)
     {
@@ -151,17 +152,8 @@ namespace rm
         vector<std::shared_ptr<rm::Texture2D>> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
         textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
-        for (std::shared_ptr<rm::Texture2D> t : textures)
-        {
-            if (std::find(Material->Textures.begin(), Material->Textures.end(), t) == Material->Textures.end())
-            {
-                Material->Textures.push_back(t);
-            }
-        }
-        
-
         // return a mesh object created from the extracted mesh data
-        return Mesh(vertices, indices, textures);
+        return Mesh(vertices, indices, textures, mesh->mName.C_Str());
     }
 
     vector<std::shared_ptr<rm::Texture2D>> rm::Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName)

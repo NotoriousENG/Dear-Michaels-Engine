@@ -12,6 +12,7 @@ namespace rm
 {
     class Shader;
     class Texture2D;
+    class Material;
 
     using namespace std;
 
@@ -35,10 +36,10 @@ namespace rm
         // mesh Data
         vector<Vertex>       vertices;
         vector<unsigned int> indices;
-        vector<std::shared_ptr<rm::Texture2D>>      textures;
+        std::shared_ptr<rm::Material> material;
         unsigned int VAO;
 
-		Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<std::shared_ptr<rm::Texture2D>> textures);
+		Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<std::shared_ptr<rm::Texture2D>> textures, const char* name);
         Mesh() {};
         ~Mesh();
 
@@ -50,6 +51,8 @@ namespace rm
 
         // initializes all the buffer objects/arrays
         void setupMesh();
+
+        std::string name;
 
 	};
 }

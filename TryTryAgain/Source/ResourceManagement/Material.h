@@ -38,5 +38,9 @@ namespace rm {
 		void ShowInspector();
 
 		void SetUniforms();
+
+		std::string name = "Material";
+
+		std::string ShaderPath = "Assets/Shaders/LoadModel.glsl";
 	};
 };

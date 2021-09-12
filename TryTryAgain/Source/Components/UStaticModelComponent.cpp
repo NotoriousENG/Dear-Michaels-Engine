@@ -19,26 +19,18 @@
 
 UStaticModelComponent::UStaticModelComponent(std::shared_ptr<AActor> owner) : UComponent(owner)
 {
-	Init();
+
 }
 
 void UStaticModelComponent::Init()
 {
-	if (this->Shader == nullptr)
-	{
-		this->Shader = rm::ResourceManager::Load<rm::Shader>(ShaderPath);
-	}
+
 	if (this->Model == nullptr)
 	{
 		this->Model = rm::ResourceManager::Load<rm::Model>(ModelPath);
 	}
 	this->name = "UStaticModelComponent";
 
-	this->Material = std::make_shared<rm::Material>();
-
-	Material->Shader = this->Shader;
-
-	Material->InitUniforms();
 }
 
 bool UStaticModelComponent::ShowInspector()
@@ -84,7 +76,12 @@ bool UStaticModelComponent::ShowInspector()
 			ImGuiFileDialog::Instance()->Close();
 		}
 
-		Material->ShowInspector();
+		for (int i = 0; i < Model->meshes.size(); i++)
+		{
+			ImGui::PushID(i);
+			Model->meshes[i].material->ShowInspector();
+			ImGui::PopID();
+		}
 
 		return true;
 	}
@@ -98,9 +95,8 @@ void UStaticModelComponent::Draw(rm::Shader* shader)
 	{
 		if (shader == nullptr)
 		{
-			shader = Shader.get();
+			shader = Model->meshes[0].material->Shader.get();
 		}
-		Material->SetUniforms();
 		shader->Use();
 		shader->SetMatrix4("model", owner->model);
 		shader->SetMatrix4("view", Camera::Main.view);

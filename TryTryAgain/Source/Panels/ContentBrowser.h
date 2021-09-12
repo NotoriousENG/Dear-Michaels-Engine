@@ -22,6 +22,8 @@ namespace Panels
 		static const std::filesystem::path assetPath;
 
 		std::unordered_map<std::string, std::shared_ptr<rm::Texture2D>> IconTextures;
+
+		void releaseIconTextures();
 	};
 }
 

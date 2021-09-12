@@ -16,8 +16,7 @@
 
 #include <Panels/Console.h>
 #include <ResourceManagement/ResourceManager.h>
-
-#include <filesystem>
+#include "Material.h"
 
 namespace rm
 {
@@ -154,7 +153,7 @@ namespace rm
         textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
         // return a mesh object created from the extracted mesh data
-        return Mesh(vertices, indices, textures);
+        return Mesh(vertices, indices, textures, mesh->mName.C_Str());
     }
 
     vector<std::shared_ptr<rm::Texture2D>> rm::Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName)

@@ -9,7 +9,7 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "Texture.h"
-
+#include "Material.h"
 #include "Resource.h"
 
 using namespace std;
@@ -17,13 +17,10 @@ using namespace std;
 namespace rm
 {
 
-    unsigned int TextureFromFile(const char* path, const string& directory, bool gamma = false);
-
-    class Model : public Resource
+    class Model : public rm::Resource
     {
     public:
         // model data 
-        vector<std::shared_ptr<rm::Texture2D>> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
         vector<Mesh>    meshes;
         std::string directory;
         std::string Path;

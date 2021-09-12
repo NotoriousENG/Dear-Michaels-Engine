@@ -3,8 +3,14 @@
 #include <imgui.h>
 #include <imgui_stdlib.h>
 
+#include "Texture.h"
+#include "Shader.h"
+#include "Resource.h"
+#include <ResourceManagement/ResourceManager.h>
+
 
 namespace rm {
+	
 	void Material::InitUniforms()
 	{
 		Uniforms.clear();
@@ -51,8 +57,8 @@ namespace rm {
 
 	void Material::ShowInspector()
 	{
-
-		ImGui::Text("Material");
+		ImGui::Text("____________________________________________________________________");
+		ImGui::Text("Material: %s", name.c_str());
 		ImGui::SameLine();
 		ImGui::TextColored(ImVec4(0, 1, 1, 1), "Shader = LoadModel");
 
@@ -69,6 +75,42 @@ namespace rm {
 				ImGui::ColorEdit4(p.name.c_str(), (float*)p.data, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_Float);
 				break;
 			}
+		}
+
+		for (int i = 0; i < Textures.size(); i++)
+		{
+			ImGui::PushID(i);
+
+			ImGui::Text(Textures[i]->type.c_str());
+			ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImColor(1.0f, 1.0f, 1.0f, 0.25f));
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				auto payload = ImGui::AcceptDragDropPayload("ASSET_PATH");
+				if (payload != nullptr)
+				{
+					std::string data = (const char*)payload->Data;
+					if (data.find(".png") != std::string::npos || data.find(".jpg") != std::string::npos) {
+
+						auto oldPath = Textures[i]->path;
+						auto oldType = Textures[i]->type;
+
+						Textures[i] = rm::ResourceManager::Load<rm::Texture2D>(data.c_str());
+						Textures[i]->type = oldType;
+					}
+				}
+				ImGui::EndDragDropTarget();
+			}
+			else
+			{
+				ImGui::SameLine();
+				ImGui::Image((ImTextureID)Textures[i]->ID, { 16, 16 });
+			}
+
+			
+			
+
+			ImGui::PopID();
 		}
 	}
 

@@ -9,7 +9,7 @@ This is a game Engine I am working on using C++17 and OpenGL, inspired by Unity 
   * If you wish to add your own actors/game features you must build from source.
 
 ## Motivation
-I've worked on many game projects before and want to create a more performant, minimal, and modifyable code base vs what is availiable in commercial engines.
+I've worked on many game projects before and want to create a performant, minimal, and modifyable code base to learn more about game engines.
 * My goal is not to build a perfect engine, but rather reach the minimal amount of features to support my next game idea.
 
 ## Included Dependencies
@@ -54,27 +54,49 @@ To install x64 libraries, run:
 ```
 
 ## Roadmap
-- [X] SDL and OpenGL (glad) integration
-- [X] OpenGL Rendering (basic textures and lighting)
+
+Systems
+- [X] Actor with Components
 - [X] Input
-- [X] Actor base class
-- [X] Camera class
-- [X] Edit and Play Mode
-- [X] ImGui Integration - Hierarchy, Console, Inspector (change values)
-- [X] Picking (Slow Pixel Based)
-- [X] ImGuizmo Integration - Transform Gizmo, Translate, Rotate, Scale, Local, World, Snapping
-- [X] Inspector Prototype - Hierarchy and Inspector are seperate
-- [X] Component Base Class
-- [X] Static Mesh Component
-- [X] Saving/Loading Scenes
-- [X] Model Loader and Rendering Refactor - obj files (mtl holds relative paths to textures)
-- [X] Inspector / Hierarchy Improvements - Add/Remove Components / Provide a simple component editor for the Model Component
-- [X] Serialize Components - It is now possible to go pure Actor-Component and move more tools into the runtime!
-- [X] Register Components - Components can be registered to be added at run time!
-- [X] Simple Input Manager - Static instance access anywhere, also comes with a cool player controller component
-- [X] Standardized Component Inspection - leverage ImGui to get can't believe it's not unity
-- [X] Skybox - Simple implementation that makes a huge difference
-- [X] Content Browser with Drag and Drop functionality
-- [ ] Start planning a simple game to help identify missing features
-- [ ] Build Configuration to compile and build without editor tools
-- [ ] Physics System Integration
+- [X] Play/Edit
+- [X] Picking/ Transform Gizmos
+- [X] Component Registry
+- [X] Scene Serialization
+- [X] Resource Management
+- [X] Material
+- [ ] Physics
+- [ ] Build
+
+Editor Panels
+- [X] Game Window
+- [X] Hierarchy
+- [X] Console
+- [X] Inspector
+- [X] Content Browser
+
+Transforms
+- [X] Position, Rotation, Scale
+- [ ] Parent Child Relationships
+
+Components
+- [X] Static Model
+- [X] Player Input
+- [ ] Camera
+- [ ] Simple Shape Colliders
+- [ ] Rigidbody Physics
+
+Resources
+- [X] Model (obj) - mtl with texture paths needed for textures
+- [X] Texture2D (image)
+- [X] Shader (glsl with defines)
+- Prototypes
+  - [X] Mesh
+  - [X] Material
+  - [ ] Animations
+
+Proto Actors / Components / Properties
+- [X] Camera
+- [X] Skybox
+- [X] 3 lines denoting the world zero point
+
+

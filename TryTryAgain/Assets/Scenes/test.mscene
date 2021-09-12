@@ -52,7 +52,7 @@
                                         "isActive": true
                                     },
                                     "ShaderPath": "Assets/Shaders/LoadModel.glsl",
-                                    "ModelPath": "Assets/Models/mario/mario-tex.obj"
+                                    "ModelPath": "Assets/Models/backpack/backpack.obj"
                                 }
                             }
                         }

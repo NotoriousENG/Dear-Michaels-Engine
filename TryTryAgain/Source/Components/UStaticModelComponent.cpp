@@ -19,24 +19,25 @@
 
 UStaticModelComponent::UStaticModelComponent(std::shared_ptr<AActor> owner) : UComponent(owner)
 {
-	Init();
+
 }
 
 void UStaticModelComponent::Init()
 {
-	if (this->Shader == nullptr)
-	{
-		this->Shader = rm::ResourceManager::Load<rm::Shader>(ShaderPath);
-	}
+	this->Material = std::make_shared<rm::Material>();
+
+	this->Material->Shader = rm::ResourceManager::Load<rm::Shader>(ShaderPath);
+
 	if (this->Model == nullptr)
 	{
 		this->Model = rm::ResourceManager::Load<rm::Model>(ModelPath);
+		if (this->Model->Material == nullptr)
+		{
+			this->Model->Material = Material;
+			this->Model->loadModel(ModelPath);
+		}
 	}
 	this->name = "UStaticModelComponent";
-
-	this->Material = std::make_shared<rm::Material>();
-
-	Material->Shader = this->Shader;
 
 	Material->InitUniforms();
 }
@@ -86,6 +87,8 @@ bool UStaticModelComponent::ShowInspector()
 
 		Material->ShowInspector();
 
+		
+
 		return true;
 	}
 
@@ -98,7 +101,7 @@ void UStaticModelComponent::Draw(rm::Shader* shader)
 	{
 		if (shader == nullptr)
 		{
-			shader = Shader.get();
+			shader = Material->Shader.get();
 		}
 		Material->SetUniforms();
 		shader->Use();

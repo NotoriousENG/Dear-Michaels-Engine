@@ -4,9 +4,12 @@
 #include <memory>
 #include <cstddef>
 
+#include "Resource.h"
+
 namespace rm {
 
 	class Shader;
+	class Texture2D;
 
 	struct Uniform
 	{
@@ -20,10 +23,13 @@ namespace rm {
 		std::byte* data;
 	};
 
-	class Material
+	class Material : public Resource
 	{
 	public:
+
 		std::shared_ptr<rm::Shader> Shader;
+
+		std::vector<std::shared_ptr<rm::Texture2D>> Textures;
 
 		std::vector<Uniform> Uniforms;
 

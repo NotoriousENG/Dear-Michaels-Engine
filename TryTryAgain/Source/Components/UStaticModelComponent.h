@@ -26,7 +26,6 @@ public:
 	typedef UComponent Super;
 
 	std::shared_ptr<rm::Model> Model;
-	std::shared_ptr<rm::Shader> Shader;
 
 	std::shared_ptr<rm::Material> Material;
 

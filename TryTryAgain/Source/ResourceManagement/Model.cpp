@@ -16,8 +16,7 @@
 
 #include <Panels/Console.h>
 #include <ResourceManagement/ResourceManager.h>
-
-#include <filesystem>
+#include "Material.h"
 
 namespace rm
 {
@@ -28,7 +27,6 @@ namespace rm
     void Model::Init(std::string path)
     {
         gammaCorrection = false;
-        loadModel(path);
     }
     void rm::Model::Draw(Shader* shader)
     {
@@ -152,6 +150,15 @@ namespace rm
         // 4. height maps
         vector<std::shared_ptr<rm::Texture2D>> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
         textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+
+        for (std::shared_ptr<rm::Texture2D> t : textures)
+        {
+            if (std::find(Material->Textures.begin(), Material->Textures.end(), t) == Material->Textures.end())
+            {
+                Material->Textures.push_back(t);
+            }
+        }
+        
 
         // return a mesh object created from the extracted mesh data
         return Mesh(vertices, indices, textures);

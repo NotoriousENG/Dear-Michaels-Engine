@@ -19,7 +19,7 @@ namespace rm
 
     unsigned int TextureFromFile(const char* path, const string& directory, bool gamma = false);
 
-    class Model : public Resource
+    class Model : public rm::Resource
     {
     public:
         // model data 

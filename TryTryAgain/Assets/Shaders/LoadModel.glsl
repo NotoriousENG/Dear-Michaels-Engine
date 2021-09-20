@@ -23,13 +23,21 @@ void main()
 out vec4 FragColor;
 
 in vec2 TexCoords;
-
+uniform bool useTexture;
 uniform sampler2D texture_diffuse1;
 uniform vec4 Albedo;
 
 void main()
 {    
-    FragColor = texture(texture_diffuse1, TexCoords) * Albedo;
+    if (!useTexture)
+    {
+        FragColor = Albedo;
+    }
+
+    else
+    {
+        FragColor = texture(texture_diffuse1, TexCoords) * Albedo;
+    }
 }
 
 #endif

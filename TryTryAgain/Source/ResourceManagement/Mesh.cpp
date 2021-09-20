@@ -60,6 +60,12 @@ namespace rm
                 // and finally bind the texture
                 glBindTexture(GL_TEXTURE_2D, material->Textures[i]->ID);
             }
+
+            if (material->Textures.size() == 0)
+            {
+                shader->SetBool("useTexture", false);
+                glBindTexture(GL_TEXTURE_2D, 0);
+            }
         }
 
         // draw mesh

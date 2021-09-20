@@ -43,7 +43,7 @@ public:
 		ar(cereal::make_nvp("UComponent", cereal::virtual_base_class<UComponent>(this)), CEREAL_NVP(ShaderPath), CEREAL_NVP(ModelPath));
 	}
 
-	std::string ModelPath = "Assets/Models/mario/mario-tex.obj";
+	std::string ModelPath = "Assets/Models/cube/cube.obj";
 
 	virtual bool ShowInspector() override;
 

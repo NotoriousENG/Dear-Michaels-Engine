@@ -10,12 +10,7 @@ UTransformGizmo::UTransformGizmo()
 {
 	model = glm::mat4(1);
 
-	this->transform = FTransform
-	{
-		glm::vec3(0),
-		glm::vec3(0),
-		glm::vec3(1)
-	};
+	this->transform = FTransform();
 
 	Shader = rm::ResourceManager::Load<rm::Shader>("Assets/Shaders/Gizmo.glsl");
 
@@ -65,16 +60,8 @@ void UTransformGizmo::Draw()
 {
 	Shader->Use();
 
-	auto trans = glm::translate(model, transform.position);
-
-	trans = glm::rotate(trans, glm::radians(transform.rotation.x), glm::vec3(1, 0, 0));
-	trans = glm::rotate(trans, glm::radians(transform.rotation.y), glm::vec3(0, 1, 0));
-	trans = glm::rotate(trans, glm::radians(transform.rotation.z), glm::vec3(0, 0, 1));
-
-	trans = glm::scale(trans, transform.scale);
-
 	Shader->Use();
-	Shader->SetMatrix4("model", trans);
+	Shader->SetMatrix4("model", transform.GetModelMatrix());
 	Shader->SetMatrix4("view", Camera::Main.view);
 	Shader->SetMatrix4("projection", Camera::Main.projection);
 

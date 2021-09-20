@@ -142,6 +142,14 @@ namespace rm
         glUniformMatrix4fv(glGetUniformLocation(this->ID, name), 1, false, glm::value_ptr(matrix));
     }
 
+    void Shader::SetBool(const char* name, bool value, bool useShader)
+    {
+        if (useShader)
+            this->Use();
+        int glvalue = value ? 1 : 0;
+        glUniform1i(glGetUniformLocation(this->ID, name), glvalue);
+    }
+
 
     void Shader::checkCompileErrors(unsigned int object, std::string type)
     {

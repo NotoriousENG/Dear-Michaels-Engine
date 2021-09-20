@@ -144,7 +144,6 @@ void Game::LoadScene(const char* path)
 	iarchive(Actors);
 	for (auto& a : Actors)
 	{
-		a->UpdateMatrix();
 		a->Init();
 	}
 }

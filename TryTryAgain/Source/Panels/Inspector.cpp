@@ -12,6 +12,7 @@
 #include <vector>
 #include <string>
 #include <Input/Input.h>
+#include "Actors/AActor.h"
 
 namespace Panels
 {
@@ -21,7 +22,6 @@ namespace Panels
 
 	void Inspector::Draw()
 	{
-		float* model_arr = glm::value_ptr(Game::instance->Picked->model);
 		auto& camera = Camera::Main;
 
 		if (!Input::MouseButtons[SDL_BUTTON_RIGHT])
@@ -40,15 +40,27 @@ namespace Panels
 
 		if (!Game::instance->Actors.empty() && Game::instance->Picked != nullptr)
 		{
-			auto actor = Game::instance->Picked;
+			auto* actor = Game::instance->Picked;
+			glm::mat4 model = Game::instance->Picked->transform->GetModelMatrix();
+			float* model_arr = glm::value_ptr(model);
+
 			ImGuizmo::SetGizmoSizeClipSpace(0.2);
 
-			EditTransform(glm::value_ptr(camera.view), glm::value_ptr(camera.projection), glm::distance(glm::normalize(camera.transform.position), glm::vec3(0)), model_arr);
+			EditTransform(glm::value_ptr(camera.view), glm::value_ptr(camera.projection), glm::distance(glm::normalize(camera.position), glm::vec3(0)), model_arr);
 
 			if (actor != nullptr)
 			{
-				auto& pt = actor->transform;
-				glm::decompose(actor->model, pt.scale, pt.rotation, pt.position, pt.skew, pt.perspective);
+				
+				glm::vec3 scale;
+				glm::quat rot;
+				glm::vec3 pos;
+				glm::vec3 skew;
+				glm::vec4 persp;
+				
+				glm::decompose(model, scale, rot, pos, skew, persp);
+				actor->transform->SetPosition(pos);
+				actor->transform->SetRotation(rot);
+				actor->transform->SetScale(scale);
 
 				int i = 0;
 				for (auto& comp : actor->components)

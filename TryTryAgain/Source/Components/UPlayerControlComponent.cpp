@@ -20,8 +20,8 @@ void UPlayerControlComponent::Tick(float delta)
 	PlayerInput.x = (int)Input::Keys[SDLK_a] + -1 * (int)Input::Keys[SDLK_d];
 	PlayerInput.y = (int)Input::Keys[SDLK_w] + -1 * (int)Input::Keys[SDLK_s];
 
-	owner->transform.position += PlayerInput.y * owner->transform.getForward() * Speed * delta;
-	owner->transform.rotation = glm::rotate(owner->transform.rotation, PlayerInput.x * TurnSpeed * delta, glm::vec3(0, 1, 0));
+	owner->transform->SetPosition(owner->transform->GetPosition() + PlayerInput.y * owner->transform->getForward() * Speed * delta);
+	owner->transform->SetRotation(glm::rotate(owner->transform->GetRotation(), PlayerInput.x * TurnSpeed * delta, glm::vec3(0, 1, 0)));
 }
 
 bool UPlayerControlComponent::ShowInspector()

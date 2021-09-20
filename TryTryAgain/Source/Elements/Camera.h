@@ -31,7 +31,8 @@ public:
     static Camera Main;
     // camera Attributes
 
-    FTransform transform;
+    glm::vec3 position;
+    glm::vec3 eulers;
 
     glm::vec3 Front;
     glm::vec3 Up;
@@ -54,11 +55,9 @@ public:
     // constructor with vectors
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
     {
-        transform.position = position;
+        this->position = position;
         WorldUp = up;
-        transform.rotation.x = glm::radians(pitch);
-        transform.rotation.y = glm::radians(yaw);
-        transform.rotation.z = 0;
+        this->eulers = glm::vec3(glm::radians(pitch), glm::radians(yaw), 0);
         Pitch = pitch;
         Yaw = yaw;
         Right = glm::cross(Front, WorldUp);
@@ -68,11 +67,9 @@ public:
     // constructor with scalar values
     Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
     {
-        transform.position = glm::vec3(posX, posY, posZ);
+        this->position = glm::vec3(posX, posY, posZ);
         WorldUp = glm::vec3(upX, upY, upZ);
-        transform.rotation.x = glm::radians(pitch);
-        transform.rotation.y = glm::radians(yaw);
-        transform.rotation.z = 0;
+        this->eulers = glm::vec3(glm::radians(pitch), glm::radians(yaw), 0);
         Pitch = pitch;
         Yaw = yaw;
         Right = glm::cross(Front, WorldUp);

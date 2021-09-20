@@ -15,7 +15,7 @@ namespace Panels
 
         static void HelpIcon(const char* desc);
 
-        void ShowActor(AActor* actor);
+        void ShowActor(std::shared_ptr<AActor> actor);
 
         void ShowTransform(FTransform& transform);
 

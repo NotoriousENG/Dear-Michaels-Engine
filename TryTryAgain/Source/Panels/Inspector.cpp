@@ -20,6 +20,8 @@ namespace Panels
 
 	UComponent* Inspector::InspectedComponent = nullptr;
 
+	static ImGuizmo::MODE mCurrentGizmoMode = ImGuizmo::LOCAL;
+
 	void Inspector::Draw()
 	{
 		auto& camera = Camera::Main;
@@ -41,26 +43,45 @@ namespace Panels
 		if (!Game::instance->Actors.empty() && Game::instance->Picked != nullptr)
 		{
 			auto* actor = Game::instance->Picked;
-			glm::mat4 model = Game::instance->Picked->transform->GetModelMatrix();
-			float* model_arr = glm::value_ptr(model);
+
+			glm::mat4 mat = mCurrentGizmoMode == ImGuizmo::MODE::LOCAL ? Game::instance->Picked->transform->GetModelMatrixLocal() : Game::instance->Picked->transform->GetModelMatrixWorld();
+
+			float* model_arr = glm::value_ptr(mat);
+			/*float* l_model_arr = glm::value_ptr(local_mat);*/
 
 			ImGuizmo::SetGizmoSizeClipSpace(0.2);
 
-			EditTransform(glm::value_ptr(camera.view), glm::value_ptr(camera.projection), glm::distance(glm::normalize(camera.position), glm::vec3(0)), model_arr);
+			auto mPrevGizmoMode = mCurrentGizmoMode;
+
+			EditTransform(glm::value_ptr(camera.view), glm::value_ptr(camera.projection), glm::distance(glm::normalize(camera.position), glm::vec3(0)), model_arr, nullptr);
 
 			if (actor != nullptr)
 			{
+				if (mPrevGizmoMode == mCurrentGizmoMode)
+				{
+					glm::vec3 scale;
+					glm::quat rot;
+					glm::vec3 pos;
+					glm::vec3 skew;
+					glm::vec4 persp;
+
+					if (mCurrentGizmoMode == ImGuizmo::MODE::LOCAL)
+					{
+						glm::decompose(mat, scale, rot, pos, skew, persp);
+						actor->transform->SetLocalPosition(pos);
+						actor->transform->SetLocalRotation(rot);
+						actor->transform->SetLocalScale(scale);
+					}
+					else
+					{
+						glm::decompose(mat, scale, rot, pos, skew, persp);
+						actor->transform->SetPosition(pos);
+						actor->transform->SetRotation(rot);
+						actor->transform->SetScale(scale);
+					}
+				}
 				
-				glm::vec3 scale;
-				glm::quat rot;
-				glm::vec3 pos;
-				glm::vec3 skew;
-				glm::vec4 persp;
-				
-				glm::decompose(model, scale, rot, pos, skew, persp);
-				actor->transform->SetPosition(pos);
-				actor->transform->SetRotation(rot);
-				actor->transform->SetScale(scale);
+
 
 				int i = 0;
 				for (auto& comp : actor->components)
@@ -92,9 +113,8 @@ namespace Panels
 		ImGui::MenuItem("Inspector", "", &isActive);
 	}
 
-	void Inspector::EditTransform(float* cameraView, float* cameraProjection, float camDistance, float* matrix)
+	void Inspector::EditTransform(float* cameraView, float* cameraProjection, float camDistance, float* world_mat, float* local_mat)
 	{
-		static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::LOCAL);
 		static bool b_useSnap = false;
 		static float snap[3] = { 1.f, 1.f, 1.f };
 		static float bounds[] = { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f };
@@ -104,7 +124,7 @@ namespace Panels
 
 		static bool allowAxisFlip = true;
 
-		
+
 		{
 			auto actor = Game::instance->Picked;
 			ImGui::BeginTable("split", 3, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_Resizable);
@@ -127,7 +147,7 @@ namespace Panels
 				Destroy(actor);
 				ImGui::PopStyleColor();
 				ImGui::EndTable();
-				
+
 				return;
 			}
 			ImGui::PopStyleColor();
@@ -163,13 +183,6 @@ namespace Panels
 				mCurrentGizmoMode = ImGuizmo::LOCAL;
 			}
 
-			float matrixTranslation[3], matrixRotation[3], matrixScale[3];
-			ImGuizmo::DecomposeMatrixToComponents(matrix, matrixTranslation, matrixRotation, matrixScale);
-			ImGui::InputFloat3("Tr", matrixTranslation);
-			ImGui::InputFloat3("Rt", matrixRotation);
-			ImGui::InputFloat3("Sc", matrixScale);
-			ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, matrix);
-
 			if (mCurrentGizmoOperation == ImGuizmo::BOUNDS)
 			{
 				ImGui::PushID(3);
@@ -184,10 +197,25 @@ namespace Panels
 			{
 				if (ImGui::RadioButton("Local", mCurrentGizmoMode == ImGuizmo::LOCAL))
 					mCurrentGizmoMode = ImGuizmo::LOCAL;
+
 				ImGui::SameLine();
+
 				if (ImGui::RadioButton("World", mCurrentGizmoMode == ImGuizmo::WORLD))
 					mCurrentGizmoMode = ImGuizmo::WORLD;
+
 			}
+
+			float matrixTranslation[3], matrixRotation[3], matrixScale[3];
+
+			{
+				float* mat = /*(mCurrentGizmoMode == ImGuizmo::LOCAL) ? local_mat :*/ world_mat;
+				ImGuizmo::DecomposeMatrixToComponents(mat, matrixTranslation, matrixRotation, matrixScale);
+				ImGui::InputFloat3("Tr", matrixTranslation);
+				ImGui::InputFloat3("Rt", matrixRotation);
+				ImGui::InputFloat3("Sc", matrixScale);
+				ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, mat);
+			}
+
 			if (ImGui::IsKeyPressed(83))
 				b_useSnap = !b_useSnap;
 			if (!boundSizing)
@@ -212,7 +240,7 @@ namespace Panels
 			ImGui::Checkbox("Allow Axis Flip", &allowAxisFlip);
 			ImGuizmo::AllowAxisFlip(allowAxisFlip);
 
-			
+
 		}
 
 		ImGui::Begin("GameWindow");
@@ -232,7 +260,7 @@ namespace Panels
 
 			if (!Game::instance->playing)
 			{
-				ImGuizmo::Manipulate(cameraView, cameraProjection, mCurrentGizmoOperation, mCurrentGizmoMode, matrix, NULL, b_useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
+				ImGuizmo::Manipulate(cameraView, cameraProjection, mCurrentGizmoOperation, mCurrentGizmoMode, world_mat, NULL, b_useSnap ? &snap[0] : NULL, boundSizing ? bounds : NULL, boundSizingSnap ? boundsSnap : NULL);
 			}
 
 			// ImGuizmo::DrawGrid(cameraView, cameraProjection, identityMatrix, 100.f);

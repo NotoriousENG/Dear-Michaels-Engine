@@ -61,7 +61,7 @@ void UTransformGizmo::Draw()
 	Shader->Use();
 
 	Shader->Use();
-	Shader->SetMatrix4("model", transform.GetModelMatrix());
+	Shader->SetMatrix4("model", transform.GetModelMatrixWorld());
 	Shader->SetMatrix4("view", Camera::Main.view);
 	Shader->SetMatrix4("projection", Camera::Main.projection);
 

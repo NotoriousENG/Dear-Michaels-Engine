@@ -92,5 +92,5 @@ void AActor::ClearDescendents()
 
 glm::mat4 AActor::GetMVP()
 {
-	return Camera::Main.projection * Camera::Main.view * transform->GetModelMatrix();
+	return Camera::Main.projection * Camera::Main.view * transform->GetModelMatrixWorld();
 }

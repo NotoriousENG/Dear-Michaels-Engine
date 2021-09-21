@@ -21,80 +21,80 @@ enum class AXIS
 class FTransform : std::enable_shared_from_this<FTransform>
 {
 public:
-	glm::mat4 GetModelMatrix()
+
+	glm::mat4 GetModelMatrixWorld()
 	{
 		glm::mat4 translate = glm::translate(glm::mat4(1.0), GetPosition());
 		glm::mat4 rotate = glm::mat4_cast(GetRotation());
 		glm::mat4 scale = glm::scale(glm::mat4(1.0), GetScale());
 
-		return (parent != nullptr) ? scale * rotate * translate : translate * rotate * scale;
+		return translate * rotate * scale;
+	}
+
+	glm::mat4 GetModelMatrixLocal()
+	{
+		glm::mat4 translate = glm::translate(glm::mat4(1.0), localPosition);
+		glm::mat4 rotate = glm::mat4_cast(localRotation);
+		glm::mat4 scale = glm::scale(glm::mat4(1.0), localScale);
+
+		return translate * rotate * scale;
 	}
 
 	// Global Getters / Setters
 
 	glm::vec3 GetPosition()
 	{
-		return (parent != nullptr) ? parent->position + localPosition : position;
+		position = (parent != nullptr) ? parent->position + parent->rotation * (parent->scale * localPosition) : localPosition;
+		return position;
 	}
 
 	void SetPosition(glm::vec3 position)
 	{
-		// if we have a parent, the local position is the difference from the parent's position
+		this->localPosition = (parent != nullptr) ? glm::inverse(parent->rotation) * (position - parent->position) / parent->scale : position;
+
 		this->position = position;
-
-		this->localPosition = (parent != nullptr) ? position - parent->position : position;
-	}
-
-	void SetPosition(AXIS axis, float value)
-	{
-		int i = (int)axis;
-		if (i >= 0 && i < 3)
-		{
-			this->position[i] = value;
-			this->localPosition[i] = (parent != nullptr) ? parent->position[i] - this->position[i] : this->position[i];
-		}
 	}
 
 	glm::quat GetRotation()
 	{
-		// rot = parent * local
-		return (parent != nullptr) ? parent->rotation : rotation;
+		rotation = (parent != nullptr) ? parent->rotation * localRotation : localRotation;
+		return rotation;
 	}
 
 	void SetRotation(glm::quat rotation)
 	{
-		if (parent == nullptr)
-			this->rotation = glm::normalize(rotation);
+		// localrot = rot * in_local
+		this->localRotation = (parent != nullptr) ? rotation * glm::inverse(parent->rotation) : glm::normalize(rotation);
 
-		// localrot = parent * inv_local
-		// this->localRotation = (parent != nullptr) ? glm::identity<glm::quat>() : glm::normalize(this->rotation);
+		this->rotation = rotation;
 	}
 
 
 	glm::vec3 GetScale()
 	{
-		return (parent != nullptr) ? parent->scale * localScale : scale;
+		scale = (parent != nullptr) ? parent->scale * localScale : localScale;
+		return scale;
 	}
 
 	void SetScale(glm::vec3 scale)
 	{
-		this->scale = scale;
-
 		this->localScale = (parent != nullptr) ? scale / parent->scale : scale;
+
+		this->scale = scale;
 	}
 
 	// local getters / setters
 
 	glm::vec3 GetLocalPosition()
 	{
-		return this->localScale;
+		return this->localPosition;
 	}
 
 	void SetLocalPosition(glm::vec3 localPostion)
 	{
 		this->localPosition = localPostion;
 
-		this->position = (parent != nullptr) ? parent->position + this->localPosition : this->localPosition;
+		this->position = GetPosition();
 	}
 
 	glm::quat GetLocalRotation()
@@ -106,7 +106,7 @@ public:
 	{
 		this->localRotation = localRotation;
 
-		this->rotation = (parent != nullptr) ? glm::normalize(parent->GetRotation() * glm::inverse(this->localRotation)) : glm::normalize(this->localRotation);
+		this->rotation = GetRotation();
 	}
 
 	glm::vec3 GetLocalScale()
@@ -118,7 +118,7 @@ public:
 	{
 		this->localScale = localScale;
 
-		this->scale = (parent != nullptr) ? parent->scale + this->localScale : this->localScale;
+		this->scale = GetScale();
 	}
 protected:
 	glm::vec3 position = glm::vec3(0);
@@ -212,6 +212,6 @@ public:
 	template <class Archive>
 	void serialize(Archive& ar)
 	{
-		ar(CEREAL_NVP(position), CEREAL_NVP(rotation), CEREAL_NVP(scale), CEREAL_NVP(skew), CEREAL_NVP(perspective));
+		ar(CEREAL_NVP(localPosition), CEREAL_NVP(localRotation), CEREAL_NVP(localScale), CEREAL_NVP(skew), CEREAL_NVP(perspective));
 	}
 };

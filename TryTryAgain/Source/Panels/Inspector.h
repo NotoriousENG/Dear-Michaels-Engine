@@ -22,11 +22,11 @@ namespace Panels {
 
 		bool useSnap = false;
 		ImGuizmo::OPERATION mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-		ImGuizmo::MODE mCurrentGizmoMode = ImGuizmo::WORLD;
+		ImGuizmo::MODE mCurrentGizmoMode = ImGuizmo::LOCAL;
 
 	private:
 
-		void EditTransform(float* cameraView, float* cameraProjection, float camDistance, float* matrix);
+		void EditTransform(float* cameraView, float* cameraProjection, float camDistance, float* world_mat, float* local_mat);
 
 		void addComponentField();
 	};

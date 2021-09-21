@@ -98,7 +98,7 @@ void UStaticModelComponent::Draw(rm::Shader* shader)
 			shader = Model->meshes[0].material->Shader.get();
 		}
 		shader->Use();
-		shader->SetMatrix4("model", owner->transform->GetModelMatrix());
+		shader->SetMatrix4("model", owner->transform->GetModelMatrixWorld());
 		shader->SetMatrix4("view", Camera::Main.view);
 		shader->SetMatrix4("projection", Camera::Main.projection);
 

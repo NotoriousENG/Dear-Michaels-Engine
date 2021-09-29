@@ -66,7 +66,7 @@ static void Destroy(AActor* actor)
 	actor->ClearComponents();
     actor->isDead = true;
 
-	auto& p = actor->transform->parent;
+	auto p = actor->transform->GetParent();
 	if (p != nullptr)
 	{
 		// Remove child

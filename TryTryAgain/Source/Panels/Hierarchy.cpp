@@ -77,7 +77,7 @@ namespace Panels
                 std::string data = (const char*)payload->Data;
                 if (data != FString("%i", id).Text) {
                     auto& child = Game::instance->Actors[std::stoi(data)];
-                    FTransform::AddChild(actor->transform, child->transform);
+                    actor->transform->AddChild(child->transform);
                 }
             }
             ImGui::EndDragDropTarget();
@@ -155,7 +155,7 @@ namespace Panels
                 std::string data = (const char*)payload->Data;
                 
                 auto& child = Game::instance->Actors[std::stoi(data)];
-                FTransform::AddChild(nullptr, child->transform);
+                child->transform->SetParent(nullptr);
 
             }
             ImGui::EndDragDropTarget();
@@ -168,7 +168,7 @@ namespace Panels
         // Iterate placeholder objects (all the same data)
         for (auto& actor : Game::instance->Actors)
         {
-            if (actor->transform->parent == nullptr)
+            if (actor->transform->GetParent() == nullptr)
                 ShowActor(actor);
         }
 

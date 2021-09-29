@@ -84,7 +84,7 @@ void AActor::ClearDescendents()
 {
 	for (auto& c : transform->children)
 	{
-		c->parent = nullptr;
+		c->SetParent(nullptr);
 		Destroy(c->actor.get());
 		c->children.clear();
 	}

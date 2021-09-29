@@ -68,16 +68,17 @@ namespace Panels
 					if (mCurrentGizmoMode == ImGuizmo::MODE::LOCAL)
 					{
 						glm::decompose(mat, scale, rot, pos, skew, persp);
-						actor->transform->SetLocalPosition(pos);
-						actor->transform->SetLocalRotation(rot);
-						actor->transform->SetLocalScale(scale);
+						actor->transform->localPosition = pos;
+						actor->transform->localRotation = rot;
+						actor->transform->localScale = scale;
 					}
 					else
 					{
 						glm::decompose(mat, scale, rot, pos, skew, persp);
 						actor->transform->SetPosition(pos);
 						actor->transform->SetRotation(rot);
-						actor->transform->SetScale(scale);
+						if (actor->transform->GetParent() == nullptr)
+							actor->transform->localScale = scale;
 					}
 				}
 				
@@ -265,12 +266,6 @@ namespace Panels
 
 			// ImGuizmo::DrawGrid(cameraView, cameraProjection, identityMatrix, 100.f);
 			// ImGuizmo::ViewManipulate(cameraView, camDistance, ImVec2(viewManipulateRight - 128, viewManipulateTop), ImVec2(128, 128), 0x10101010);
-
-			if (false)
-			{
-				//ImGui::End();
-				ImGui::PopStyleColor(1);
-			}
 
 			ImGui::EndChild();
 		}

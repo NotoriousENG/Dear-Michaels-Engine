@@ -7,6 +7,8 @@
 #include <Panels/Console.h>
 #include "Structs/FString.h"
 #include <stack>
+#include <memory>
+#include <glm/gtx/matrix_decompose.hpp>
 
 class AActor;
 
@@ -18,17 +20,27 @@ enum class AXIS
 	w = 3
 };
 
-class FTransform : std::enable_shared_from_this<FTransform>
+class FTransform : public std::enable_shared_from_this<FTransform>
 {
+private:
+	std::shared_ptr<FTransform> parent;
+	
 public:
+
+	std::shared_ptr<AActor> actor;
+
+	std::vector<std::shared_ptr<FTransform>> children;
+
+	glm::vec3 localPosition = glm::vec3(0);
+	glm::quat localRotation = glm::identity<glm::quat>();
+	glm::vec3 localScale = glm::vec3(1);
 
 	glm::mat4 GetModelMatrixWorld()
 	{
-		glm::mat4 translate = glm::translate(glm::mat4(1.0), GetPosition());
-		glm::mat4 rotate = glm::mat4_cast(GetRotation());
-		glm::mat4 scale = glm::scale(glm::mat4(1.0), GetScale());
-
-		return translate * rotate * scale;
+		if (parent)
+			return parent->GetModelMatrixWorld() * GetModelMatrixLocal();
+		else
+			return GetModelMatrixLocal();
 	}
 
 	glm::mat4 GetModelMatrixLocal()
@@ -40,139 +52,147 @@ public:
 		return translate * rotate * scale;
 	}
 
-	// Global Getters / Setters
-
 	glm::vec3 GetPosition()
 	{
-		position = (parent != nullptr) ? parent->position + parent->rotation * (parent->scale * localPosition) : localPosition;
-		return position;
+		glm::vec3 pos;
+
+		glm::mat4 model = GetModelMatrixWorld();
+
+		pos = glm::vec3(model[3][0], model[3][1], model[3][2]);
+
+		return pos;
 	}
 
-	void SetPosition(glm::vec3 position)
+	void SetPosition(glm::vec3 w_position)
 	{
-		this->localPosition = (parent != nullptr) ? glm::inverse(parent->rotation) * (position - parent->position) / parent->scale : position;
+		if (parent)
+		{
+			glm::mat4 local = glm::translate(glm::inverse(parent->GetModelMatrixWorld()), w_position);
 
-		this->position = position;
+			localPosition = glm::vec3(local[3][0], local[3][1], local[3][2]);
+		}
+		else
+		{
+			localPosition = w_position;
+		}
 	}
 
 	glm::quat GetRotation()
 	{
-		rotation = (parent != nullptr) ? parent->rotation * localRotation : localRotation;
-		return rotation;
+		glm::vec3 scale;
+		glm::quat rot;
+		glm::vec3 pos;
+		glm::vec3 skew;
+		glm::vec4 persp;
+		glm::decompose(GetModelMatrixWorld(), scale, rot, pos, skew, persp);
+
+		return rot;
 	}
 
-	void SetRotation(glm::quat rotation)
+	void SetRotation(glm::quat w_rot)
 	{
-		// localrot = rot * in_local
-		this->localRotation = (parent != nullptr) ? rotation * glm::inverse(parent->rotation) : glm::normalize(rotation);
+		if (parent)
+		{
+			// given parent world rot
+			// desired world
 
-		this->rotation = rotation;
+			// get local to parent
+			// parent * local = world
+
+			localRotation = glm::normalize(glm::inverse(glm::quat_cast(parent->GetModelMatrixWorld())) * w_rot);
+		}
+		else
+		{
+			localRotation = w_rot;
+		}
 	}
-
 
 	glm::vec3 GetScale()
 	{
-		scale = (parent != nullptr) ? parent->scale * localScale : localScale;
+		glm::vec3 scale;
+		glm::quat rot;
+		glm::vec3 pos;
+		glm::vec3 skew;
+		glm::vec4 persp;
+		glm::decompose(GetModelMatrixWorld(), scale, rot, pos, skew, persp);
+
 		return scale;
 	}
 
-	void SetScale(glm::vec3 scale)
+	std::shared_ptr<FTransform> GetParent()
 	{
-		this->localScale = (parent != nullptr) ? scale / parent->scale : scale;
-
-		this->scale = scale;
+		return this->parent;
 	}
 
-	// local getters / setters
-
-	glm::vec3 GetLocalPosition()
+	void SetParent(std::shared_ptr<FTransform> parent)
 	{
-		return this->localPosition;
+		glm::vec3 scale;
+		glm::quat rot;
+		glm::vec3 pos;
+		glm::vec3 skew;
+		glm::vec4 persp;
+		glm::decompose(GetModelMatrixWorld(), scale, rot, pos, skew, persp);
+
+		// remove this child from it's old parent
+		if (this->parent != nullptr)
+		{
+			for (int i = 0; i < this->parent->children.size(); i++)
+			{
+				auto& c = this->parent->children[i];
+				if (c.get() == this)
+				{
+					this->parent->children.erase(this->parent->children.begin() + i);
+					break;
+				}
+			}
+		}
+
+		this->parent = parent;
+
+		// maintain transformations in global space
+		this->SetPosition(pos);
+		this->SetRotation(rot);
+		this->localScale = scale;
 	}
 
-	void SetLocalPosition(glm::vec3 localPostion)
+	void AddChild(std::shared_ptr<FTransform> child)
 	{
-		this->localPosition = localPostion;
-
-		this->position = GetPosition();
-	}
-
-	glm::quat GetLocalRotation()
-	{
-		return this->localRotation;
-	}
-
-	void SetLocalRotation(glm::quat localRotation)
-	{
-		this->localRotation = localRotation;
-
-		this->rotation = GetRotation();
-	}
-
-	glm::vec3 GetLocalScale()
-	{
-		return this->localScale;
-	}
-
-	void SetLocalScale(glm::vec3 localScale)
-	{
-		this->localScale = localScale;
-
-		this->scale = GetScale();
-	}
-protected:
-	glm::vec3 position = glm::vec3(0);
-	glm::quat rotation = glm::identity<glm::quat>();
-	glm::vec3 scale = glm::vec3(1);
-
-	glm::vec3 localPosition = glm::vec3(0);
-	glm::quat localRotation = glm::identity<glm::quat>();
-	glm::vec3 localScale = glm::vec3(1);
-
-	glm::vec3 skew;
-	glm::vec4 perspective;
-
-public:
-
-	std::shared_ptr<AActor> actor;
-	std::shared_ptr<FTransform> parent;
-	std::vector<std::shared_ptr<FTransform>> children;
-
-	static void AddChild(std::shared_ptr<FTransform> parent, std::shared_ptr<FTransform> child)
-	{
-		if (parent == child)
+		if (this == child.get())
 		{
 			M_LOG("[warn]: parent and child can not be the same transform");
 			return;
 		}
 
-		if (parent != nullptr)
+		if (child == nullptr)
 		{
-			// DFS
-			std::unordered_map<std::shared_ptr<FTransform>, bool> visited;
-			std::stack<std::shared_ptr<FTransform>> s;
-			s.push(child);
-			while (!s.empty())
-			{
-				auto v = s.top();
-				s.pop();
-				if (v == parent)
-				{
-					M_LOG("[warn] cycle");
-					return;
-				}
-				if (!visited[v])
-				{
-					visited[v] = true;
-					for (auto& c : v->children)
-					{
-						s.push(c);
-					}
-				}
-			}
+			M_LOG("[warn]: child is null");
+			return;
 		}
 
 
+		// DFS
+		std::unordered_map<std::shared_ptr<FTransform>, bool> visited;
+		std::stack<std::shared_ptr<FTransform>> s;
+		s.push(child);
+		while (!s.empty())
+		{
+			auto v = s.top();
+			s.pop();
+			if (v.get() == this)
+			{
+				M_LOG("[warn] cycle");
+				return;
+			}
+			if (!visited[v])
+			{
+				visited[v] = true;
+				for (auto& c : v->children)
+				{
+					s.push(c);
+				}
+			}
+		}
+		
 		// remove this child from it's old parent
 		if (child->parent != nullptr)
 		{
@@ -188,17 +208,16 @@ public:
 		}
 
 		// the child knows it's new parent
-		child->parent = parent;
+		child->SetParent(shared_from_this());
 
-		if (parent != nullptr)
-			// the parent knows its new child
-			parent->children.push_back(child);
+		// the parent knows its new child
+		children.push_back(child);
 
 	}
 
 	glm::vec3 getForward()
 	{
-		return glm::normalize(rotation * glm::vec3(0, 0, 1));
+		return glm::normalize(localRotation * glm::vec3(0, 0, 1));
 	}
 
 	std::shared_ptr<FTransform> GetRoot()
@@ -212,6 +231,6 @@ public:
 	template <class Archive>
 	void serialize(Archive& ar)
 	{
-		ar(CEREAL_NVP(localPosition), CEREAL_NVP(localRotation), CEREAL_NVP(localScale), CEREAL_NVP(skew), CEREAL_NVP(perspective));
+		ar(CEREAL_NVP(localPosition), CEREAL_NVP(localRotation), CEREAL_NVP(localScale));
 	}
 };

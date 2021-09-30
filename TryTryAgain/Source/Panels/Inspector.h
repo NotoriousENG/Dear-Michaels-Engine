@@ -26,7 +26,7 @@ namespace Panels {
 
 	private:
 
-		void EditTransform(float* cameraView, float* cameraProjection, float camDistance, float* world_mat, float* local_mat);
+		void EditTransform(float* cameraView, float* cameraProjection, float camDistance, float* local, float* world, bool& manipulated);
 
 		void addComponentField();
 	};

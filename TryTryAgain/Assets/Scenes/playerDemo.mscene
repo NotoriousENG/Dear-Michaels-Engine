@@ -5,34 +5,40 @@
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "name": "Actor (0)",
+                    "name": "Mario",
                     "transform": {
-                        "position": {
-                            "x": 0.0,
-                            "y": 0.0,
-                            "z": 0.0
-                        },
-                        "rotation": {
-                            "x": 0.0,
-                            "y": 0.0,
-                            "z": 0.0,
-                            "w": 1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0,
-                            "z": 1.0
-                        },
-                        "skew": {
-                            "x": 0.0,
-                            "y": 0.0,
-                            "z": 0.0
-                        },
-                        "perspective": {
-                            "x": 0.0,
-                            "y": 0.0,
-                            "z": 0.0,
-                            "w": 1.0
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "localPosition": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "localRotation": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0,
+                                    "w": 1.0
+                                },
+                                "localScale": {
+                                    "x": 1.0,
+                                    "y": 1.0,
+                                    "z": 1.0
+                                },
+                                "actor": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 1
+                                    }
+                                },
+                                "parent": {
+                                    "ptr_wrapper": {
+                                        "id": 0
+                                    }
+                                },
+                                "children": []
+                            }
                         }
                     },
                     "components": [

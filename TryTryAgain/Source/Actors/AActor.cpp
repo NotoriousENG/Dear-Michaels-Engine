@@ -17,6 +17,10 @@ AActor::AActor()
 
 void AActor::Init()
 {
+	if (transform == nullptr)
+	{
+		transform = std::make_shared<FTransform>();
+	}
 	for (auto& c : components)
 	{
 		c->Init();

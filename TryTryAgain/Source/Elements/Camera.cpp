@@ -8,17 +8,17 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
 {
     float velocity = MovementSpeed * deltaTime;
     if (direction == FORWARD)
-        transform.position += Front * velocity;
+        position += Front * velocity;
     if (direction == BACKWARD)
-        transform.position -= Front * velocity;
+        position -= Front * velocity;
     if (direction == LEFT)
-        transform.position -= Right * velocity;
+       position -= Right * velocity;
     if (direction == RIGHT)
-        transform.position += Right * velocity;
+        position += Right * velocity;
     if (direction == UP)
-        transform.position += Up * velocity;
+        position += Up * velocity;
     if (direction == DOWN)
-        transform.position -= Up * velocity;
+        position -= Up * velocity;
 
     UpdateCameraVectors();
 }
@@ -29,10 +29,12 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constr
     yoffset *= MouseSensitivity;
 
     //glm::vec3 eulerAngles = glm::degrees(glm::eulerAngles(transform.rotation));
-    float Yaw = glm::degrees(transform.rotation.y);
-    float Pitch = glm::degrees(transform.rotation.x);
+    float Yaw = glm::degrees(eulers.y);
+    float Pitch = glm::degrees(eulers.x);
+
     Yaw += xoffset;
     Pitch += yoffset;
+
 
     // make sure that when pitch is out of bounds, screen doesn't get flipped
     if (constrainPitch)
@@ -43,8 +45,8 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constr
             Pitch = -89.0f;
     }
 
-    transform.rotation.y = glm::radians(Yaw);
-    transform.rotation.x = glm::radians(Pitch);
+    eulers.y = glm::radians(Yaw);
+    eulers.x = glm::radians(Pitch);
 
     // update Front, Right and Up Vectors using the updated Euler angles
     UpdateCameraVectors();
@@ -62,8 +64,8 @@ void Camera::ProcessMouseScroll(float yoffset)
 void Camera::UpdateCameraVectors()
 {
     //glm::vec3 eulerAngles = glm::degrees(glm::eulerAngles(transform.rotation));
-    float Yaw = glm::degrees(transform.rotation.y);
-    float Pitch = glm::degrees(transform.rotation.x);
+    float Yaw = glm::degrees(eulers.y);
+    float Pitch = glm::degrees(eulers.x);
 
     // calculate the new Front vector
     glm::vec3 front = glm::vec3(0);
@@ -77,5 +79,5 @@ void Camera::UpdateCameraVectors()
 
     projection = glm::perspective(glm::radians(this->Zoom), AspectRatio, 0.1f, 1000.0f);
 
-    view = glm::lookAt(transform.position, transform.position + Front, Up);
+    view = glm::lookAt(position, position + Front, Up);
 }

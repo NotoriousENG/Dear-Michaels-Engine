@@ -71,7 +71,7 @@ unsigned int Skybox::loadCubeMap(std::vector<std::string> faces)
         }
         else
         {
-            M_LOG("[error]: Cubemap tex failed to load at path: %s", faces[i].c_str())
+            M_LOG("[error]: Cubemap tex failed to load at path: %s", faces[i].c_str());
             stbi_image_free(data);
         }
     }

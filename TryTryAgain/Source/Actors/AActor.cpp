@@ -17,19 +17,14 @@ AActor::AActor()
 
 void AActor::Init()
 {
+	if (transform == nullptr)
+	{
+		transform = std::make_shared<FTransform>();
+	}
 	for (auto& c : components)
 	{
 		c->Init();
 	}
-}
-
-void AActor::UpdateMatrix()
-{
-	glm::mat4 translate = glm::translate(glm::mat4(1.0), transform.position);
-	glm::mat4 rotate = glm::mat4_cast(transform.rotation);
-	glm::mat4 scale = glm::scale(glm::mat4(1.0), transform.scale);
-
-	model = translate * rotate * scale;
 }
 
 void AActor::Tick(float delta)
@@ -38,14 +33,6 @@ void AActor::Tick(float delta)
 	{
 		if (c->isActive)
 			c->Tick(delta);
-	}
-	if (!isUsing)
-	{
-		glm::mat4 translate = glm::translate(glm::mat4(1.0), transform.position);
-		glm::mat4 rotate = glm::mat4_cast(transform.rotation);
-		glm::mat4 scale = glm::scale(glm::mat4(1.0), transform.scale);
-
-		model = translate * rotate * scale;
 	}
 }
 
@@ -96,7 +83,17 @@ void AActor::ClearComponents()
 	components.clear();
 }
 
+void AActor::ClearDescendents()
+{
+	for (auto& c : transform->children)
+	{
+		c->SetParent(nullptr);
+		Destroy(c->actor.get());
+		c->children.clear();
+	}
+}
+
 glm::mat4 AActor::GetMVP()
 {
-	return Camera::Main.projection * Camera::Main.view * this->model;
+	return Camera::Main.projection * Camera::Main.view * transform->GetModelMatrixWorld();
 }

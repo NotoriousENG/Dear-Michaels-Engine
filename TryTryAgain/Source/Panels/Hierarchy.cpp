@@ -26,90 +26,106 @@ namespace Panels
 		}
 	}
 
-	void Hierarchy::ShowActor(AActor* actor)
+	void Hierarchy::ShowActor(std::shared_ptr<AActor> actor)
 	{
-        int uid = reinterpret_cast<unsigned int>(actor);
-        ImGui::PushID(uid);
+        // index in actor vector
+        auto it = std::find(Game::instance->Actors.begin(), Game::instance->Actors.end(), actor);
+        int id = (it != Game::instance->Actors.end()) ? it - Game::instance->Actors.begin() : -1;
 
-        // Text and Tree nodes are less high than framed widgets, using AlignTextToFramePadding() we add vertical spacing to make the tree lines equal high.
-        ImGui::TableNextRow();
-        ImGui::TableSetColumnIndex(0);
+        ImGui::PushID(id);
+
         ImGui::AlignTextToFramePadding();
         const char* actorLabel = actor->name.c_str();
 
-        auto wasEditing = actor->isEditing;
+        actor->isExpandedInHierarchy = ImGui::TreeNode("Object", " ");
 
-        if (actor == Game::instance->Picked)
+        if (actor.get() == Game::instance->Picked)
             ImGui::PushStyleColor(0, ImVec4(0, 1, 1, 1));
 
-        actor->isEditing = ImGui::TreeNode("Object", actorLabel);
+        ImGui::SameLine();
+        ImGui::Text(actorLabel);
 
-        if (actor == Game::instance->Picked)
+        if (actor.get() == Game::instance->Picked)
             ImGui::PopStyleColor();
 
-        if (actor->isEditing != wasEditing)
-        {
-            Game::instance->Picked = actor;
-        }
-
-        ImGui::TableSetColumnIndex(1);
-
-        if (actor == Game::instance->Picked)
-            ImGui::PushStyleColor(0, ImVec4(0, 1, 1, 1));
-
-        ImGui::Text("ID: 0x%x", uid);
-        
-        if (actor == Game::instance->Picked)
-            ImGui::PopStyleColor();
-
+        // Pick actor from label
         if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), true) && ImGui::IsMouseClicked(0))
         {
-            Game::instance->Picked = actor;
+            Game::instance->Picked = actor.get();
         }
 
-        
-
-        if (actor->isEditing)
+        // Set actor to be a child of another actor
+        if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_SourceAllowNullID))
         {
+            ImGui::BeginTooltip();
+            ImGui::SetTooltip(actorLabel);
+            ImGui::EndTooltip();
+
+            // get index in actor vector
+            std::string data = FString("%i", id).Text;
+            ImGui::SetDragDropPayload("ACTOR", data.c_str(), data.length() + 1);
+
+            ImGui::EndDragDropSource();
+        }
+
+        // Add child to this actor
+        if (ImGui::BeginDragDropTarget())
+        {
+            auto payload = ImGui::AcceptDragDropPayload("ACTOR");
+            if (payload != nullptr)
             {
-                ImGui::TableSetColumnIndex(0);
-
-                if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), true) && ImGui::IsMouseClicked(0))
-                {
-                    Game::instance->Picked = actor;
+                std::string data = (const char*)payload->Data;
+                if (data != FString("%i", id).Text) {
+                    auto& child = Game::instance->Actors[std::stoi(data)];
+                    actor->transform->AddChild(child->transform);
                 }
+            }
+            ImGui::EndDragDropTarget();
+        }
 
-                ImGui::TableSetColumnIndex(1);
-            	
-            	
+        if (actor->isExpandedInHierarchy)
+        {
+            for (auto& c : actor->transform->children)
+            {
+                if (c->actor != nullptr)
+                    ShowActor(c->actor);
             }
             ImGui::TreePop();
         }
+
+        
         ImGui::PopID();
 	}
 
 	void Hierarchy::AddActor()
 	{
-        ImGui::Text("Add Actor:");
+        ImGui::Text("Add:");
         if (ImGui::Button("Empty"))
         {
             int id = Game::instance->Actors.size();
             Game::instance->Actors.push_back(std::make_shared<AActor>());
+            
+            std::shared_ptr<AActor> sp = Game::instance->Actors.back();
+            sp->transform->actor = sp;
+
             Game::instance->Picked = Game::instance->Actors.back().get();
-            Game::instance->Picked->name = FString("Actor (%i)", id).Text;
-            Game::instance->Picked->UpdateMatrix();
+            Game::instance->Picked->name = FString("Empty (%i)", id).Text;
         }
-        if (ImGui::Button("3D Model"))
+        if (ImGui::Button("Cube"))
         {
             int id = Game::instance->Actors.size();
             Game::instance->Actors.push_back(std::make_shared<AActor>());
+
             Game::instance->Picked = Game::instance->Actors.back().get();
-            Game::instance->Picked->name = FString("Actor (%i)", id).Text;
-            Game::instance->Picked->UpdateMatrix();
+            Game::instance->Picked->name = FString("Cube (%i)", id).Text;
 
             auto& a = Game::instance->Actors.back();
             a->AddComponent<UStaticModelComponent>();
             a->Init();
+
+            std::shared_ptr<AActor> sp = Game::instance->Actors.back();
+            sp->transform->actor = sp;
+
         }
 	}
 
@@ -125,17 +141,39 @@ namespace Panels
         HelpIcon(
             "This is a simple property editor");
 
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
-        if (ImGui::BeginTable("split", 2, ImGuiTableFlags_BordersOuter | ImGuiTableFlags_Resizable))
+        ImGui::PushStyleColor(0, ImVec4(.5f, 0, 0, 1));
+        ImGui::Text("Remove Parent");
+        ImGui::PopStyleColor();
+        
+
+        // Add child to this actor
+        if (ImGui::BeginDragDropTarget())
         {
-            // Iterate placeholder objects (all the same data)
-            for (auto& actor : Game::instance->Actors)
+            auto payload = ImGui::AcceptDragDropPayload("ACTOR");
+            if (payload != nullptr)
             {
-                ShowActor(actor.get());
-                //ImGui::Separator();
+                std::string data = (const char*)payload->Data;
+                
+                auto& child = Game::instance->Actors[std::stoi(data)];
+                child->transform->SetParent(nullptr);
+
             }
-            ImGui::EndTable();
+            ImGui::EndDragDropTarget();
         }
+
+        ImGui::Separator();
+
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
+
+        // Iterate placeholder objects (all the same data)
+        for (auto& actor : Game::instance->Actors)
+        {
+            if (actor->transform->GetParent() == nullptr)
+                ShowActor(actor);
+        }
+
+        ImGui::Separator();
+
         AddActor();
         ImGui::PopStyleVar();
         ImGui::End();

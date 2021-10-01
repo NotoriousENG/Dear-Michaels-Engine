@@ -5,8 +5,6 @@
 #include <imgui.h>
 #include "IPanel.h"
 
-#define M_LOG(...) Panels::Console::instance.AddLog(__VA_ARGS__);printf(__VA_ARGS__); printf("\n");
-
 // Visual Studio warnings
 #ifdef _MSC_VER
 #pragma warning (disable: 4996) // 'This function or variable may be unsafe': strcpy, strdup, sprintf, vsnprintf, sscanf, fopen
@@ -62,4 +60,14 @@ namespace Panels
 
         int     TextEditCallback(ImGuiInputTextCallbackData* data);
     };
+}
+
+static void M_LOG(const char* fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+    Panels::Console::instance.AddLog(fmt, args);
+    printf(fmt, args);
+    printf("\n");
+    va_end(args);
 }

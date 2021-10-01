@@ -16,11 +16,11 @@ public:
 
 	typedef AActor Super;
 
-    bool isEditing;
+    bool isExpandedInHierarchy;
 	bool isUsing = false;
     bool isDead = false;
 	
-    FTransform transform;
+    std::shared_ptr<FTransform> transform;
 
     std::string name = "Actor";
 
@@ -28,11 +28,7 @@ public:
 
 	virtual void Init();
 
-	void UpdateMatrix();
-
 	virtual void Tick(float delta);
-
-	glm::mat4 model;
 
 	template <typename T>
 	T* AddComponent();
@@ -51,6 +47,8 @@ public:
 
 	void ClearComponents();
 
+	void ClearDescendents();
+
 	glm::mat4 GetMVP();
 
 	template <class Archive>
@@ -64,8 +62,23 @@ public:
 
 static void Destroy(AActor* actor)
 {
+	actor->ClearDescendents();
 	actor->ClearComponents();
     actor->isDead = true;
+
+	auto p = actor->transform->GetParent();
+	if (p != nullptr)
+	{
+		// Remove child
+		for (int i = 0; i < p->children.size(); i++)
+		{
+			if (p->children[i] == actor->transform)
+			{
+				p->children.erase(p->children.begin() + i);
+				return;
+			}
+		}
+	}
 }
 
 template<typename T>

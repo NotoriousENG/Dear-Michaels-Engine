@@ -89,24 +89,6 @@ public:
 		return rot;
 	}
 
-	void SetRotation(glm::quat w_rot)
-	{
-		if (parent)
-		{
-			// given parent world rot
-			// desired world
-
-			// get local to parent
-			// parent * local = world
-
-			localRotation = glm::normalize(glm::inverse(glm::quat_cast(parent->GetModelMatrixWorld())) * w_rot);
-		}
-		else
-		{
-			localRotation = w_rot;
-		}
-	}
-
 	glm::vec3 GetScale()
 	{
 		glm::vec3 scale;
@@ -119,6 +101,30 @@ public:
 		return scale;
 	}
 
+	void SetLocalFromWorld(glm::mat4 world)
+	{
+		glm::vec3 scale;
+		glm::quat rot;
+		glm::vec3 pos;
+		glm::vec3 skew;
+		glm::vec4 persp;
+
+		if (parent)
+		{
+			auto local = glm::inverse(parent->GetModelMatrixWorld()) * world;
+			glm::decompose(local, scale, rot, pos, skew, persp);
+		}
+
+		else
+		{
+			glm::decompose(world, scale, rot, pos, skew, persp);
+		}
+
+		localPosition = pos;
+		localRotation = rot;
+		localScale = scale;
+	}
+
 	std::shared_ptr<FTransform> GetParent()
 	{
 		return this->parent;
@@ -126,12 +132,7 @@ public:
 
 	void SetParent(std::shared_ptr<FTransform> parent)
 	{
-		glm::vec3 scale;
-		glm::quat rot;
-		glm::vec3 pos;
-		glm::vec3 skew;
-		glm::vec4 persp;
-		glm::decompose(GetModelMatrixWorld(), scale, rot, pos, skew, persp);
+		auto world = GetModelMatrixWorld();
 
 		// remove this child from it's old parent
 		if (this->parent != nullptr)
@@ -150,9 +151,7 @@ public:
 		this->parent = parent;
 
 		// maintain transformations in global space
-		this->SetPosition(pos);
-		this->SetRotation(rot);
-		this->localScale = scale;
+		this->SetLocalFromWorld(world);
 	}
 
 	void AddChild(std::shared_ptr<FTransform> child)

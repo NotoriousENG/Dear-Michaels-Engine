@@ -66,21 +66,18 @@ namespace Panels
 				glm::vec3 skew;
 				glm::vec4 persp;
 
-				if (mCurrentGizmoMode == ImGuizmo::LOCAL)
+				// gizmos
+				if (manipulated)
+				{
+					actor->transform->SetLocalFromWorld(world);
+				}
+				// float fields
+				else
 				{
 					glm::decompose(local, scale, rot, pos, skew, persp);
 					actor->transform->localPosition = pos;
 					actor->transform->localRotation = rot;
 					actor->transform->localScale = scale;
-				}
-
-				if (mCurrentGizmoMode == ImGuizmo::WORLD || manipulated)
-				{
-					glm::decompose(world, scale, rot, pos, skew, persp);
-					actor->transform->SetPosition(pos);
-					actor->transform->SetRotation(rot);
-					if (actor->transform->GetParent() == nullptr)
-						actor->transform->localScale = scale;
 				}
 
 
@@ -209,7 +206,7 @@ namespace Panels
 			float matrixTranslation[3], matrixRotation[3], matrixScale[3];
 
 			{
-				float* mat = (mCurrentGizmoMode == ImGuizmo::LOCAL) ? local : world;
+				float* mat = local;
 				ImGuizmo::DecomposeMatrixToComponents(mat, matrixTranslation, matrixRotation, matrixScale);
 				ImGui::InputFloat3("Tr", matrixTranslation);
 				ImGui::InputFloat3("Rt", matrixRotation);

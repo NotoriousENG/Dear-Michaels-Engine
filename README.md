@@ -76,7 +76,7 @@ Editor Panels
 
 Transforms
 - [X] Position, Rotation, Scale
-- [ ] Parent Child Relationships
+- [X] Parent Child Relationships
 
 Components
 - [X] Static Model

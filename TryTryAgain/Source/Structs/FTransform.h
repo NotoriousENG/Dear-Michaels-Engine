@@ -230,6 +230,6 @@ public:
 	template <class Archive>
 	void serialize(Archive& ar)
 	{
-		ar(CEREAL_NVP(localPosition), CEREAL_NVP(localRotation), CEREAL_NVP(localScale));
+		ar(CEREAL_NVP(localPosition), CEREAL_NVP(localRotation), CEREAL_NVP(localScale), CEREAL_NVP(actor), CEREAL_NVP(parent), CEREAL_NVP(children));
 	}
 };

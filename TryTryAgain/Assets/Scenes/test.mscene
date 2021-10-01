@@ -5,40 +5,240 @@
             "ptr_wrapper": {
                 "id": 2147483649,
                 "data": {
-                    "name": "Actor (0)",
+                    "name": "Cube (0)",
                     "transform": {
-                        "position": {
-                            "x": 0.0,
-                            "y": 0.0,
-                            "z": 0.0
-                        },
-                        "rotation": {
-                            "x": 0.0,
-                            "y": 0.0,
-                            "z": 0.0,
-                            "w": 1.0
-                        },
-                        "scale": {
-                            "x": 1.0,
-                            "y": 1.0,
-                            "z": 1.0
-                        },
-                        "skew": {
-                            "x": 0.0,
-                            "y": 0.0,
-                            "z": 0.0
-                        },
-                        "perspective": {
-                            "x": 0.0,
-                            "y": 0.0,
-                            "z": 0.0,
-                            "w": 1.0
+                        "ptr_wrapper": {
+                            "id": 2147483650,
+                            "data": {
+                                "localPosition": {
+                                    "x": -1.7179820537567139,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "localRotation": {
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0,
+                                    "w": 1.0
+                                },
+                                "localScale": {
+                                    "x": 1.0,
+                                    "y": 1.0,
+                                    "z": 2.0
+                                },
+                                "actor": {
+                                    "polymorphic_id": 1073741824,
+                                    "ptr_wrapper": {
+                                        "id": 1
+                                    }
+                                },
+                                "parent": {
+                                    "ptr_wrapper": {
+                                        "id": 0
+                                    }
+                                },
+                                "children": [
+                                    {
+                                        "ptr_wrapper": {
+                                            "id": 2147483651,
+                                            "data": {
+                                                "localPosition": {
+                                                    "x": 2.6143202781677248,
+                                                    "y": 0.0,
+                                                    "z": 0.1800674945116043
+                                                },
+                                                "localRotation": {
+                                                    "x": -0.11571382731199265,
+                                                    "y": 0.36506426334381106,
+                                                    "z": 0.3096613883972168,
+                                                    "w": 0.8703150153160095
+                                                },
+                                                "localScale": {
+                                                    "x": 0.9999996423721314,
+                                                    "y": 0.9999962449073792,
+                                                    "z": 0.9999996423721314
+                                                },
+                                                "actor": {
+                                                    "polymorphic_id": 1073741824,
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483652,
+                                                        "data": {
+                                                            "name": "Cube (1)",
+                                                            "transform": {
+                                                                "ptr_wrapper": {
+                                                                    "id": 3
+                                                                }
+                                                            },
+                                                            "components": [
+                                                                {
+                                                                    "polymorphic_id": 2147483649,
+                                                                    "polymorphic_name": "UStaticModelComponent",
+                                                                    "ptr_wrapper": {
+                                                                        "valid": 1,
+                                                                        "data": {
+                                                                            "UComponent": {
+                                                                                "owner": {
+                                                                                    "polymorphic_id": 1073741824,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 4
+                                                                                    }
+                                                                                },
+                                                                                "isActive": true
+                                                                            },
+                                                                            "ShaderPath": "Assets/Shaders/LoadModel.glsl",
+                                                                            "ModelPath": "Assets/Models/cube/cube.obj"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                },
+                                                "parent": {
+                                                    "ptr_wrapper": {
+                                                        "id": 2
+                                                    }
+                                                },
+                                                "children": [
+                                                    {
+                                                        "ptr_wrapper": {
+                                                            "id": 2147483653,
+                                                            "data": {
+                                                                "localPosition": {
+                                                                    "x": -1.785736083984375,
+                                                                    "y": -1.3623046875,
+                                                                    "z": 0.0
+                                                                },
+                                                                "localRotation": {
+                                                                    "x": 0.0,
+                                                                    "y": 0.0,
+                                                                    "z": 0.0,
+                                                                    "w": 1.0
+                                                                },
+                                                                "localScale": {
+                                                                    "x": 1.0,
+                                                                    "y": 1.0,
+                                                                    "z": 1.0
+                                                                },
+                                                                "actor": {
+                                                                    "polymorphic_id": 1073741824,
+                                                                    "ptr_wrapper": {
+                                                                        "id": 2147483654,
+                                                                        "data": {
+                                                                            "name": "Cube (2)",
+                                                                            "transform": {
+                                                                                "ptr_wrapper": {
+                                                                                    "id": 5
+                                                                                }
+                                                                            },
+                                                                            "components": [
+                                                                                {
+                                                                                    "polymorphic_id": 1,
+                                                                                    "ptr_wrapper": {
+                                                                                        "valid": 1,
+                                                                                        "data": {
+                                                                                            "UComponent": {
+                                                                                                "owner": {
+                                                                                                    "polymorphic_id": 1073741824,
+                                                                                                    "ptr_wrapper": {
+                                                                                                        "id": 6
+                                                                                                    }
+                                                                                                },
+                                                                                                "isActive": true
+                                                                                            },
+                                                                                            "ShaderPath": "Assets/Shaders/LoadModel.glsl",
+                                                                                            "ModelPath": "Assets/Models/cube/cube.obj"
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                },
+                                                                "parent": {
+                                                                    "ptr_wrapper": {
+                                                                        "id": 3
+                                                                    }
+                                                                },
+                                                                "children": []
+                                                            }
+                                                        }
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    {
+                                        "ptr_wrapper": {
+                                            "id": 2147483655,
+                                            "data": {
+                                                "localPosition": {
+                                                    "x": 0.8121185898780823,
+                                                    "y": 1.23345947265625,
+                                                    "z": 0.0
+                                                },
+                                                "localRotation": {
+                                                    "x": 0.0,
+                                                    "y": 0.0,
+                                                    "z": 0.0,
+                                                    "w": 1.0
+                                                },
+                                                "localScale": {
+                                                    "x": 1.0,
+                                                    "y": 1.0,
+                                                    "z": 1.0
+                                                },
+                                                "actor": {
+                                                    "polymorphic_id": 1073741824,
+                                                    "ptr_wrapper": {
+                                                        "id": 2147483656,
+                                                        "data": {
+                                                            "name": "Cube (3)",
+                                                            "transform": {
+                                                                "ptr_wrapper": {
+                                                                    "id": 7
+                                                                }
+                                                            },
+                                                            "components": [
+                                                                {
+                                                                    "polymorphic_id": 1,
+                                                                    "ptr_wrapper": {
+                                                                        "valid": 1,
+                                                                        "data": {
+                                                                            "UComponent": {
+                                                                                "owner": {
+                                                                                    "polymorphic_id": 1073741824,
+                                                                                    "ptr_wrapper": {
+                                                                                        "id": 8
+                                                                                    }
+                                                                                },
+                                                                                "isActive": true
+                                                                            },
+                                                                            "ShaderPath": "Assets/Shaders/LoadModel.glsl",
+                                                                            "ModelPath": "Assets/Models/cube/cube.obj"
+                                                                        }
+                                                                    }
+                                                                }
+                                                            ]
+                                                        }
+                                                    }
+                                                },
+                                                "parent": {
+                                                    "ptr_wrapper": {
+                                                        "id": 2
+                                                    }
+                                                },
+                                                "children": []
+                                            }
+                                        }
+                                    }
+                                ]
+                            }
                         }
                     },
                     "components": [
                         {
-                            "polymorphic_id": 2147483649,
-                            "polymorphic_name": "UStaticModelComponent",
+                            "polymorphic_id": 1,
                             "ptr_wrapper": {
                                 "valid": 1,
                                 "data": {
@@ -52,12 +252,30 @@
                                         "isActive": true
                                     },
                                     "ShaderPath": "Assets/Shaders/LoadModel.glsl",
-                                    "ModelPath": "Assets/Models/backpack/backpack.obj"
+                                    "ModelPath": "Assets/Models/cube/cube.obj"
                                 }
                             }
                         }
                     ]
                 }
+            }
+        },
+        {
+            "polymorphic_id": 1073741824,
+            "ptr_wrapper": {
+                "id": 4
+            }
+        },
+        {
+            "polymorphic_id": 1073741824,
+            "ptr_wrapper": {
+                "id": 6
+            }
+        },
+        {
+            "polymorphic_id": 1073741824,
+            "ptr_wrapper": {
+                "id": 8
             }
         }
     ]

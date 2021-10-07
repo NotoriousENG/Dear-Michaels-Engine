@@ -6,13 +6,13 @@
 #include <Structs/FTransform.h>
 
 // Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
-enum Camera_Movement {
-    FORWARD,
-    BACKWARD,
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN
+enum class Camera_Movement {
+    FORWARD = 0,
+    BACKWARD = 1,
+    LEFT = 2,
+    RIGHT = 3,
+    UP = 4,
+    DOWN = 5
 };
 
 // Default camera values

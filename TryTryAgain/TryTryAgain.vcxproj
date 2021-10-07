@@ -203,6 +203,7 @@ XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Co
     <ClCompile Include="Source\Objects\UObject.cpp" />
     <ClCompile Include="Source\Components\UPlayerControlComponent.cpp" />
     <ClCompile Include="Source\Components\UCameraComponent.cpp" />
+    <ClCompile Include="Source\Components\UStaticMeshComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\ResourceManagement\Resource.h" />
@@ -236,6 +237,7 @@ XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Co
     <ClInclude Include="Source\Objects\UObject.h" />
     <ClInclude Include="Source\Components\UPlayerControlComponent.h" />
     <ClInclude Include="Source\Components\UCameraComponent.h" />
+    <ClInclude Include="Source\Components\UStaticMeshComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

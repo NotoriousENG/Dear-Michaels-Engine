@@ -13,6 +13,7 @@
 #include <iostream>
 #include <fstream>
 #include "Input/Input.h"
+#include <Components/UStaticMeshComponent.h>
 
 Game* Game::instance;
 
@@ -20,7 +21,7 @@ Game::Game(unsigned framebuffer)
 {
 	Game::instance = this;
 
-	Camera::Main = Camera(glm::vec3(0,0,4), glm::vec3(0,1,0), -90);
+	Camera::Main = Camera(glm::vec3(0, 0, 4), glm::vec3(0, 1, 0), -90);
 
 	this->framebuffer = framebuffer;
 
@@ -76,6 +77,11 @@ void Game::Render()
 				auto model_comp = actor->GetComponent<UStaticModelComponent>();
 				if (model_comp != nullptr && model_comp->isActive)
 					model_comp->Draw();
+
+				auto mesh_comp = actor->GetComponent<UStaticMeshComponent>();
+				if (mesh_comp != nullptr && mesh_comp->isActive)
+					mesh_comp->Draw();
+
 			}
 		}
 	}
@@ -105,7 +111,7 @@ void Game::ProcessInput()
 void Game::DrawActorsWithPickingShader()
 {
 	// Picking
-	
+
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	PickingShader->Use();
@@ -130,7 +136,21 @@ void Game::DrawActorsWithPickingShader()
 
 			model_comp->Model->Draw(PickingShader.get());
 		}
-			
+
+		auto mesh_comp = a->GetComponent<UStaticMeshComponent>();
+		if (mesh_comp != nullptr)
+		{
+			// Convert id into unique color
+			int r = (i & 0x000000FF) >> 0;
+			int g = (i & 0x0000FF00) >> 8;
+			int b = (i & 0x00FF0000) >> 16;
+
+			PickingShader->SetMatrix4("MVP", a->GetMVP());
+			PickingShader->SetVector4f("PickingColor", glm::vec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.f));
+
+			mesh_comp->Mesh->Draw(PickingShader.get());
+		}
+
 		i++;
 	}
 }
@@ -170,7 +190,7 @@ void Game::Pick()
 	ndcPos += glm::vec2(1);
 	ndcPos /= 2;
 	ndcPos *= glm::vec2(w, h);
-	
+
 	DrawActorsWithPickingShader();
 
 	glFlush();
@@ -192,7 +212,7 @@ void Game::Pick()
 	{
 		Picked = nullptr;
 	}
-	
+
 }
 
 void Game::ProcessInputEditor()
@@ -213,7 +233,7 @@ void Game::ProcessInputEditor()
 		Picked = nullptr;
 		Destroy(toDestroy);
 	}
-	
+
 	if (Input::MouseButtonsUp[SDL_BUTTON_LEFT] && ImGui::IsWindowFocused())
 	{
 		if (mouse != glm::vec2(-1, -1))
@@ -222,7 +242,7 @@ void Game::ProcessInputEditor()
 		}
 		usingPickingShader = true;
 	}
-	
+
 	if (Input::MouseButtons[SDL_BUTTON_RIGHT])
 	{
 		SDL_SetRelativeMouseMode(SDL_TRUE);
@@ -247,26 +267,26 @@ void Game::ProcessCamera()
 
 	if (Input::Keys[SDLK_w])
 	{
-		Camera::Main.ProcessKeyboard(FORWARD, deltaTime);
+		Camera::Main.ProcessKeyboard(Camera_Movement::FORWARD, deltaTime);
 	}
 	if (Input::Keys[SDLK_s])
 	{
-		Camera::Main.ProcessKeyboard(BACKWARD, deltaTime);
+		Camera::Main.ProcessKeyboard(Camera_Movement::BACKWARD, deltaTime);
 	}
 	if (Input::Keys[SDLK_a])
 	{
-		Camera::Main.ProcessKeyboard(LEFT, deltaTime);
+		Camera::Main.ProcessKeyboard(Camera_Movement::LEFT, deltaTime);
 	}
 	if (Input::Keys[SDLK_d])
 	{
-		Camera::Main.ProcessKeyboard(RIGHT, deltaTime);
+		Camera::Main.ProcessKeyboard(Camera_Movement::RIGHT, deltaTime);
 	}
 	if (Input::Keys[SDLK_q])
 	{
-		Camera::Main.ProcessKeyboard(DOWN, deltaTime);
+		Camera::Main.ProcessKeyboard(Camera_Movement::DOWN, deltaTime);
 	}
 	if (Input::Keys[SDLK_e])
 	{
-		Camera::Main.ProcessKeyboard(UP, deltaTime);
+		Camera::Main.ProcessKeyboard(Camera_Movement::UP, deltaTime);
 	}
 }

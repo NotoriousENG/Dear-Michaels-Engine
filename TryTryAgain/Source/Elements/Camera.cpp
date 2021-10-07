@@ -7,17 +7,17 @@ Camera Camera::Main = Camera(glm::vec3(0, 0, 4), glm::vec3(0, 1, 0), -90);
 void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
 {
     float velocity = MovementSpeed * deltaTime;
-    if (direction == FORWARD)
+    if (direction == Camera_Movement::FORWARD)
         position += Front * velocity;
-    if (direction == BACKWARD)
+    if (direction == Camera_Movement::BACKWARD)
         position -= Front * velocity;
-    if (direction == LEFT)
+    if (direction == Camera_Movement::LEFT)
        position -= Right * velocity;
-    if (direction == RIGHT)
+    if (direction == Camera_Movement::RIGHT)
         position += Right * velocity;
-    if (direction == UP)
+    if (direction == Camera_Movement::UP)
         position += Up * velocity;
-    if (direction == DOWN)
+    if (direction == Camera_Movement::DOWN)
         position -= Up * velocity;
 
     UpdateCameraVectors();

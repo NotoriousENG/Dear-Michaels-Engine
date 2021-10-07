@@ -41,6 +41,7 @@
     <ClCompile Include="Source\Panels\ContentBrowser.cpp" />
     <ClCompile Include="Source\ResourceManagement\Material.cpp" />
     <ClCompile Include="Source\ResourceManagement\Texture.cpp" />
+    <ClCompile Include="Source\Components\UStaticMeshComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Window\Window.h" />
@@ -74,5 +75,6 @@
     <ClInclude Include="Source\ResourceManagement\Material.h" />
     <ClInclude Include="Source\ResourceManagement\Resource.h" />
     <ClInclude Include="Source\ResourceManagement\Texture.h" />
+    <ClInclude Include="Source\Components\UStaticMeshComponent.h" />
   </ItemGroup>
 </Project>

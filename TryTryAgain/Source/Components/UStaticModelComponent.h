@@ -14,13 +14,6 @@ using namespace std;
 class UStaticModelComponent : public UComponent
 {
 
-	enum class SHADER {
-		FRAG = 0,
-		VERT = 1,
-		GEOM = 2,
-		SHORT_NAME = 3
-	};
-
 public:
 
 	typedef UComponent Super;

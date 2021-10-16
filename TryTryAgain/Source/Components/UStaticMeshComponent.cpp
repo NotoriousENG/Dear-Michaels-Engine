@@ -16,7 +16,7 @@ void UStaticMeshComponent::Init()
 {
 	if (this->Mesh == nullptr)
 	{
-		this->Mesh = std::make_unique<rm::Mesh>(rm::ResourceManager::Load<rm::Model>("Assets/Models/cube/cube.obj")->meshes[0]);
+		this->Mesh = rm::ResourceManager::Load<rm::Model>("Assets/Models/cube/cube.obj")->meshes[0];
 		this->Material = std::make_shared<rm::Material>();
 
 		this->Material->Shader = rm::ResourceManager::Load<rm::Shader>("Assets/Shaders/LoadModel.glsl");

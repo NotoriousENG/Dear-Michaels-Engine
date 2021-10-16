@@ -14,6 +14,8 @@ namespace Panels {
 
 		static UComponent* InspectedComponent;
 
+		static bool Manipulating;
+
 		void Draw() override;
 
 		void MenuItem() override;

@@ -98,6 +98,13 @@ namespace Panels
 					if (data.find(".mscene") != std::string::npos) {
 						Game::instance->LoadScene(data.c_str());
 					}
+					else if (data.find(".obj") != std::string::npos
+						|| data.find(".fbx") != std::string::npos
+						|| data.find(".glb") != std::string::npos)
+					{
+						// Load the model and add to game hierarchy
+						Game::instance->AddActor(rm::ResourceManager::Load<rm::Model>(data));
+					}
 				}
 				ImGui::EndDragDropTarget();
 			}

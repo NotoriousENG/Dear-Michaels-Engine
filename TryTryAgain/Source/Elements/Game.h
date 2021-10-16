@@ -14,6 +14,10 @@
 #include <map>
 #include <ResourceManagement/Skybox.h>
 
+namespace rm {
+	class mNode;
+}
+
 class Game
 {
 public:
@@ -62,7 +66,11 @@ public:
 
 	std::unique_ptr<Skybox> skybox;
 
+	void AddActor(std::shared_ptr<rm::Model> model);
+
 private:
+
+	std::shared_ptr<AActor> AddActor(rm::mNode* node);
 
 	std::shared_ptr<rm::Shader> PickingShader;
 

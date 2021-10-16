@@ -3,7 +3,6 @@
 #include "Actors/AActor.h" // because we forward declare in UComponent
 
 // Include All Components Here //
-#include "Components/UStaticModelComponent.h"
 #include "Components/UPlayerControlComponent.h"
 #include "Components/UStaticMeshComponent.h"
 
@@ -11,9 +10,8 @@ ComponentFactory ComponentFactory::instance;
 
 ComponentFactory::ComponentFactory()
 {
-	Register("UStaticModelComponent", []() {return std::make_unique<UStaticModelComponent>(); });
-	Register("UPlayerControlComponent", []() {return std::make_unique<UPlayerControlComponent>(); });
 	Register("UStaticMeshComponent", []() {return std::make_unique<UStaticMeshComponent>(); });
+	Register("UPlayerControlComponent", []() {return std::make_unique<UPlayerControlComponent>(); });
 	// REGISTER COMPONENTS HERE //
 
 	// Save to vector for easy access via imgui

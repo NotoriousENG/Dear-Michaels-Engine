@@ -8,7 +8,7 @@
 #include "Elements/Game.h"
 #include "Structs/FString.h"
 #include "imgui_stdlib.h"
-#include <Components/UStaticModelComponent.h>
+#include "Components/UStaticMeshComponent.h"
 
 namespace Panels
 {
@@ -120,7 +120,7 @@ namespace Panels
             Game::instance->Picked->name = FString("Cube (%i)", id).Text;
 
             auto& a = Game::instance->Actors.back();
-            a->AddComponent<UStaticModelComponent>();
+            a->AddComponent<UStaticMeshComponent>();
             a->Init();
 
             std::shared_ptr<AActor> sp = Game::instance->Actors.back();

@@ -77,6 +77,11 @@ namespace rm
         glActiveTexture(GL_TEXTURE0);
 	}
 
+    std::string Mesh::GetName()
+    {
+        return this->name;
+    }
+
 	void rm::Mesh::setupMesh()
 	{
         // create buffers/arrays

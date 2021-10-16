@@ -6,7 +6,6 @@
 #include "Panels/Console.h"
 #include <glm/gtx/matrix_decompose.hpp>
 #include <Panels/GameWindow.h>
-#include "Components/UStaticModelComponent.h"
 #include "imgui_stdlib.h"
 #include "Utility/Utility.h"
 #include <vector>
@@ -19,6 +18,8 @@ namespace Panels
 	static int regIndex = 0;
 
 	UComponent* Inspector::InspectedComponent = nullptr;
+
+	bool Inspector::Manipulating = false;
 
 	static ImGuizmo::MODE mCurrentGizmoMode = ImGuizmo::LOCAL;
 
@@ -54,8 +55,7 @@ namespace Panels
 
 			ImGuizmo::SetGizmoSizeClipSpace(0.2);
 
-			bool manipulated = false;
-			EditTransform(glm::value_ptr(camera.view), glm::value_ptr(camera.projection), glm::distance(glm::normalize(camera.position), glm::vec3(0)), local_arr, world_arr, manipulated);
+			EditTransform(glm::value_ptr(camera.view), glm::value_ptr(camera.projection), glm::distance(glm::normalize(camera.position), glm::vec3(0)), local_arr, world_arr, Manipulating);
 
 			if (actor != nullptr)
 			{
@@ -67,7 +67,7 @@ namespace Panels
 				glm::vec4 persp;
 
 				// gizmos
-				if (manipulated)
+				if (Manipulating)
 				{
 					actor->transform->SetLocalFromWorld(world);
 				}

@@ -2,7 +2,6 @@
 
 #include "Panels/Console.h"
 #include "ResourceManagement/ResourceManager.h"
-#include <Components/UStaticModelComponent.h>
 #include <Structs/FString.h>
 
 #include <cereal/cereal.hpp>
@@ -14,6 +13,8 @@
 #include <fstream>
 #include "Input/Input.h"
 #include <Components/UStaticMeshComponent.h>
+#include "ResourceManagement/Model.h"
+#include <Panels/Inspector.h>
 
 Game* Game::instance;
 
@@ -74,14 +75,9 @@ void Game::Render()
 				actor->Tick(deltaTime);
 			if (!usingPickingShader)
 			{
-				auto model_comp = actor->GetComponent<UStaticModelComponent>();
-				if (model_comp != nullptr && model_comp->isActive)
-					model_comp->Draw();
-
 				auto mesh_comp = actor->GetComponent<UStaticMeshComponent>();
 				if (mesh_comp != nullptr && mesh_comp->isActive)
 					mesh_comp->Draw();
-
 			}
 		}
 	}
@@ -123,20 +119,6 @@ void Game::DrawActorsWithPickingShader()
 	int i = 0;
 	for (auto& a : Actors)
 	{
-		auto model_comp = a->GetComponent<UStaticModelComponent>();
-		if (model_comp != nullptr)
-		{
-			// Convert id into unique color
-			int r = (i & 0x000000FF) >> 0;
-			int g = (i & 0x0000FF00) >> 8;
-			int b = (i & 0x00FF0000) >> 16;
-
-			PickingShader->SetMatrix4("MVP", a->GetMVP());
-			PickingShader->SetVector4f("PickingColor", glm::vec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.f));
-
-			model_comp->Model->Draw(PickingShader.get());
-		}
-
 		auto mesh_comp = a->GetComponent<UStaticMeshComponent>();
 		if (mesh_comp != nullptr)
 		{
@@ -177,6 +159,37 @@ void Game::SaveScene(const char* path)
 	oarchive(CEREAL_NVP(Actors));
 }
 
+void Game::AddActor(std::shared_ptr<rm::Model> model)
+{
+	auto a = AddActor(model->HierarchyRoot.get());
+	a->name = model->GetName();
+}
+
+std::shared_ptr<AActor> Game::AddActor(rm::mNode* node)
+{
+	this->Actors.push_back(std::make_shared<AActor>());
+
+	auto a = this->Actors.back();
+	a->transform->actor = a;
+
+	for (auto& mesh : node->meshes)
+	{
+		a->name = mesh->GetName();
+
+		auto c = a->AddComponent<UStaticMeshComponent>();
+		c->Mesh = mesh;
+		c->Material = mesh->material;
+	}
+	
+	for (auto& child : node->children)
+	{
+		auto t = AddActor(child.get())->transform;
+
+		a->transform->AddChild(t);
+	}
+	return a;
+}
+
 void Game::Pick()
 {
 	float h = ImGui::GetWindowHeight();
@@ -205,7 +218,13 @@ void Game::Pick()
 	M_LOG("(%f, %f)", ndcPos.x, ndcPos.y);*/
 	if (id < Actors.size())
 	{
-		Picked = Actors.at(id).get();
+		auto a = Actors.at(id).get();
+		auto root = a->transform->GetRoot()->actor.get();
+
+		if (Input::Keys[SDLK_c])
+			Picked = a;
+		else
+			Picked = root;
 		// M_LOG("Picked: %s ID: 0x%x", Picked->name.c_str(), reinterpret_cast<int>(Picked));
 	}
 	else
@@ -234,7 +253,7 @@ void Game::ProcessInputEditor()
 		Destroy(toDestroy);
 	}
 
-	if (Input::MouseButtonsUp[SDL_BUTTON_LEFT] && ImGui::IsWindowFocused())
+	if (Input::MouseButtonsUp[SDL_BUTTON_LEFT] && ImGui::IsWindowFocused() && !Panels::Inspector::Manipulating)
 	{
 		if (mouse != glm::vec2(-1, -1))
 		{

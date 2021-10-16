@@ -45,6 +45,8 @@ namespace rm
 
 		void Draw(rm::Shader* shader);
 
+        std::string GetName();
+
     private:
         // render data 
         unsigned int VBO, EBO;

@@ -221,6 +221,8 @@ public:
 
 	std::shared_ptr<FTransform> GetRoot()
 	{
+		if (this->parent == nullptr)
+			return shared_from_this();
 		if (this->parent->parent == nullptr)
 			return parent;
 

@@ -27,12 +27,8 @@ namespace rm
     void Model::Init(std::string path)
     {
         gammaCorrection = false;
+        HierarchyRoot = std::make_unique<mNode>();
         loadModel(path);
-    }
-    void rm::Model::Draw(Shader* shader)
-    {
-        for (unsigned int i = 0; i < meshes.size(); i++)
-            meshes[i].Draw(shader);
     }
 
     void rm::Model::loadModel(string const& path)
@@ -50,24 +46,48 @@ namespace rm
         directory = path.substr(0, path.find_last_of('/'));
         this->Path = path;
 
-        // process ASSIMP's root node recursively
-        processNode(scene->mRootNode, scene);
+        this->name = scene->GetShortFilename(path.c_str());
+        auto i = name.find('.');
+        if (i != std::string::npos)
+            name = name.erase(i);
+        processScene(scene);
     }
 
-    void rm::Model::processNode(aiNode* node, const aiScene* scene)
+    std::string Model::GetName()
+    {
+        return name;
+    }
+
+    void Model::processScene(const aiScene* scene)
+    {
+        // process all unique meshes in scene
+        for (int i = 0; i < scene->mNumMeshes; i++)
+        {
+            this->meshes.push_back(std::make_shared<rm::Mesh>(processMesh(scene->mMeshes[i], scene)));
+        }
+
+        // get the hierarchy structure from assimp so that we can use it in our hierarchy
+        processNode(scene->mRootNode, scene, HierarchyRoot.get());
+    }
+
+    void rm::Model::processNode(aiNode* aiNode, const aiScene* scene, mNode* mnode)
     {
         // process each mesh located at the current node
-        for (unsigned int i = 0; i < node->mNumMeshes; i++)
+        for (unsigned int i = 0; i < aiNode->mNumMeshes; i++)
         {
             // the node object only contains indices to index the actual objects in the scene. 
             // the scene contains all the data, node is just to keep stuff organized (like relations between nodes).
-            aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-            meshes.push_back(processMesh(mesh, scene));
+            // we store this in our mNode (intermediate hierarchy stucture)
+            mnode->meshes.push_back(this->meshes[aiNode->mMeshes[i]]);
         }
         // after we've processed all of the meshes (if any) we then recursively process each of the children nodes
-        for (unsigned int i = 0; i < node->mNumChildren; i++)
+        for (unsigned int i = 0; i < aiNode->mNumChildren; i++)
         {
-            processNode(node->mChildren[i], scene);
+            // add this child to the mNode (Intermediate hierarchy)
+            mnode->children.push_back(std::make_unique<mNode>());
+
+            // we can now process the next child, the data will be stored in the correct child mNode
+            processNode(aiNode->mChildren[i], scene, mnode->children[i].get());
         }
     }
 

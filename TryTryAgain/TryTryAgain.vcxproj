@@ -199,7 +199,6 @@ XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Co
     <ClCompile Include="source\Window\Window.cpp" />
     <ClCompile Include="Source\Objects\UTransformGizmo.cpp" />
     <ClCompile Include="Source\Components\UComponent.cpp" />
-    <ClCompile Include="Source\Components\UStaticModelComponent.cpp" />
     <ClCompile Include="Source\Objects\UObject.cpp" />
     <ClCompile Include="Source\Components\UPlayerControlComponent.cpp" />
     <ClCompile Include="Source\Components\UCameraComponent.cpp" />
@@ -233,7 +232,6 @@ XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Co
     <ClInclude Include="source\Window\Window.h" />
     <ClInclude Include="Source\Objects\UTransformGizmo.h" />
     <ClInclude Include="Source\Components\UComponent.h" />
-    <ClInclude Include="Source\Components\UStaticModelComponent.h" />
     <ClInclude Include="Source\Objects\UObject.h" />
     <ClInclude Include="Source\Components\UPlayerControlComponent.h" />
     <ClInclude Include="Source\Components\UCameraComponent.h" />

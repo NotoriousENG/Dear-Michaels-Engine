@@ -30,25 +30,27 @@ namespace rm
         // load image
         int width, height, nrChannels;
         unsigned char* data = stbi_load(path.c_str(), &width, &height, &nrChannels, 0);
-        if (data)
-        {
-            if (nrChannels == 1)
-                Image_Format = GL_RED;
-            else if (nrChannels == 3)
-                Image_Format = GL_RGB;
-            else if (nrChannels == 4)
-                Image_Format = GL_RGBA;
-
-            if (path.find(".png") != std::string::npos)
-                Internal_Format = GL_RGBA;
-
-            // now generate texture
-            Generate(width, height, data);
-        }
-        else
+        if (data == nullptr)
         {
             M_LOG("Texture failed to load at path %s", path.c_str());
+            M_LOG("Loading default texture %s", defaultTexturePath.c_str());
+
+            data = stbi_load(defaultTexturePath.c_str(), &width, &height, &nrChannels, 0);
         }
+
+        if (nrChannels == 1)
+            Image_Format = GL_RED;
+        else if (nrChannels == 3)
+            Image_Format = GL_RGB;
+        else if (nrChannels == 4)
+            Image_Format = GL_RGBA;
+
+        if (path.find(".png") != std::string::npos)
+            Internal_Format = GL_RGBA;
+
+        // now generate texture
+        Generate(width, height, data);
+        
         // and finally free image data
         stbi_image_free(data);
     }

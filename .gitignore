@@ -342,5 +342,4 @@ healthchecksdb
 !TryTryAgain/imgui.ini
 
 *.zip
-/TryTryAgain/Assets/Models/Hajj_Man02
-/TryTryAgain/Assets/Models/weebchar
+/TryTryAgain/Assets/Models/Local

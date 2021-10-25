@@ -190,9 +190,18 @@ namespace rm
             auto sp = rm::ResourceManager::Load<rm::Texture2D>(filename);
             sp->type = typeName;
             sp->path = str.C_Str();
-            textures.push_back(sp);
-                
+            textures.push_back(sp); 
         }
+
+        if (textures.size() == 0)
+        {
+            if (type == aiTextureType::aiTextureType_DIFFUSE)
+            {
+                auto t = ResourceManager::Load<rm::Texture2D>("Resources/DefaultTextures/diffuse.png");
+                textures.push_back(t);
+            }
+        }
+
         return textures;
     }
 }

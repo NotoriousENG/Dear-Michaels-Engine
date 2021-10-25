@@ -179,6 +179,7 @@ std::shared_ptr<AActor> Game::AddActor(rm::mNode* node)
 		auto c = a->AddComponent<UStaticMeshComponent>();
 		c->Mesh = mesh;
 		c->Material = mesh->material;
+		c->Init();
 	}
 	
 	for (auto& child : node->children)

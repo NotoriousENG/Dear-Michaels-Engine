@@ -1,5 +1,3 @@
-#pragma once
-
 #include "UStaticModelComponent.h"
 #include <Panels/Console.h>
 #include "ResourceManagement/Mesh.h"

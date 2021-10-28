@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include <functional>
+#include <string>
 
 class UComponent;
 class ComponentFactory

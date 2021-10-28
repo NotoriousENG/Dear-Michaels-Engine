@@ -133,7 +133,7 @@ namespace Panels
 			ImGui::PopItemWidth();
 
 			ImGui::TableSetColumnIndex(1);
-			int uid = reinterpret_cast<unsigned int>(actor);
+			long uid = reinterpret_cast<unsigned long>(actor);
 			ImGui::Text("ID: 0x%x", uid);
 			ImGui::TableSetColumnIndex(2);
 

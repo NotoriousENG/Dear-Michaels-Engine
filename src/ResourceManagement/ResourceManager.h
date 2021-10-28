@@ -6,6 +6,7 @@
 #include <glad/glad.h>
 #include "Texture.h"
 #include <memory>
+#include <filesystem>
 
 namespace rm
 {   
@@ -17,7 +18,7 @@ namespace rm
         static std::map<std::string, std::weak_ptr<Resource>>        Resources;
 
         template <typename T>
-        static std::shared_ptr<T> Load(std::string file)
+        static std::shared_ptr<T> Load(std::filesystem::path file)
         {
             static_assert(std::is_base_of<Resource, T>::value, "Resource Types must derive from Resource");
 

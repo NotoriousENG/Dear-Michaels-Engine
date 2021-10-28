@@ -1,4 +1,5 @@
-﻿#include "Material.h"
+﻿#include <glad/glad.h>
+#include "Material.h"
 #include "ResourceManagement/Shader.h"
 #include <imgui.h>
 #include <imgui_stdlib.h>

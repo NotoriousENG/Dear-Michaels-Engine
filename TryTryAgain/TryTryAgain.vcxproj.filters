@@ -7,7 +7,7 @@
     <ClCompile Include="source\ThirdParty\imgui-docking\imgui_tables.cpp" />
     <ClCompile Include="source\ThirdParty\imgui-docking\imgui_widgets.cpp" />
     <ClCompile Include="source\Main.cpp" />
-    <ClCompile Include="source\Window\Window.cpp" />
+    <ClCompile Include="Source\Engine.cpp" />
     <ClCompile Include="source\ThirdParty\imgui-docking\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="source\ThirdParty\imgui-docking\backends\imgui_impl_sdl.cpp" />
     <ClCompile Include="source\stb_image.cpp" />
@@ -17,7 +17,6 @@
     <ClCompile Include="Source\ResourceManagement\Shader.cpp" />
     <ClCompile Include="Source\Actors\AActor.cpp" />
     <ClCompile Include="Source\Panels\Hierarchy.cpp" />
-    <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Objects\UTransformGizmo.cpp" />
     <ClCompile Include="Source\ThirdParty\imgui-docking\misc\cpp\imgui_stdlib.cpp" />
     <ClCompile Include="Source\Panels\GameWindow.cpp" />
@@ -41,9 +40,12 @@
     <ClCompile Include="Source\Panels\ContentBrowser.cpp" />
     <ClCompile Include="Source\ResourceManagement\Material.cpp" />
     <ClCompile Include="Source\ResourceManagement\Texture.cpp" />
+    <ClCompile Include="Source\Modules\Window\SDL_GL_WindowModule.cpp" />
+    <ClCompile Include="Source\Modules\Render\GL_RenderModule.cpp" />
+    <ClCompile Include="Source\Modules\Editor\EditorModule.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\Window\Window.h" />
+    <ClInclude Include="Source\Engine.h" />
     <ClInclude Include="source\Panels\Console.h" />
     <ClInclude Include="source\Panels\GameWindow.h" />
     <ClInclude Include="source\Panels\Hierarchy.h" />
@@ -53,7 +55,6 @@
     <ClInclude Include="Source\ResourceManagement\Shader.h" />
     <ClInclude Include="Source\Actors\AActor.h" />
     <ClInclude Include="Source\Structs\FTransform.h" />
-    <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Objects\UTransformGizmo.h" />
     <ClInclude Include="Source\Components\UComponent.h" />
     <ClInclude Include="Source\Components\UStaticModelComponent.h" />
@@ -74,5 +75,9 @@
     <ClInclude Include="Source\ResourceManagement\Material.h" />
     <ClInclude Include="Source\ResourceManagement\Resource.h" />
     <ClInclude Include="Source\ResourceManagement\Texture.h" />
+    <ClInclude Include="Source\Modules\Window\SDL_GL_WindowModule.h" />
+    <ClInclude Include="Source\Modules\Render\GL_RenderModule.h" />
+    <ClInclude Include="Source\Modules\Editor\EditorModule.h" />
+    <ClInclude Include="Source\Modules\Editor\EditorStyles.h" />
   </ItemGroup>
 </Project>

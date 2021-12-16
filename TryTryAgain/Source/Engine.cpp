@@ -1,4 +1,4 @@
-#include "Window.h"
+#include "Engine.h"
 
 #include <imgui_impl_opengl3.h>
 #include <imguizmo/ImGuizmo.h>
@@ -13,12 +13,12 @@
 #include <ThirdParty/stb_image.h>
 #include <Input/Input.h>
 
-void Window::sdl_die(const char* message) {
+void Engine::sdl_die(const char* message) {
     fprintf(stderr, "%s: %s\n", message, SDL_GetError());
     exit(2);
 }
 
-void APIENTRY Window::openglCallbackFunction(
+void APIENTRY Engine::openglCallbackFunction(
     GLenum source,
     GLenum type,
     GLuint id,
@@ -36,7 +36,7 @@ void APIENTRY Window::openglCallbackFunction(
     }
 }
 
-void Window::init_screen(const char* caption) {
+void Engine::init_screen(const char* caption) {
     // Initialize SDL 
     if (SDL_Init(SDL_INIT_VIDEO | GL_STENCIL_BITS) < 0)
         sdl_die("Couldn't initialize SDL");
@@ -104,7 +104,7 @@ void Window::init_screen(const char* caption) {
     glClearColor(0.0f, 0.5f, 1.0f, 0.0f);
 }
 
-void Window::init_imgui()
+void Engine::init_imgui()
 {
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -134,45 +134,21 @@ void Window::init_imgui()
     ImGui_ImplOpenGL3_Init();
 }
 
-void Window::execute() {
+void Engine::execute() {
     init_screen("Unreal Engine 7");
-    init_imgui();
-    ImGuiIO& io = ImGui::GetIO();
+
     SDL_Event event;
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    stbi_set_flip_vertically_on_load(false);
     glEnable(GL_DEPTH_TEST);
-
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
-    
-    gameWindow = std::make_unique<Panels::GameWindow>();
-
-
-    // unique ptr is non copyable only moveable
-
-    panels.push_back(std::make_unique<Panels::Console>(Panels::Console::instance));
-
-    panels.push_back(std::make_unique<Panels::Inspector>());
-
-    panels.push_back(std::make_unique<Panels::Hierarchy>());
-
-    panels.push_back(std::make_unique<Panels::ContentBrowser>());
 	
     while (!quit) {
-        Game::instance->mouseRel = glm::vec2(0, 0);
-
-        for (int i = 0; i < 6; i++)
-        {
-            Input::MouseButtonsUp[i] = false;
-        }
     	
         while (SDL_PollEvent(&event)) {
             // Forward to Imgui
-            ImGui_ImplSDL2_ProcessEvent(&event);
+            // ImGui_ImplSDL2_ProcessEvent(&event);
             switch (event.type)
             {
             case SDL_QUIT:
@@ -184,68 +160,17 @@ void Window::execute() {
                 }
                 break;
             }
-            processInputForWindow(event);
-        }
-
-        // Start the Dear ImGui frame
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplSDL2_NewFrame(window);
-        ImGui::NewFrame();
-        ImGuizmo::BeginFrame();
-
-        ImGui::DockSpaceOverViewport();
-
-        // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-        if (show_demo_window)
-            ImGui::ShowDemoWindow(&show_demo_window);
-
-        ShowAppMainMenuBar();
-
-        ShowFileDialog();
-
-        gameWindow->Draw();
-
-        for (auto& p : panels)
-        {
-            if (p->isActive)
-            {
-                p->Draw();
-            }
-        }
-
-
-        // Rendering
-        ImGui::Render();
-        /*glViewport(0, 0, (int)io.DisplaySize.x, (int)io.DisplaySize.y);
-        glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
-        glClear(GL_COLOR_BUFFER_BIT);*/
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-        // Update and Render additional Platform Windows
-        // (Platform functions may change the current OpenGL context, so we save/restore it to make it easier to paste this code elsewhere.
-        //  For this specific demo app we could also call SDL_GL_MakeCurrent(window, gl_context) directly)
-        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-        {
-            SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
-            SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
-            ImGui::UpdatePlatformWindows();
-            ImGui::RenderPlatformWindowsDefault();
-            SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
+            // processInputForWindow(event);
         }
 
         SDL_GL_SwapWindow(window);
     }
 
-    // Cleanup imgui
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplSDL2_Shutdown();
-    ImGui::DestroyContext();
-
     // Cleanup SDL
     SDL_Quit();
 }
 
-void Window::processInputForWindow(SDL_Event event)
+void Engine::processInputForWindow(SDL_Event event)
 {
     if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
         Game::instance->playing = false;
@@ -295,13 +220,13 @@ void Window::processInputForWindow(SDL_Event event)
 	}
 }
 
-void Window::framebuffer_size_callback(int width, int height)
+void Engine::framebuffer_size_callback(int width, int height)
 {
     glViewport(0, 0, width, height);
 
 }
 
-void Window::ShowAppMainMenuBar()
+void Engine::ShowAppMainMenuBar()
 {
     if (ImGui::BeginMainMenuBar())
     {
@@ -335,7 +260,7 @@ void Window::ShowAppMainMenuBar()
     }
 }
 
-void Window::ShowFileDialog()
+void Engine::ShowFileDialog()
 {
     // display
     if (ImGuiFileDialog::Instance()->Display("Open Scene"))

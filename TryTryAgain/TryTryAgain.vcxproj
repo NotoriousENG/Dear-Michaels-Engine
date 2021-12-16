@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -163,6 +163,9 @@ XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Co
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Modules\Editor\EditorModule.cpp" />
+    <ClCompile Include="Source\Modules\Render\GL_RenderModule.cpp" />
+    <ClCompile Include="Source\Modules\Window\SDL_GL_WindowModule.cpp" />
     <ClCompile Include="Source\ResourceManagement\Material.cpp" />
     <ClCompile Include="Source\Panels\ContentBrowser.cpp" />
     <ClCompile Include="Source\ResourceManagement\Skybox.cpp" />
@@ -170,7 +173,6 @@ XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Co
     <ClCompile Include="Source\Serialization\ComponentFactory.cpp" />
     <ClCompile Include="Source\Panels\Inspector.cpp" />
     <ClCompile Include="Source\ResourceManagement\Model.cpp" />
-    <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Elements\Camera.cpp" />
     <ClCompile Include="source\Elements\Game.cpp" />
     <ClCompile Include="Source\Actors\AActor.cpp" />
@@ -196,7 +198,7 @@ XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Co
     <ClCompile Include="Source\ThirdParty\imguizmo\ImGradient.cpp" />
     <ClCompile Include="Source\ThirdParty\imguizmo\ImGuizmo.cpp" />
     <ClCompile Include="Source\ThirdParty\imguizmo\ImSequencer.cpp" />
-    <ClCompile Include="source\Window\Window.cpp" />
+    <ClCompile Include="Source\Engine.cpp" />
     <ClCompile Include="Source\Objects\UTransformGizmo.cpp" />
     <ClCompile Include="Source\Components\UComponent.cpp" />
     <ClCompile Include="Source\Components\UStaticModelComponent.cpp" />
@@ -205,6 +207,10 @@ XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Co
     <ClCompile Include="Source\Components\UCameraComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Modules\Editor\EditorModule.h" />
+    <ClInclude Include="Source\Modules\Editor\EditorStyles.h" />
+    <ClInclude Include="Source\Modules\Render\GL_RenderModule.h" />
+    <ClInclude Include="Source\Modules\Window\SDL_GL_WindowModule.h" />
     <ClInclude Include="Source\ResourceManagement\Resource.h" />
     <ClInclude Include="Source\ResourceManagement\Material.h" />
     <ClInclude Include="Source\Panels\ContentBrowser.h" />
@@ -214,7 +220,6 @@ XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Co
     <ClInclude Include="Source\Serialization\ComponentFactory.h" />
     <ClInclude Include="Source\Panels\Inspector.h" />
     <ClInclude Include="Source\ResourceManagement\Model.h" />
-    <ClInclude Include="Source\Application.h" />
     <ClInclude Include="source\Elements\Camera.h" />
     <ClInclude Include="source\Elements\Game.h" />
     <ClInclude Include="Source\Actors\AActor.h" />
@@ -229,7 +234,7 @@ XCOPY "$(SolutionDir)\TryTryAgain\Resources" "$(TargetDir)\Resources\" /E /Y</Co
     <ClInclude Include="Source\Structs\FString.h" />
     <ClInclude Include="Source\Structs\FTransform.h" />
     <ClInclude Include="Source\Utility\Utility.h" />
-    <ClInclude Include="source\Window\Window.h" />
+    <ClInclude Include="Source\Engine.h" />
     <ClInclude Include="Source\Objects\UTransformGizmo.h" />
     <ClInclude Include="Source\Components\UComponent.h" />
     <ClInclude Include="Source\Components\UStaticModelComponent.h" />

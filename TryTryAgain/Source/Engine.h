@@ -12,7 +12,7 @@
 
 #include <vector>
 
-class Window
+class Engine
 {
 public:
 	void execute();

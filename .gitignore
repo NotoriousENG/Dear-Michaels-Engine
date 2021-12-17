@@ -344,7 +344,7 @@ healthchecksdb
 *.zip
 
 # vscode
-.vscode
+*.vscode
 
 # Build files
 build

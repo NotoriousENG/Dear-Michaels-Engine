@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.7)
 
 # ADD OUR CMAKE DIRECTORY, NEEDED FOR GLM AND GLAD
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_src_DIR}/cmake)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 project(Dear-Michaels-Engine)
 
@@ -17,7 +17,7 @@ find_package(CEREAL REQUIRED)
 find_package(ASSIMP REQUIRED)
 
 # CUSTOM FIND SCRIPTS IN CMAKE DIRECTORY
-# find_package(GLM REQUIRED)
+find_package(GLM REQUIRED)
 
 add_executable(Dear-Michaels-Engine 
     # Engine

@@ -342,3 +342,9 @@ healthchecksdb
 !TryTryAgain/imgui.ini
 
 *.zip
+
+# Build files
+build
+*.sln
+*.vcxproj
+*.vcxproj.filters

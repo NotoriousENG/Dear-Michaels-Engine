@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SDL2/SDL.h>
 #include <glad/glad.h>
 
 class GL_RenderModule

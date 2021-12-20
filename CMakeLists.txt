@@ -19,6 +19,8 @@ find_package(ASSIMP REQUIRED)
 # CUSTOM FIND SCRIPTS IN CMAKE DIRECTORY
 find_package(GLM REQUIRED)
 
+add_compile_definitions(EDITOR)
+
 add_executable(Dear-Michaels-Engine 
     # Engine
     "src/Main.cpp"

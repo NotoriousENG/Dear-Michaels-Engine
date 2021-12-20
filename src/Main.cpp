@@ -4,8 +4,6 @@
 	#undef main
 #endif // main
 
-#define EDITOR
-
 #ifdef EDITOR
 #include <Modules/Editor/EditorModule.h>
 #endif // EDITOR

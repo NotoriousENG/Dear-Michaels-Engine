@@ -25,9 +25,6 @@ void GL_RenderModule::Init(void* proc, int w, int h)
     glDebugMessageControl(
         GL_DEBUG_SOURCE_API, GL_DEBUG_TYPE_ERROR, GL_DONT_CARE, 0, NULL, GL_TRUE);
 
-    // Use v-sync
-    SDL_GL_SetSwapInterval(1);
-
     glEnable(GL_DEPTH_TEST);
     // glDisable(GL_CULL_FACE);
 

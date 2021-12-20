@@ -1,5 +1,10 @@
 #include "SDL_GL_WindowModule.h"
 
+#ifdef EDITOR
+#include <imgui_impl_sdl.h>
+#include <imgui_impl_opengl3.h>
+#endif //EDITOR
+
 void SDL_GL_WindowModule::Init(bool* bQuit, GL_RenderModule* renderModule)
 {
     // store quit ptr
@@ -50,13 +55,19 @@ void SDL_GL_WindowModule::Init(bool* bQuit, GL_RenderModule* renderModule)
     maincontext = SDL_GL_CreateContext(window);
     if (maincontext == NULL)
         sdl_die("Failed to create OpenGL context");
+        
+    // Use v-sync
+    SDL_GL_SetSwapInterval(1);
 }
 
 void SDL_GL_WindowModule::Update()
 {
     while (SDL_PollEvent(&event)) {
         // Forward to Imgui
-        // ImGui_ImplSDL2_ProcessEvent(&event);
+#ifdef EDITOR
+        ImGui_ImplSDL2_ProcessEvent(&event);
+#endif //EDITOR
+
         switch (event.type)
         {
         case SDL_QUIT:

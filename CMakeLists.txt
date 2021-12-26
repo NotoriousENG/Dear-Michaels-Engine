@@ -16,6 +16,8 @@ find_package(SDL2 REQUIRED)
 find_package(CEREAL REQUIRED)
 find_package(ASSIMP REQUIRED)
 
+find_package(EnTT CONFIG REQUIRED)
+
 # CUSTOM FIND SCRIPTS IN CMAKE DIRECTORY
 find_package(GLM REQUIRED)
 
@@ -24,6 +26,13 @@ add_compile_definitions(EDITOR)
 add_executable(Dear-Michaels-Engine 
     # Engine
     "src/Main.cpp"
+
+    # Scene
+    "src/Scene/Scene.cpp"
+    "src/Scene/Entity.cpp"
+
+    # Editors
+    "src/Scene/Editor/SceneEditor.cpp"
 
     # Modules ------------------------------------
     "src/Modules/Editor/EditorModule.cpp"
@@ -56,19 +65,21 @@ add_executable(Dear-Michaels-Engine
 # ADD ALL OF OUR 3RD PARTY LIBS AND INCLUDES
 
 target_include_directories(Dear-Michaels-Engine PRIVATE ${SDL2_INCLUDE_DIRS})
-target_link_libraries(Dear-Michaels-Engine ${SDL2_LIBRARIES})
+target_link_libraries(Dear-Michaels-Engine PRIVATE ${SDL2_LIBRARIES})
 
 target_include_directories(Dear-Michaels-Engine PRIVATE ${GLM_INCLUDE_DIRS})
-target_link_libraries(Dear-Michaels-Engine ${GLM_LIBRARIES})
+target_link_libraries(Dear-Michaels-Engine PRIVATE ${GLM_LIBRARIES})
 
 target_include_directories(Dear-Michaels-Engine PRIVATE ${CEREAL_INCLUDE_DIRS})
-target_link_libraries(Dear-Michaels-Engine ${CEREAL_LIBRARIES})
+target_link_libraries(Dear-Michaels-Engine PRIVATE ${CEREAL_LIBRARIES})
 
 target_include_directories(Dear-Michaels-Engine PRIVATE ${ASSIMP_INCLUDE_DIRS})
-target_link_libraries(Dear-Michaels-Engine ${ASSIMP_LIBRARIES})
+target_link_libraries(Dear-Michaels-Engine PRIVATE ${ASSIMP_LIBRARIES})
+
+target_link_libraries(Dear-Michaels-Engine PRIVATE EnTT::EnTT)
 
 # needed for glad
-target_link_libraries(Dear-Michaels-Engine ${CMAKE_DL_LIBS})
+target_link_libraries(Dear-Michaels-Engine PRIVATE ${CMAKE_DL_LIBS})
 
 # LOCAL INCLUDES
 MACRO(HEADER_DIRECTORIES return_list)

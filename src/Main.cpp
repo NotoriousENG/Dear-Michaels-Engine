@@ -8,6 +8,8 @@
 #include <Modules/Editor/EditorModule.h>
 #endif // EDITOR
 
+#include "Scene/Scene.h"
+#include "Scene/Entity.h"
 
 int main(void)
 {
@@ -19,13 +21,18 @@ int main(void)
 
 	winModule.Init(&bQuit, &renModule);
 
-	{
+    {
 		void* proc;
 		int w;
 		int h;
 		winModule.GetRendererParams(proc, w, h);
 		renModule.Init(proc, w, h);
 	}
+
+    Scene s;
+
+    s.CreateEntity("Poop");
+    s.CreateEntity();
 
 #ifdef EDITOR
 	EditorModule editorModule;

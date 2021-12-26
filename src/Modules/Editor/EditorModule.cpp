@@ -76,6 +76,7 @@ void EditorModule::Update()
 	}
 	ImGui::End();
 
+    se.Draw();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

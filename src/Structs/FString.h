@@ -1,5 +1,8 @@
 #pragma once
 
+#include<stdarg.h>
+#include<stdio.h>
+
 struct FString
 {
 	// Constructs FString with accessable Text Element (char [255])

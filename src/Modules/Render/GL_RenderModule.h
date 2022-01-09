@@ -17,6 +17,8 @@ public:
 
 private:
 
+    void DrawMesh();
+
 	unsigned int framebuffer;
 	unsigned int textureColorbuffer;
 

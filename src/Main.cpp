@@ -10,6 +10,7 @@
 
 #include "Scene/Scene.h"
 #include "Scene/Entity.h"
+#include "Scene/Components.h"
 
 int main(void)
 {
@@ -31,7 +32,8 @@ int main(void)
 
     Scene s;
 
-    s.CreateEntity("Poop");
+    auto e = s.CreateEntity("Poop");
+    e.AddComponent<TransformComponent>();
     s.CreateEntity();
 
 #ifdef EDITOR

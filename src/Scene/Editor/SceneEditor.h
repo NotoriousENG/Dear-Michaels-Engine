@@ -2,19 +2,18 @@
 
 #include <entt/entt.hpp>
 
+#include "Modules/Editor/IEditor.h"
 #include "Scene/Scene.h"
 
 class NameComponent;
 
-class SceneEditor
+class SceneEditor : public IEditor
 {
 public:
-    void Draw();
-    void MenuItem();
+    virtual void Draw() override;
+    virtual void MenuItem() override;
 
     void ShowEntity(entt::entity entity, NameComponent* name = nullptr);
-
-    bool isActive;
 
 private:
     friend class Scene;

@@ -5,7 +5,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 project(Dear-Michaels-Engine)
 
-# C++20 
+# C++17
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -21,7 +21,7 @@ find_package(EnTT CONFIG REQUIRED)
 # CUSTOM FIND SCRIPTS IN CMAKE DIRECTORY
 find_package(GLM REQUIRED)
 
-add_compile_definitions(EDITOR)
+set(EDITOR true CACHE BOOL "Enable edtitor windows and tools developed with imgui")
 
 add_executable(Dear-Michaels-Engine 
     # Engine
@@ -31,11 +31,7 @@ add_executable(Dear-Michaels-Engine
     "src/Scene/Scene.cpp"
     "src/Scene/Entity.cpp"
 
-    # Editors
-    "src/Scene/Editor/SceneEditor.cpp"
-
     # Modules ------------------------------------
-    "src/Modules/Editor/EditorModule.cpp"
 
     "src/Modules/Render/GL_RenderModule.cpp"
 
@@ -46,21 +42,58 @@ add_executable(Dear-Michaels-Engine
     "src/stb_image.cpp" 
 
     # Third Party .c/.cpp
-    "src/ThirdParty/imgui-docking/backends/imgui_impl_opengl3.cpp" 
-    "src/ThirdParty/imgui-docking/backends/imgui_impl_sdl.cpp" 
-    "src/ThirdParty/imgui-docking/imgui.cpp" 
-    "src/ThirdParty/imgui-docking/imgui_demo.cpp" 
-    "src/ThirdParty/imgui-docking/imgui_draw.cpp" 
-    "src/ThirdParty/imgui-docking/imgui_tables.cpp" 
-    "src/ThirdParty/imgui-docking/imgui_widgets.cpp" 
-    "src/ThirdParty/imgui-docking/misc/cpp/imgui_stdlib.cpp" 
-    "src/ThirdParty/ImGuiFileDialog/ImGuiFileDialog.cpp" 
-    "src/ThirdParty/imguizmo/ImCurveEdit.cpp" 
-    "src/ThirdParty/imguizmo/ImGradient.cpp" 
-    "src/ThirdParty/imguizmo/ImGuizmo.cpp" 
-    "src/ThirdParty/imguizmo/ImSequencer.cpp" 
     "src/ThirdParty/glad/glad.c"
 )
+
+target_include_directories(
+    Dear-Michaels-Engine
+
+    PUBLIC "src"
+    PUBLIC "src/Modules/Render"
+    PUBLIC "src/Modules/Window"
+    PUBLIC "src/Scene"
+
+
+    # Third Party
+    PUBLIC "src/ThirdParty"
+    PUBLIC "src/ThirdParty/glad"
+)
+
+if (${EDITOR})
+
+    add_compile_definitions(EDITOR)
+
+    target_sources(Dear-Michaels-Engine
+        PRIVATE "src/Modules/Editor/EditorModule.cpp"
+        PRIVATE "src/Scene/Editor/SceneEditor.cpp"
+
+        # Third Party
+        PRIVATE "src/ThirdParty/imgui-docking/backends/imgui_impl_opengl3.cpp" 
+        PRIVATE "src/ThirdParty/imgui-docking/backends/imgui_impl_sdl.cpp" 
+        PRIVATE "src/ThirdParty/imgui-docking/imgui.cpp" 
+        PRIVATE "src/ThirdParty/imgui-docking/imgui_demo.cpp" 
+        PRIVATE "src/ThirdParty/imgui-docking/imgui_draw.cpp" 
+        PRIVATE "src/ThirdParty/imgui-docking/imgui_tables.cpp" 
+        PRIVATE "src/ThirdParty/imgui-docking/imgui_widgets.cpp" 
+        PRIVATE "src/ThirdParty/imgui-docking/misc/cpp/imgui_stdlib.cpp" 
+        PRIVATE "src/ThirdParty/ImGuiFileDialog/ImGuiFileDialog.cpp" 
+        PRIVATE "src/ThirdParty/imguizmo/ImCurveEdit.cpp" 
+        PRIVATE "src/ThirdParty/imguizmo/ImGradient.cpp" 
+        PRIVATE "src/ThirdParty/imguizmo/ImGuizmo.cpp" 
+        PRIVATE "src/ThirdParty/imguizmo/ImSequencer.cpp" 
+    )
+    target_include_directories(Dear-Michaels-Engine
+        PUBLIC "src/Modules/Editor"
+        PUBLIC "src/Scene/Editor"
+
+        # Third Party
+        PUBLIC "src/ThirdParty/imgui-docking"
+        PUBLIC "src/ThirdParty/imgui-docking/backends"
+        PUBLIC "src/ThirdParty/ImGuiFileDialog"
+        PUBLIC "src/ThirdParty/imguizmo"
+    )
+endif()
+
 
 # ADD ALL OF OUR 3RD PARTY LIBS AND INCLUDES
 
@@ -81,36 +114,11 @@ target_link_libraries(Dear-Michaels-Engine PRIVATE EnTT::EnTT)
 # needed for glad
 target_link_libraries(Dear-Michaels-Engine PRIVATE ${CMAKE_DL_LIBS})
 
-# LOCAL INCLUDES
-MACRO(HEADER_DIRECTORIES return_list)
-    FILE(GLOB_RECURSE new_list *.h)
-    SET(dir_list "")
-    FOREACH(file_path ${new_list})
-        GET_FILENAME_COMPONENT(dir_path ${file_path} PATH)
-        SET(dir_list ${dir_list} ${dir_path})
-    ENDFOREACH()
-    LIST(REMOVE_DUPLICATES dir_list)
-    SET(${return_list} ${dir_list})
-ENDMACRO()
-
-HEADER_DIRECTORIES(header_dir_list)
-
-list(LENGTH header_dir_list header_dir_list_count)
-message(STATUS "[INFO] Found ${header_dir_list_count} header directories.")
-
-target_include_directories(
-    Dear-Michaels-Engine
-    PUBLIC
-    ${header_dir_list} # Recursive
-)
-
-
-
-# COPY ASSETS AND REsrcS FOLDERS
-add_custom_target(copy_resrcs
+# COPY ASSETS AND RESOURCESS FOLDERS
+add_custom_target(copy_resources
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Resources ${CMAKE_CURRENT_BINARY_DIR}/Resources
 )
-add_dependencies(Dear-Michaels-Engine copy_resrcs)
+add_dependencies(Dear-Michaels-Engine copy_resources)
 
 add_custom_target(copy_assets
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/Assets ${CMAKE_CURRENT_BINARY_DIR}/Assets

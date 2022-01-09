@@ -1,6 +1,8 @@
 #pragma once
 
-#include <Scene/Editor/SceneEditor.h>
+#include <vector>
+#include <memory>
+#include <Modules/Editor/IEditor.h>
 
 class EditorModule
 {
@@ -9,7 +11,9 @@ public:
 	void Update();
 	void Shutdown();
 
-	SceneEditor se;
+    std::vector<std::unique_ptr<IEditor>> editors;
+
+    bool show_demo_window = false;
 
 private:
 	unsigned int texColorBuffer;

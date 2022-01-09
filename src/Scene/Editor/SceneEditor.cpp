@@ -38,7 +38,7 @@ void SceneEditor::Draw()
 
 void SceneEditor::MenuItem()
 {
-    ImGui::MenuItem("Hierarchy", "", &isActive);
+    ImGui::MenuItem("Hierarchy", "", &bDrawable);
 }
 
 void SceneEditor::ShowEntity(entt::entity id, NameComponent* name)

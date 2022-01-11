@@ -29,7 +29,7 @@ public:
     template<typename T>
     bool HasComponent()
     {
-        return scene->registry.any_of<T>(entityHandle);
+        return scene->registry.has<T>(entityHandle);
     }
 
     template<typename T>

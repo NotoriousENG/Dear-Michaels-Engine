@@ -14,7 +14,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # CMAKE SHIPS WITH THESE FIND SCRIPTS
 find_package(SDL2 REQUIRED)
 find_package(CEREAL REQUIRED)
-find_package(ASSIMP REQUIRED)
+find_package(ASSIMP CONFIG REQUIRED)
 
 find_package(EnTT CONFIG REQUIRED)
 
@@ -82,6 +82,7 @@ if (${EDITOR})
         PRIVATE "src/ThirdParty/imguizmo/ImGuizmo.cpp" 
         PRIVATE "src/ThirdParty/imguizmo/ImSequencer.cpp" 
     )
+
     target_include_directories(Dear-Michaels-Engine
         PUBLIC "src/Modules/Editor"
         PUBLIC "src/Scene/Editor"
@@ -92,13 +93,21 @@ if (${EDITOR})
         PUBLIC "src/ThirdParty/ImGuiFileDialog"
         PUBLIC "src/ThirdParty/imguizmo"
     )
+
+    if (WIN32)
+        target_include_directories(Dear-Michaels-Engine
+
+        # Third Party
+        PUBLIC "src/ThirdParty/ImGuiFileDialog/dirent/dirent.h"
+    )
+    endif()
 endif()
 
 
 # ADD ALL OF OUR 3RD PARTY LIBS AND INCLUDES
 
 target_include_directories(Dear-Michaels-Engine PRIVATE ${SDL2_INCLUDE_DIRS})
-target_link_libraries(Dear-Michaels-Engine PRIVATE ${SDL2_LIBRARIES})
+target_link_libraries(Dear-Michaels-Engine PRIVATE SDL2::SDL2 SDL2::SDL2main)
 
 target_include_directories(Dear-Michaels-Engine PRIVATE ${GLM_INCLUDE_DIRS})
 target_link_libraries(Dear-Michaels-Engine PRIVATE ${GLM_LIBRARIES})
@@ -107,7 +116,7 @@ target_include_directories(Dear-Michaels-Engine PRIVATE ${CEREAL_INCLUDE_DIRS})
 target_link_libraries(Dear-Michaels-Engine PRIVATE ${CEREAL_LIBRARIES})
 
 target_include_directories(Dear-Michaels-Engine PRIVATE ${ASSIMP_INCLUDE_DIRS})
-target_link_libraries(Dear-Michaels-Engine PRIVATE ${ASSIMP_LIBRARIES})
+target_link_libraries(Dear-Michaels-Engine PRIVATE  assimp::assimp)
 
 target_link_libraries(Dear-Michaels-Engine PRIVATE EnTT::EnTT)
 

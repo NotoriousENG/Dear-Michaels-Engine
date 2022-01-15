@@ -26,4 +26,5 @@ private:
 #ifdef EDITOR
     friend class SceneEditor;
 #endif //EDITOR
+    friend class GL_RenderModule;
 };

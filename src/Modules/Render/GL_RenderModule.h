@@ -2,6 +2,11 @@
 
 #include <glad/glad.h>
 
+namespace rm {
+	class Mesh;
+	class Shader;
+}
+
 class GL_RenderModule
 {
 public:
@@ -17,7 +22,7 @@ public:
 
 private:
 
-    void DrawMesh();
+    void DrawMesh(rm::Mesh* mesh, rm::Shader* shader);
 
 	unsigned int framebuffer;
 	unsigned int textureColorbuffer;

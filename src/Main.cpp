@@ -34,6 +34,7 @@ int main(void)
 
     auto e = s.CreateEntity("Poop");
     e.AddComponent<TransformComponent>();
+	e.AddComponent<StaticMeshComponent>();
     s.CreateEntity();
 
 #ifdef EDITOR

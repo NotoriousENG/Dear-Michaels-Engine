@@ -9,7 +9,7 @@
 #include "Texture.h"
 #include <glad/glad.h>
 #include <stb_image.h>
-#include <Panels/Console.h>
+// #include <Panels/Console.h>
 
 namespace rm
 {
@@ -47,7 +47,7 @@ namespace rm
         }
         else
         {
-            M_LOG("Texture failed to load at path %s", path.c_str());
+            printf("Texture failed to load at path %s", path.c_str());
         }
         // and finally free image data
         stbi_image_free(data);

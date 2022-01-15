@@ -34,6 +34,9 @@ add_executable(Dear-Michaels-Engine
     "src/Scene/Scene.cpp"
     "src/Scene/Entity.cpp"
 
+    # Camera
+    "src/Elements/Camera.cpp"
+
     # Modules ------------------------------------
 
     "src/Modules/Render/GL_RenderModule.cpp"
@@ -46,6 +49,15 @@ add_executable(Dear-Michaels-Engine
 
     # Third Party .c/.cpp
     "src/ThirdParty/glad/glad.c"
+
+    # Resources
+    "src/ResourceManagement/Material.cpp"
+    "src/ResourceManagement/Mesh.cpp"
+    "src/ResourceManagement/Model.cpp"
+    "src/ResourceManagement/ResourceManager.cpp"
+    "src/ResourceManagement/Shader.cpp"
+    # "src/ResourceManagement/Skybox.cpp"
+    "src/ResourceManagement/Texture.cpp"
 )
 
 target_include_directories(
@@ -54,12 +66,30 @@ target_include_directories(
     PUBLIC "src"
     PUBLIC "src/Modules/Render"
     PUBLIC "src/Modules/Window"
-    PUBLIC "src/Scene"
+    
+    # Scene
+    PUBLIC "src/Scene/Scene.h"
+    PUBLIC "src/Scene/Entity.h"
+    PUBLIC "src/Scene/Components.h"
+    PUBLIC "src/Scene/Systems/Systems.h"
+
+    # Camera
+    PUBLIC "src/Elements/Camera.h"
 
 
     # Third Party
     PUBLIC "src/ThirdParty"
     PUBLIC "src/ThirdParty/glad"
+
+    # Resources
+    PUBLIC "src/ResourceManagement/Material.h"
+    PUBLIC "src/ResourceManagement/Mesh.h"
+    PUBLIC "src/ResourceManagement/Model.h"
+    PUBLIC "src/ResourceManagement/Resource.h"
+    PUBLIC "src/ResourceManagement/ResourceManager.h"
+    PUBLIC "src/ResourceManagement/Shader.h"
+    # PUBLIC "src/ResourceManagement/Skybox.h"
+    PUBLIC "src/ResourceManagement/Texture.h"
 )
 
 if (${EDITOR})
@@ -100,9 +130,9 @@ if (${EDITOR})
     if (WIN32)
         target_include_directories(Dear-Michaels-Engine
 
-        # Third Party
-        PUBLIC "src/ThirdParty/ImGuiFileDialog/dirent/dirent.h"
-    )
+            # Third Party
+            PUBLIC "src/ThirdParty/ImGuiFileDialog/dirent/dirent.h"
+        )
     endif()
 endif()
 

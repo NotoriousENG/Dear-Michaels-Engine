@@ -4,7 +4,7 @@
 #include <cereal/cereal.hpp>
 #include <cereal/archives/json.hpp>
 #include <Serialization/CerealGLM.h>
-#include <Panels/Console.h>
+// #include <Panels/Console.h>
 #include "Structs/FString.h"
 #include <stack>
 #include <memory>
@@ -158,13 +158,13 @@ public:
 	{
 		if (this == child.get())
 		{
-			M_LOG("[warn]: parent and child can not be the same transform");
+			printf("[warn]: parent and child can not be the same transform");
 			return;
 		}
 
 		if (child == nullptr)
 		{
-			M_LOG("[warn]: child is null");
+			printf("[warn]: child is null");
 			return;
 		}
 
@@ -179,7 +179,7 @@ public:
 			s.pop();
 			if (v.get() == this)
 			{
-				M_LOG("[warn] cycle");
+				printf("[warn] cycle");
 				return;
 			}
 			if (!visited[v])

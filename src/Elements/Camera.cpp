@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include <Panels/Console.h>
+// #include <Panels/Console.h>
 #include <glm/gtx/matrix_decompose.hpp>
 
 Camera Camera::Main = Camera(glm::vec3(0, 0, 4), glm::vec3(0, 1, 0), -90);

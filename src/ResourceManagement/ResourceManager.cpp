@@ -13,7 +13,7 @@
 #include <fstream>
 
 #include "stb_image.h"
-#include "Panels/Console.h"
+// #include "Panels/Console.h"
 #include <memory>
 
 #include "Resource.h"

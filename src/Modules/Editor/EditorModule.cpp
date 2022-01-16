@@ -6,6 +6,8 @@
 #include <Modules/Editor/EditorStyles.h>
 
 #include <Scene/Editor/SceneEditor.h>
+#include <Input/Input.h>
+#include <Elements/Camera.h>
 
 void EditorModule::Init(unsigned int texColorBuffer)
 {
@@ -76,6 +78,10 @@ void EditorModule::Update()
 
     ImGui::Begin("GameWindow");
     {
+        auto inputVec = glm::vec3(Input::GetAxisRight(), Input::GetAxisUp(), Input::GetAxisForward());
+        ImGui::InputFloat3("Input: ", &inputVec[0]);
+        ImGui::InputFloat3("Camera: ", &Camera::Main.position[0]);
+
         bool playing = false;
         const char* playButtonLabel = playing ? "Press Escape to Exit Play Mode" : "Play (F5)";
         if (ImGui::Button(playButtonLabel))

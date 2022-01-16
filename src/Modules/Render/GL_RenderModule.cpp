@@ -12,6 +12,7 @@
 #include <Scene/Scene.h>
 #include <Scene/Components.h>
 #include <Elements/Camera.h>
+#include <Input/Input.h>
 
 void GL_RenderModule::Init(void* proc, int w, int h)
 {
@@ -79,6 +80,14 @@ void GL_RenderModule::Update()
 
     // make sure we clear the framebuffer's content
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    if (Input::MouseButtons[1])
+    {
+        Camera::Main.ProcessMouseMovement(Input::MouseRel.x, -Input::MouseRel.y);
+    }
+    
+    auto inputVec = glm::vec3(Input::GetAxisRight(), Input::GetAxisUp(), -Input::GetAxisForward());
+    Camera::Main.ProcessKeyboard(inputVec, .01f);
 
     // render objects here
     auto view = Scene::Instance->registry.view<TransformComponent, StaticMeshComponent>();

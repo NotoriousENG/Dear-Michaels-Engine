@@ -44,6 +44,9 @@ add_executable(Dear-Michaels-Engine
     "src/Modules/Window/SDL_GL_WindowModule.cpp"
     # --------------------------------------------
 
+    # Input
+    "src/Input/Input.cpp"
+
     # Implementation .c/cpp
     "src/stb_image.cpp" 
 
@@ -66,15 +69,16 @@ target_include_directories(
     PUBLIC "src"
     PUBLIC "src/Modules/Render"
     PUBLIC "src/Modules/Window"
+
+    # Input
+    PUBLIC "src/Input/"
     
     # Scene
-    PUBLIC "src/Scene/Scene.h"
-    PUBLIC "src/Scene/Entity.h"
-    PUBLIC "src/Scene/Components.h"
-    PUBLIC "src/Scene/Systems/Systems.h"
+    PUBLIC "src/Scene"
+    PUBLIC "src/Scene/Systems"
 
     # Camera
-    PUBLIC "src/Elements/Camera.h"
+    PUBLIC "src/Elements"
 
 
     # Third Party
@@ -82,14 +86,7 @@ target_include_directories(
     PUBLIC "src/ThirdParty/glad"
 
     # Resources
-    PUBLIC "src/ResourceManagement/Material.h"
-    PUBLIC "src/ResourceManagement/Mesh.h"
-    PUBLIC "src/ResourceManagement/Model.h"
-    PUBLIC "src/ResourceManagement/Resource.h"
-    PUBLIC "src/ResourceManagement/ResourceManager.h"
-    PUBLIC "src/ResourceManagement/Shader.h"
-    # PUBLIC "src/ResourceManagement/Skybox.h"
-    PUBLIC "src/ResourceManagement/Texture.h"
+    PUBLIC "src/ResourceManagement"
 )
 
 if (${EDITOR})

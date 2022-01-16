@@ -4,6 +4,8 @@
 #include <imgui_impl_sdl.h>
 #include <imgui_impl_opengl3.h>
 #endif //EDITOR
+#include <Input/Input.h>
+#include <glm/glm.hpp>
 
 void SDL_GL_WindowModule::Init(bool* bQuit, GL_RenderModule* renderModule)
 {
@@ -78,6 +80,40 @@ void SDL_GL_WindowModule::Update()
                 renderModule->framebuffer_size_callback(event.window.data1, event.window.data2);
             }
             break;
+        }
+
+        auto key = event.key.keysym.sym;
+        if (key < 1024)
+        {
+            if (event.type == SDL_KEYDOWN)
+                Input::Keys[key] = true;
+            else if (event.type == SDL_KEYUP)
+                Input::Keys[key] = false;
+        }
+        
+        if (event.type == SDL_MOUSEMOTION)
+        {
+            Input::MouseRel = glm::vec2(event.motion.xrel, event.motion.yrel);
+        }
+
+        auto button = event.button.button;
+        if (button >= 0 && button < 6)
+        {
+            if (event.type == SDL_MOUSEBUTTONDOWN)
+            {
+                Input::MouseButtons[button] = true;
+                Input::MouseButtonsDown[button] = true;
+            }
+            else if (event.type == SDL_MOUSEBUTTONUP)
+            {
+                Input::MouseButtons[button] = false;
+                Input::MouseButtonsUp[button] = true;
+            }
+            else
+            {
+                Input::MouseButtonsDown[button] = false;
+                Input::MouseButtonsUp[button] = false;
+            }
         }
     }
 

@@ -33,7 +33,7 @@ int main(void)
 
     Scene s;
 
-    auto& e = s.CreateEntity("Mario");
+    auto e = s.CreateEntity("Mario");
     e.AddComponent<TransformComponent>();
 	e.AddComponent<StaticMeshComponent>();
 

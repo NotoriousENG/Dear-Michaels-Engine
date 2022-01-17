@@ -120,6 +120,7 @@ if (${EDITOR})
 
         # Third Party
         PUBLIC "src/ThirdParty/imgui-docking"
+        PUBLIC "src/ThirdParty/imgui-docking/misc/cpp"
         PUBLIC "src/ThirdParty/imgui-docking/backends"
         PUBLIC "src/ThirdParty/ImGuiFileDialog"
         PUBLIC "src/ThirdParty/imguizmo"

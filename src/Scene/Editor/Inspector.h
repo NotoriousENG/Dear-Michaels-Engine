@@ -8,6 +8,7 @@
 #include <ThirdParty/imgui-docking/imgui.h>
 #include <imgui_stdlib.h>
 #include <ImGuizmo.h>
+#include <Components.h>
 
 class Inspector : public IEditor
 {
@@ -26,5 +27,10 @@ private:
     ImGuizmo::OPERATION mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
     ImGuizmo::MODE mCurrentGizmoMode = ImGuizmo::LOCAL;
 
+    bool fileDialogOpen = false;
+
     void ShowComponentHeader(const char* title);
+
+    void showFileDialog(StaticMeshComponent& mesh);
+
 };

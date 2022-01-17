@@ -2,6 +2,9 @@
 #include <Entity.h>
 #include <Scene/Components.h>
 #include <Elements/Camera.h>
+#include <ImGuiFileDialog.h>
+#include <ResourceManagement/ResourceManager.h>
+#include <Utility/Utility.h>
 
 void Inspector::Draw() 
 {
@@ -38,6 +41,51 @@ void Inspector::ShowComponents()
 
 		ShowComponentHeader("Transform");
 		EditTransform(glm::value_ptr(camera.view), glm::value_ptr(camera.projection), glm::distance(glm::normalize(camera.position), glm::vec3(0)), transform, transform, manipulated);
+	}
+
+	if (entity.HasComponent<StaticMeshComponent>())
+	{
+		auto& mesh = entity.GetComponent<StaticMeshComponent>();
+
+		ShowComponentHeader("Mesh");
+
+		if (ImGui::Button("Model:"))
+		{
+			ImGuiFileDialog::Instance()->OpenDialog("Load Model", "Load Model File", ".obj", "Assets/Models/");
+			fileDialogOpen = true;
+		}
+
+		float margin = 2;
+
+		ImGui::SameLine();
+		auto pos = ImGui::GetCursorScreenPos();
+		ImGui::PushTextWrapPos();
+		ImGui::Text(mesh.Model->Path.c_str());
+		ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImColor(1.0f, 1.0f, 1.0f, 0.25f));
+		ImGui::PopTextWrapPos();
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			auto payload = ImGui::AcceptDragDropPayload("ASSET_PATH");
+			if (payload != nullptr)
+			{
+				std::string data = (const char*)payload->Data;
+				if (data.find(".obj") != std::string::npos) {
+					mesh.Model = rm::ResourceManager::Load<rm::Model>(data.c_str());
+
+					mesh.ModelPath = data;
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+
+		if (fileDialogOpen) {
+			showFileDialog(mesh);
+		}
+		else if (ImGuiFileDialog::Instance()->IsOpened("Load Model"))
+		{
+			ImGuiFileDialog::Instance()->Close();
+		}
 	}
 }
 
@@ -189,4 +237,36 @@ void Inspector::EditTransform(float* cameraView, float* cameraProjection, float 
 		ImGui::EndChild();
 	}
 	ImGui::End();
+}
+
+void Inspector::showFileDialog(StaticMeshComponent& mesh)
+{
+	// display
+	if (ImGuiFileDialog::Instance()->Display("Load Model"))
+	{
+		// action if OK
+		if (ImGuiFileDialog::Instance()->IsOk())
+		{
+			std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+			std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+
+
+			int localIndex = filePathName.find("Assets");
+			if (localIndex != string::npos)
+			{
+				filePathName = filePathName.substr(localIndex);
+			}
+
+			filePathName = StringUtil::ReplaceAll(filePathName, "\\", "/");
+
+			mesh.Model = rm::ResourceManager::Load<rm::Model>(filePathName.c_str());
+
+			mesh.ModelPath = filePathName;
+
+			fileDialogOpen = false;
+		}
+
+		// close
+		ImGuiFileDialog::Instance()->Close();
+	}
 }

@@ -39,7 +39,7 @@ void GL_RenderModule::Init(void* proc, int w, int h)
     // glDisable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glClearColor(0.5f, 1.0f, 0.85f, 1.0f);
+    glClearColor(0.25f, .25f, 0.25f, 1.0f);
 
     // generate frame buffer
     glGenFramebuffers(1, &framebuffer);

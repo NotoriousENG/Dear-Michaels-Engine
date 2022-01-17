@@ -1,7 +1,6 @@
 #include "Scene.h"
-
-#include "Entity.h"
 #include "Components.h"
+#include <Entity.h>
 
 Scene* Scene::Instance = nullptr;
 

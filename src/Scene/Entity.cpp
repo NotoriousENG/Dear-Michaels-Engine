@@ -5,3 +5,8 @@ Entity::Entity(entt::entity handle, Scene* scene)
 {
     
 }
+
+entt::entity Entity::GetHandle()
+{
+    return entityHandle;
+}

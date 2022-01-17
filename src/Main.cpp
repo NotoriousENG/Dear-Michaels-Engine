@@ -33,9 +33,10 @@ int main(void)
 
     Scene s;
 
-    auto e = s.CreateEntity("Poop");
+    auto& e = s.CreateEntity("Mario");
     e.AddComponent<TransformComponent>();
 	e.AddComponent<StaticMeshComponent>();
+
     s.CreateEntity();
 
 #ifdef EDITOR

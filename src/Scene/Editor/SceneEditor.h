@@ -14,7 +14,4 @@ public:
     virtual void MenuItem() override;
 
     void ShowEntity(entt::entity entity, NameComponent* name = nullptr);
-
-private:
-    friend class Scene;
 };

@@ -96,6 +96,7 @@ if (${EDITOR})
     target_sources(Dear-Michaels-Engine
         PRIVATE "src/Modules/Editor/EditorModule.cpp"
         PRIVATE "src/Scene/Editor/SceneEditor.cpp"
+        PRIVATE "src/Scene/Editor/Inspector.cpp"
 
         # Third Party
         PRIVATE "src/ThirdParty/imgui-docking/backends/imgui_impl_opengl3.cpp" 

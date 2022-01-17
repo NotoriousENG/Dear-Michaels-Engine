@@ -40,6 +40,8 @@ public:
 
     operator bool() const {return (int)entityHandle != 0; }
 
+    entt::entity GetHandle();
+
 private:
     entt::entity entityHandle {0};
     Scene* scene = nullptr;

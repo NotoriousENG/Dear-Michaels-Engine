@@ -6,11 +6,13 @@
 #include <Modules/Editor/EditorStyles.h>
 
 #include <Scene/Editor/SceneEditor.h>
+#include <Scene/Editor/Inspector.h>
 #include <Input/Input.h>
 #include <Elements/Camera.h>
 
 void EditorModule::Init(GL_RenderModule* renderModule)
 {
+    editors.push_back(std::make_unique<Inspector>());
     editors.push_back(std::make_unique<SceneEditor>());
 
     this->renderModule = renderModule;
@@ -77,6 +79,7 @@ void EditorModule::Update()
         ImGui::EndMainMenuBar();
     }
 
+    ImGui::SetNextWindowSize(ImVec2(430, 450), ImGuiCond_FirstUseEver);
     ImGui::Begin("Debug");
     {
         auto inputVec = glm::vec3(Input::GetAxisRight(), Input::GetAxisUp(), Input::GetAxisForward());
@@ -85,6 +88,7 @@ void EditorModule::Update()
     }
     ImGui::End();
 
+    ImGui::SetNextWindowSize(ImVec2(430, 450), ImGuiCond_FirstUseEver);
     ImGui::Begin("GameWindow");
     {
         bool playing = false;

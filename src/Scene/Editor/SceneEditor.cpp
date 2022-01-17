@@ -19,7 +19,6 @@ void SceneEditor::Draw()
 
     ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(2, 2));
 
-    // Iterate placeholder objects (all the same data)
     auto view = Scene::Instance->registry.view<NameComponent>();
 
     // use forward iterators and get only the components of interest
@@ -47,7 +46,23 @@ void SceneEditor::ShowEntity(entt::entity id, NameComponent* name)
     ImGui::PushID((int)id);
     if (name != nullptr)
     {
+        if (id == Scene::Instance->selectedEntity)
+        {
+            ImGui::PushStyleColor(0, ImVec4(0, 1, 1, 1));
+        }
+
         ImGui::Text(name->Name.c_str());
+
+        if (id == Scene::Instance->selectedEntity)
+        {
+            ImGui::PopStyleColor();
+        }
+
+        // Pick actor from label
+        if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), true) && ImGui::IsMouseClicked(0))
+        {
+            Scene::Instance->selectedEntity = id;
+        }
     }
 
     ImGui::PopID();

@@ -10,7 +10,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd textures\\0x3b7d69bc.png
+map_Kd textures/0x3b7d69bc.png
 
 newmtl submesh_1
 Ns 225.000000
@@ -21,7 +21,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd textures\\0x39b36443.png
+map_Kd textures/0x39b36443.png
 
 newmtl submesh_2
 Ns 225.000000
@@ -32,7 +32,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd textures\\0x4c506d2f.png
+map_Kd textures/0x4c506d2f.png
 
 newmtl submesh_3
 Ns 225.000000
@@ -43,7 +43,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd textures\\0x95852189.png
+map_Kd textures/0x95852189.png
 
 newmtl submesh_4
 Ns 225.000000
@@ -54,7 +54,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd textures\\0xbc4e9ae5.png
+map_Kd textures/0xbc4e9ae5.png
 
 newmtl submesh_5
 Ns 225.000000
@@ -65,7 +65,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd textures\\0x96b71089.png
+map_Kd textures/0x96b71089.png
 
 newmtl submesh_6
 Ns 225.000000
@@ -76,7 +76,7 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd textures\\0x54faa61.png
+map_Kd textures/0x54faa61.png
 
 newmtl submesh_7
 Ns 225.000000
@@ -87,4 +87,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd textures\\0x73e72eb1.png
+map_Kd textures/0x73e72eb1.png

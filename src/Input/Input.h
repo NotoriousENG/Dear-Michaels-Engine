@@ -7,7 +7,7 @@ class Input
 public:
 	static bool Keys[1024];
 
-	static glm::vec2 MouseRel;
+	static glm::ivec2 MouseRel;
 	static bool MouseButtons[6];
 	static bool MouseButtonsDown[6];
 	static bool MouseButtonsUp[6];

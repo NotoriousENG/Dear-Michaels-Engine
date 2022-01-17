@@ -37,39 +37,20 @@ void GL_RenderModule::Init(void* proc, int w, int h)
 
     glEnable(GL_DEPTH_TEST);
     // glDisable(GL_CULL_FACE);
-
-    glViewport(0, 0, w, h);
-    glClearColor(0.5f, 1.0f, 0.85f, 1.0f);
-
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    glEnable(GL_DEPTH_TEST);
+    glClearColor(0.5f, 1.0f, 0.85f, 1.0f);
 
     // generate frame buffer
     glGenFramebuffers(1, &framebuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
-    // color attatchment texture
+    // generate texture
     glGenTextures(1, &textureColorbuffer);
-    glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1920, 1080, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
 
     // create a renderbuffer object for depth and stencil attachment (we won't be sampling these)
-    unsigned int rbo;
     glGenRenderbuffers(1, &rbo);
-    glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1920, 1080); // use a single renderbuffer object for both a depth AND stencil buffer.
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo); // now actually attach it
-    // now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-    {
-        printf("ERROR::FRAMEBUFFER:: Framebuffer is not complete!\n");
-    }
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    FrameBufferResizeCallback(w, h);
 }
 
 void GL_RenderModule::Update()
@@ -81,13 +62,19 @@ void GL_RenderModule::Update()
     // make sure we clear the framebuffer's content
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    if (Input::MouseButtons[1])
+    bool isStandalone = false;
+
+#ifndef EDITOR
+    isStandalone = true;
+#endif // EDITOR
+
+    if (Input::MouseButtons[3] || isStandalone)
     {
         Camera::Main.ProcessMouseMovement(Input::MouseRel.x, -Input::MouseRel.y);
+
+        auto inputVec = glm::vec3(Input::GetAxisRight(), Input::GetAxisUp(), -Input::GetAxisForward());
+        Camera::Main.ProcessKeyboard(inputVec, .01f);
     }
-    
-    auto inputVec = glm::vec3(Input::GetAxisRight(), Input::GetAxisUp(), -Input::GetAxisForward());
-    Camera::Main.ProcessKeyboard(inputVec, .01f);
 
     // render objects here
     auto view = Scene::Instance->registry.view<TransformComponent, StaticMeshComponent>();
@@ -113,7 +100,9 @@ void GL_RenderModule::Update()
     // any post processing can be done on the framebuffer before this step
     // this will get drawn over by the editor so our original framebuffer address is given to ImGui
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glBlitNamedFramebuffer(framebuffer, 0, 0, 0, 1920, 1080, 0, 0, w, h, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+#ifndef EDITOR
+    glBlitNamedFramebuffer(framebuffer, 0, 0, 0, w, h, 0, 0, w, h, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+#endif
     
     // call winbdow update afterwards to swap buffers, get events, etc
 }
@@ -132,13 +121,6 @@ void GL_RenderModule::openglCallbackFunction(GLenum source, GLenum type, GLuint 
         fprintf(stderr, "Aborting...\n");
         abort();
     }
-}
-
-void GL_RenderModule::framebuffer_size_callback(int width, int height)
-{
-    w = width;
-    h = height;
-    glViewport(0, 0, width, height);
 }
 
 unsigned int GL_RenderModule::GetTextureColorBuffer()
@@ -192,4 +174,42 @@ void GL_RenderModule::DrawMesh(rm::Mesh* mesh, rm::Shader* shader)
 
     // always good practice to set everything back to defaults once configured.
     glActiveTexture(GL_TEXTURE0);
+}
+
+void GL_RenderModule::FrameBufferResizeCallback(int w, int h)
+{
+    this->w = w;
+    this->h = h;
+    glViewport(0, 0, w, h);
+
+    Camera::Main.AspectRatio = (w / 800.0f) / (h / 800.0f);
+    Camera::Main.UpdateCameraVectors();
+
+    // Update GL Render Properties
+    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+
+    // color attatchment texture
+    
+    glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    // attatch it to the currently bound framebuffer object
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
+
+    // Renderbuffer begin:
+    glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, w, h); // use a single renderbuffer object for both a depth AND stencil buffer.
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo); // now actually attach it
+
+    // now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+    {
+        printf("ERROR::FRAMEBUFFER:: Framebuffer is not complete!\n");
+    }
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

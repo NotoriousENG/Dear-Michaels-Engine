@@ -27,6 +27,7 @@ int main(void)
 		int w;
 		int h;
 		winModule.GetRendererParams(proc, w, h);
+
 		renModule.Init(proc, w, h);
 	}
 
@@ -40,7 +41,7 @@ int main(void)
 #ifdef EDITOR
 	EditorModule editorModule;
 
-	editorModule.Init(renModule.GetTextureColorBuffer());
+	editorModule.Init(&renModule);
 #endif
 
 	// Update

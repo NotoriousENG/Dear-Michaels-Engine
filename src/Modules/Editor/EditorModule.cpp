@@ -9,11 +9,12 @@
 #include <Input/Input.h>
 #include <Elements/Camera.h>
 
-void EditorModule::Init(unsigned int texColorBuffer)
+void EditorModule::Init(GL_RenderModule* renderModule)
 {
     editors.push_back(std::make_unique<SceneEditor>());
 
-    this->texColorBuffer = texColorBuffer;
+    this->renderModule = renderModule;
+    this->texColorBuffer = renderModule->GetTextureColorBuffer();
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -76,12 +77,16 @@ void EditorModule::Update()
         ImGui::EndMainMenuBar();
     }
 
-    ImGui::Begin("GameWindow");
+    ImGui::Begin("Debug");
     {
         auto inputVec = glm::vec3(Input::GetAxisRight(), Input::GetAxisUp(), Input::GetAxisForward());
         ImGui::InputFloat3("Input: ", &inputVec[0]);
         ImGui::InputFloat3("Camera: ", &Camera::Main.position[0]);
+    }
+    ImGui::End();
 
+    ImGui::Begin("GameWindow");
+    {
         bool playing = false;
         const char* playButtonLabel = playing ? "Press Escape to Exit Play Mode" : "Play (F5)";
         if (ImGui::Button(playButtonLabel))
@@ -94,6 +99,12 @@ void EditorModule::Update()
 
         // Get the size of the child (i.e. the whole draw size of the windows).
         ImVec2 wsize = ImGui::GetWindowSize();
+
+        if (wsize.x != size.x || wsize.y != size.y)
+        {
+            size = wsize;
+            this->renderModule->FrameBufferResizeCallback(size.x, size.y);
+        }
 
         // Because I use the texture from OpenGL, I need to invert the V from the UV.
         ImGui::Image((ImTextureID)texColorBuffer, wsize, ImVec2(0, 1), ImVec2(1, 0));

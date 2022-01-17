@@ -16,9 +16,8 @@ public:
 	void Update();
 	void Shutdown();
 
-	void framebuffer_size_callback(int width, int height);
-
 	unsigned int GetTextureColorBuffer();
+	void FrameBufferResizeCallback(int w, int h);
 
 private:
 
@@ -26,6 +25,7 @@ private:
 
 	unsigned int framebuffer;
 	unsigned int textureColorbuffer;
+	unsigned int rbo;
 
 	int w;
 	int h;

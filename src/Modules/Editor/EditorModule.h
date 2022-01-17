@@ -3,11 +3,14 @@
 #include <vector>
 #include <memory>
 #include <Modules/Editor/IEditor.h>
+#include <functional>
+#include <imgui_impl_sdl.h>
+#include <GL_RenderModule.h>
 
 class EditorModule
 {
 public:
-	void Init(unsigned int texColorBuffer);
+	void Init(GL_RenderModule* renderModule);
 	void Update();
 	void Shutdown();
 
@@ -17,5 +20,8 @@ public:
 
 private:
 	unsigned int texColorBuffer;
+	ImVec2 size = ImVec2(1920, 1080);
+
+	GL_RenderModule* renderModule;
 };
 

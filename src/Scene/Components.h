@@ -19,7 +19,7 @@ struct StaticMeshComponent
 {
     StaticMeshComponent()
     {
-        this->ModelPath = "Assets/Models/cube/cube.obj";
+        this->ModelPath = "Assets/Models/mario/mario-tex.obj";
         this->ShaderPath = "Assets/Shaders/LoadModel.glsl";
         this->Model = std::make_shared<rm::Model>();
         this->Model->Init(ModelPath);

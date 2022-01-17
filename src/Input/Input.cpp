@@ -3,7 +3,7 @@
 
 bool Input::Keys[1024];
 
-glm::vec2 Input::MouseRel;
+glm::ivec2 Input::MouseRel;
 bool Input::MouseButtons[6];
 bool Input::MouseButtonsDown[6];
 bool Input::MouseButtonsUp[6];

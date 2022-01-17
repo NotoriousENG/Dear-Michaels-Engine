@@ -64,6 +64,8 @@ void SDL_GL_WindowModule::Init(bool* bQuit, GL_RenderModule* renderModule)
 
 void SDL_GL_WindowModule::Update()
 {
+    SDL_GetRelativeMouseState(&Input::MouseRel[0], &Input::MouseRel[1]);
+
     while (SDL_PollEvent(&event)) {
         // Forward to Imgui
 #ifdef EDITOR
@@ -77,7 +79,7 @@ void SDL_GL_WindowModule::Update()
             break;
         case SDL_WINDOWEVENT:
             if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                renderModule->framebuffer_size_callback(event.window.data1, event.window.data2);
+                renderModule->FrameBufferResizeCallback(event.window.data1, event.window.data2);
             }
             break;
         }
@@ -89,11 +91,6 @@ void SDL_GL_WindowModule::Update()
                 Input::Keys[key] = true;
             else if (event.type == SDL_KEYUP)
                 Input::Keys[key] = false;
-        }
-        
-        if (event.type == SDL_MOUSEMOTION)
-        {
-            Input::MouseRel = glm::vec2(event.motion.xrel, event.motion.yrel);
         }
 
         auto button = event.button.button;

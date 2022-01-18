@@ -80,15 +80,6 @@ void EditorModule::Update()
     }
 
     ImGui::SetNextWindowSize(ImVec2(430, 450), ImGuiCond_FirstUseEver);
-    ImGui::Begin("Debug");
-    {
-        auto inputVec = glm::vec3(Input::GetAxisRight(), Input::GetAxisUp(), Input::GetAxisForward());
-        ImGui::InputFloat3("Input: ", &inputVec[0]);
-        ImGui::InputFloat3("Camera: ", &Camera::Main.position[0]);
-    }
-    ImGui::End();
-
-    ImGui::SetNextWindowSize(ImVec2(430, 450), ImGuiCond_FirstUseEver);
     ImGui::Begin("GameWindow");
     {
         bool playing = false;

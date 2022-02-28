@@ -18,8 +18,10 @@ public:
 
     void OnUpdate(float delta);
 
-private:
     entt::registry registry;
+
+private:
+    
 
     friend class Entity;
 

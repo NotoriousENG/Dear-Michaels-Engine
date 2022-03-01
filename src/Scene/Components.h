@@ -15,6 +15,10 @@ struct NameComponent
 
     static void Assign(Entity entity)
     {
+        if (entity.HasComponent<NameComponent>())
+        {
+            return;
+        }
         entity.AddComponent<NameComponent>();
     }
 
@@ -35,6 +39,10 @@ struct TransformComponent
 
     static void Assign(Entity entity)
     {
+        if (entity.HasComponent<TransformComponent>())
+        {
+            return;
+        }
         entity.AddComponent<TransformComponent>();
     }
 
@@ -65,6 +73,10 @@ struct StaticMeshComponent
 
     static void Assign(Entity entity)
     {
+        if (entity.HasComponent<StaticMeshComponent>())
+        {
+            return;
+        }
         entity.AddComponent<StaticMeshComponent>();
     }
 

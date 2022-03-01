@@ -15,10 +15,7 @@ public:
     template<typename T, typename... Args>
     T& AddComponent(Args&&... args)
     {
-        if (HasComponent<T>())
-        {
-            return T();
-        }
+        ENGINE_ASSERT(!HasComponent<T>(), "Entity already has component");
         return scene->registry.emplace<T>(entityHandle, std::forward<Args>(args)...);
     }
 

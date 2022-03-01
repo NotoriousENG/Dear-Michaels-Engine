@@ -15,7 +15,10 @@ public:
     template<typename T, typename... Args>
     T& AddComponent(Args&&... args)
     {
-        ENGINE_ASSERT(!HasComponent<T>(), "Entity already has component");
+        if (HasComponent<T>())
+        {
+            return T();
+        }
         return scene->registry.emplace<T>(entityHandle, std::forward<Args>(args)...);
     }
 
@@ -35,7 +38,19 @@ public:
     template<typename T>
     void RemoveComponent()
     {
-        return scene->registry.remove<T>(entityHandle);
+        scene->registry.remove<T>(entityHandle);
+    }
+
+    void DestroyEntity()
+    {
+        scene->registry.destroy(entityHandle);
+#ifdef EDITOR
+        if (*Scene::Instance->selectedEntity == entityHandle)
+        {
+            delete(scene->Instance->selectedEntity);
+            scene->Instance->selectedEntity = nullptr;
+        }
+#endif // EDITOR
     }
 
     operator bool() const {return (int)entityHandle != 0; }
@@ -43,7 +58,7 @@ public:
     entt::entity GetHandle();
 
 private:
-    entt::entity entityHandle {0};
+    entt::entity entityHandle { };
     Scene* scene = nullptr;
 
     friend class Scene;

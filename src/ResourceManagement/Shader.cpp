@@ -16,6 +16,7 @@ namespace rm
 {
     Shader::~Shader()
     {
+        glUseProgram(0);
         glDeleteProgram(this->ID);
     }
     Shader& Shader::Use()

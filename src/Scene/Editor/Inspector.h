@@ -29,8 +29,10 @@ private:
 
     bool fileDialogOpen = false;
 
-    void ShowComponentHeader(const char* title);
+    void ShowComponentHeader(const char* title, Entity entity, std::function<void(Entity entity)> deleteCallback);
 
     void showFileDialog(StaticMeshComponent& mesh);
+
+    void addComponentButton(Entity entity);
 
 };

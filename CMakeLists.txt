@@ -33,6 +33,7 @@ add_executable(Dear-Michaels-Engine
     # Scene
     "src/Scene/Scene.cpp"
     "src/Scene/Entity.cpp"
+    "src/Scene/ComponentRegistry.cpp"
 
     # Camera
     "src/Elements/Camera.cpp"

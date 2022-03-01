@@ -30,7 +30,8 @@ void SceneEditor::Draw()
 
     ImGui::Separator();
 
-    // AddActor();
+    AddEntity();
+
     ImGui::PopStyleVar();
     ImGui::End();
 }
@@ -46,14 +47,14 @@ void SceneEditor::ShowEntity(entt::entity id, NameComponent* name)
     ImGui::PushID((int)id);
     if (name != nullptr)
     {
-        if (id == Scene::Instance->selectedEntity)
+        if (Scene::Instance->selectedEntity != nullptr && id == *Scene::Instance->selectedEntity)
         {
             ImGui::PushStyleColor(0, ImVec4(0, 1, 1, 1));
         }
 
         ImGui::Text(name->Name.c_str());
 
-        if (id == Scene::Instance->selectedEntity)
+        if (Scene::Instance->selectedEntity != nullptr && id == *Scene::Instance->selectedEntity)
         {
             ImGui::PopStyleColor();
         }
@@ -61,9 +62,17 @@ void SceneEditor::ShowEntity(entt::entity id, NameComponent* name)
         // Pick actor from label
         if (ImGui::IsMouseHoveringRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), true) && ImGui::IsMouseClicked(0))
         {
-            Scene::Instance->selectedEntity = id;
+            Scene::Instance->selectedEntity = new entt::entity(id);
         }
     }
 
     ImGui::PopID();
+}
+
+void SceneEditor::AddEntity()
+{
+    if (ImGui::Button("Add Entity"))
+    {
+        Scene::Instance->CreateEntity();
+    }
 }

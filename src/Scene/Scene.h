@@ -28,7 +28,7 @@ private:
 #ifdef EDITOR
     friend class SceneEditor;
     friend class Inspector;
-    entt::entity selectedEntity {0};
+    entt::entity* selectedEntity = nullptr;
 #endif //EDITOR
     friend class GL_RenderModule;
 };

@@ -6,7 +6,9 @@
 #include <ResourceManagement/ResourceManager.h>
 #include <Utility/Utility.h>
 
-void Inspector::Draw() 
+#include <ComponentRegistry.h>
+
+void Inspector::Draw()
 {
 	ImGui::SetNextWindowSize(ImVec2(430, 450), ImGuiCond_FirstUseEver);
 	ImGui::Begin("Inspector");
@@ -15,39 +17,63 @@ void Inspector::Draw()
 
 	ImGui::End();
 }
-void Inspector::MenuItem() 
+void Inspector::MenuItem()
 {
 	ImGui::MenuItem("Inspector", "", &bDrawable);
 }
 
 void Inspector::ShowComponents()
 {
-	auto entity = Entity(Scene::Instance->selectedEntity, Scene::Instance);
+	if (!Scene::Instance->selectedEntity)
+	{
+		return;
+	}
+
+	auto entity = Entity(*Scene::Instance->selectedEntity, Scene::Instance);
 
 	if (entity.HasComponent<NameComponent>())
 	{
+
+		ShowComponentHeader("Name", entity, [](Entity entity) {
+			entity.DestroyEntity(); 
+		});
+
+		if (!Scene::Instance->selectedEntity)
+		{
+			return;
+		}
+
 		auto& name = entity.GetComponent<NameComponent>();
-
-		ShowComponentHeader("Name");
-
 		ImGui::InputText("Name", &name.Name);
+
 	}
 
 	if (entity.HasComponent<TransformComponent>())
 	{
+		ShowComponentHeader("Transform", entity, [](Entity entity) {entity.RemoveComponent<TransformComponent>(); });
+
+		if (!entity.HasComponent<TransformComponent>())
+		{
+			return;
+		}
+
 		auto transform = glm::value_ptr(entity.GetComponent<TransformComponent>().transform);
 		auto& camera = Camera::Main;
 		bool manipulated = false;
 
-		ShowComponentHeader("Transform");
 		EditTransform(glm::value_ptr(camera.view), glm::value_ptr(camera.projection), glm::distance(glm::normalize(camera.position), glm::vec3(0)), transform, transform, manipulated);
 	}
 
 	if (entity.HasComponent<StaticMeshComponent>())
 	{
-		auto& mesh = entity.GetComponent<StaticMeshComponent>();
+		ShowComponentHeader("Mesh", entity, [](Entity entity) {entity.RemoveComponent<StaticMeshComponent>(); });
 
-		ShowComponentHeader("Mesh");
+		if (!entity.HasComponent<StaticMeshComponent>())
+		{
+			return;
+		}
+
+		auto& mesh = entity.GetComponent<StaticMeshComponent>();
 
 		if (ImGui::Button("Model:"))
 		{
@@ -87,30 +113,9 @@ void Inspector::ShowComponents()
 			ImGuiFileDialog::Instance()->Close();
 		}
 	}
-}
 
-void Inspector::ShowComponentHeader(const char* title)
-{
-	ImGui::Separator();
+	addComponentButton(entity);
 
-	if (ImGui::BeginTable("split", 2, ImGuiTableFlags_SizingStretchProp))
-	{
-		ImGui::TableNextColumn();
-		ImGui::Text(title);
-
-		ImGui::TableNextColumn();
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1, 0, 0, 1));
-		if (ImGui::Button("X"))
-		{
-			ImGui::PopStyleColor();
-			ImGui::EndTable();
-
-			return;
-		}
-		ImGui::PopStyleColor();
-
-		ImGui::EndTable();
-	}
 }
 
 void Inspector::EditTransform(float* cameraView, float* cameraProjection, float camDistance, float* local, float* world, bool& manipulated)
@@ -239,6 +244,30 @@ void Inspector::EditTransform(float* cameraView, float* cameraProjection, float 
 	ImGui::End();
 }
 
+void Inspector::ShowComponentHeader(const char* title, Entity entity, std::function<void(Entity entity)> deleteCallback)
+{
+	ImGui::Separator();
+
+	if (ImGui::BeginTable("split", 2, ImGuiTableFlags_SizingStretchProp))
+	{
+		ImGui::TableNextColumn();
+		ImGui::Text(title);
+
+		ImGui::TableNextColumn();
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(1, 0, 0, 1));
+		if (ImGui::Button("X"))
+		{
+			ImGui::PopStyleColor();
+			ImGui::EndTable();
+			deleteCallback(entity);
+			return;
+		}
+		ImGui::PopStyleColor();
+
+		ImGui::EndTable();
+	}
+}
+
 void Inspector::showFileDialog(StaticMeshComponent& mesh)
 {
 	// display
@@ -268,5 +297,34 @@ void Inspector::showFileDialog(StaticMeshComponent& mesh)
 
 		// close
 		ImGuiFileDialog::Instance()->Close();
+	}
+}
+
+void Inspector::addComponentButton(Entity entity)
+{
+	ImGui::Separator();
+
+	// Simple selection popup (if you want to show the current selection inside the Button itself,
+	// you may want to build a string using the "###" operator to preserve a constant ID with a variable label)
+	if (ImGui::Button("Add Component"))
+		ImGui::OpenPopup("Add Component Popup");
+	if (ImGui::BeginPopup("Add Component Popup"))
+	{
+		ImGui::Text("Components: ");
+		ImGui::Separator();
+		for (auto& c : ComponentRegistry::registeredComponents)
+		{
+			if (ImGui::Selectable(c.first.c_str()))
+			{
+				if (auto type = entt::resolve(c.second))
+				{
+					if (auto func = type.func(entt::hashed_string("Assign")))
+					{
+						func.invoke({}, entity);
+					}
+				}
+			}
+		}
+		ImGui::EndPopup();
 	}
 }

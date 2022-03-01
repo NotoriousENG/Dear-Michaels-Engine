@@ -12,85 +12,66 @@
 #include "Scene/Entity.h"
 #include "Scene/Components.h"
 
+#include "ComponentRegistry.h"
+
 int main(void)
 {
-	TransformComponent::RegisterComponent();
+	bool bQuit = false;
 
-	Scene s;
+	// Initialize Modules
+	SDL_GL_WindowModule winModule;
+	GL_RenderModule renModule;
 
-	auto entity = s.CreateEntity("Mario");
+	winModule.Init(&bQuit, &renModule);
 
-	auto type = entt::resolve(entt::hashed_string("TransformComponent"));
+    {
+		void* proc;
+		int w;
+		int h;
+		winModule.GetRendererParams(proc, w, h);
 
-	if (auto func = type.func(entt::hashed_string("assign")))
+		renModule.Init(proc, w, h);
+	}
+
+	ComponentRegistry::Init();
+
+    Scene s;
+
+	s.CreateEntity();
+
 	{
-		func.invoke({}, entity);
-	}
-	
-	// TransformComponent::assign(entity);
-	
-	// type.func(entt::hashed_string("assign")).invoke(registry, entity);
-
-	auto view = s.registry.view<TransformComponent>();
-
-	// use forward iterators and get only the components of interest
-	for (auto entity : view) {
-		auto& t = view.get<TransformComponent>(entity);
-		printf("TransformComponent\n");
+		auto e = s.CreateEntity("Mario");
+		e.AddComponent<TransformComponent>();
+		e.AddComponent<StaticMeshComponent>();
 	}
 
-	return 0;
+#ifdef EDITOR
+	EditorModule editorModule;
 
-//	bool bQuit = false;
-//
-//	// Initialize Modules
-//	SDL_GL_WindowModule winModule;
-//	GL_RenderModule renModule;
-//
-//	winModule.Init(&bQuit, &renModule);
-//
-//    {
-//		void* proc;
-//		int w;
-//		int h;
-//		winModule.GetRendererParams(proc, w, h);
-//
-//		renModule.Init(proc, w, h);
-//	}
-//
-//    Scene s;
-//
-//    auto e = s.CreateEntity("Mario");
-//    e.AddComponent<TransformComponent>();
-//	e.AddComponent<StaticMeshComponent>();
-//
-//    s.CreateEntity();
-//
-//#ifdef EDITOR
-//	EditorModule editorModule;
-//
-//	editorModule.Init(&renModule);
-//#endif
-//
-//	// Update
-//	while (!bQuit)
-//	{
-//		winModule.Update(); 
-//		renModule.Update();
-//
-//#ifdef EDITOR
-//		editorModule.Update();
-//#endif
-//
-//	}
-//
-//	// Shutdown
-//	winModule.Shutdown();
-//	renModule.Shutdown();
-//
-//#ifdef EDITOR
-//	editorModule.Shutdown();
-//#endif
+	editorModule.Init(&renModule);
+#endif
+
+	// Update
+	while (!bQuit)
+	{
+		winModule.Update(); 
+		renModule.Update();
+
+		s.OnUpdate(0);
+
+#ifdef EDITOR
+		editorModule.Update();
+#endif
+
+	}
+
+	// Shutdown
+	winModule.Shutdown();
+	renModule.Shutdown();
+
+#ifdef EDITOR
+	editorModule.Shutdown();
+#endif
 
 	return 0;
 }

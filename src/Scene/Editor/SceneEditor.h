@@ -14,4 +14,6 @@ public:
     virtual void MenuItem() override;
 
     void ShowEntity(entt::entity entity, NameComponent* name = nullptr);
+
+    void AddEntity();
 };

@@ -7,7 +7,7 @@ Camera Camera::Main = Camera(glm::vec3(0, 0, 4), glm::vec3(0, 1, 0), -90);
 void Camera::ProcessKeyboard(glm::vec3 input, float deltaTime)
 {
     float velocity = MovementSpeed * deltaTime;
-    position += input * velocity;
+    position += (Right * input.x + Up * input.y + Front * -input.z) * velocity;
 
     UpdateCameraVectors();
 }

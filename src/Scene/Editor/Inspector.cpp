@@ -114,6 +114,57 @@ void Inspector::ShowComponents()
 		}
 	}
 
+	if (entity.HasComponent<SpriteComponent>())
+	{
+		ShowComponentHeader("Sprite", entity, [](Entity entity) {entity.RemoveComponent<SpriteComponent>(); });
+
+		if (!entity.HasComponent<SpriteComponent>())
+		{
+			return;
+		}
+
+		auto& sprite = entity.GetComponent<SpriteComponent>();
+
+		if (ImGui::Button("Sprite:"))
+		{
+			ImGuiFileDialog::Instance()->OpenDialog("Load Sprite", "Load Sprite File", ".png", "Assets/Textures/");
+			fileDialogOpen = true;
+		}
+
+		float margin = 2;
+
+		ImGui::SameLine();
+		auto pos = ImGui::GetCursorScreenPos();
+		ImGui::PushTextWrapPos();
+		ImGui::Text(sprite.TexturePath.c_str());
+		ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImColor(1.0f, 1.0f, 1.0f, 0.25f));
+		ImGui::PopTextWrapPos();
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			auto payload = ImGui::AcceptDragDropPayload("ASSET_PATH");
+			if (payload != nullptr)
+			{
+				std::string data = (const char*)payload->Data;
+				if (data.find(".png") != std::string::npos) {
+					sprite.Sprite = rm::ResourceManager::Load<rm::Texture2D>(data.c_str());
+
+					sprite.TexturePath = data;
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+
+		if (fileDialogOpen) {
+			// showFileDialog(sprite);
+		}
+		else if (ImGuiFileDialog::Instance()->IsOpened("Load Model"))
+		{
+			ImGuiFileDialog::Instance()->Close();
+		}
+	}
+
+
 	addComponentButton(entity);
 
 }

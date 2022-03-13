@@ -14,14 +14,14 @@
 #include <Elements/Camera.h>
 #include <Input/Input.h>
 
-void GL_RenderModule::Init(void* proc, int w, int h)
+void GL_RenderModule::Init(void *proc, int w, int h)
 {
     this->w = w;
     this->h = h;
 
     // Check OpenGL properties
     printf("OpenGL loaded\n");
-    gladLoadGLLoader((GLADloadproc) proc);
+    gladLoadGLLoader((GLADloadproc)proc);
     printf("Vendor:   %s\n", glGetString(GL_VENDOR));
     printf("Renderer: %s\n", glGetString(GL_RENDERER));
     printf("Version:  %s\n", glGetString(GL_VERSION));
@@ -31,9 +31,9 @@ void GL_RenderModule::Init(void* proc, int w, int h)
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(openglCallbackFunction, nullptr);
     glDebugMessageControl(
-                GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_FALSE);
+        GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_FALSE);
     glDebugMessageControl(
-                GL_DEBUG_SOURCE_API, GL_DEBUG_TYPE_ERROR, GL_DONT_CARE, 0, NULL, GL_TRUE);
+        GL_DEBUG_SOURCE_API, GL_DEBUG_TYPE_ERROR, GL_DONT_CARE, 0, NULL, GL_TRUE);
 
     glEnable(GL_DEPTH_TEST);
     // glDisable(GL_CULL_FACE);
@@ -51,10 +51,39 @@ void GL_RenderModule::Init(void* proc, int w, int h)
     glGenRenderbuffers(1, &rbo);
 
     FrameBufferResizeCallback(w, h);
+
+    this->SpriteShader = rm::ResourceManager::Load<rm::Shader>("Assets/Shaders/Sprite.glsl");
+
+    // Init Quad
+    {
+        // configure VAO/VBO
+        unsigned int VBO;
+        float vertices[] = {
+            // pos      // tex
+            0.0f, 1.0f, 0.0f, 1.0f,
+            1.0f, 0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 0.0f,
+
+            0.0f, 1.0f, 0.0f, 1.0f,
+            1.0f, 1.0f, 1.0f, 1.0f,
+            1.0f, 0.0f, 1.0f, 0.0f};
+
+        glGenVertexArrays(1, &this->quadVAO);
+        glGenBuffers(1, &VBO);
+
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+        glBindVertexArray(this->quadVAO);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *)0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindVertexArray(0);
+    }
 }
 
 void GL_RenderModule::Update()
-{   
+{
     // bind to framebuffer and draw scene as we normally would to color texture
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
     glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
@@ -76,23 +105,50 @@ void GL_RenderModule::Update()
         Camera::Main.ProcessKeyboard(inputVec, .01f);
     }
 
-    // render objects here
-    auto view = Scene::Instance->registry.view<TransformComponent, StaticMeshComponent>();
+    { // render objects here
+        auto view = Scene::Instance->registry.view<TransformComponent, StaticMeshComponent>();
 
-    // use forward iterators and get only the components of interest
-    for (auto entity : view)
+        // use forward iterators and get only the components of interest
+        for (auto entity : view)
+
+        {
+            auto [transform, mesh] = view.get<TransformComponent, StaticMeshComponent>(entity);
+
+            auto shader = mesh.Model->meshes[0].material->Shader.get();
+
+            shader->Use();
+            shader->SetMatrix4("model", transform.transform);
+            shader->SetMatrix4("view", Camera::Main.view);
+            shader->SetMatrix4("projection", Camera::Main.projection);
+
+            mesh.Model->Draw(shader);
+        }
+    }
 
     {
-        auto [transform, mesh] = view.get<TransformComponent, StaticMeshComponent>(entity);
+        auto view = Scene::Instance->registry.view<TransformComponent, SpriteComponent>();
 
-        auto shader = mesh.Model->meshes[0].material->Shader.get();
+        // use forward iterators and get only the components of interest
+        for (auto entity : view)
 
-        shader->Use();
-        shader->SetMatrix4("model", transform.transform);
-        shader->SetMatrix4("view", Camera::Main.view);
-        shader->SetMatrix4("projection", Camera::Main.projection);
+        {
+            auto [transform, sprite] = view.get<TransformComponent, SpriteComponent>(entity);
 
-        mesh.Model->Draw(shader);
+            auto shader = this->SpriteShader.get();
+
+            shader->Use();
+            shader->SetMatrix4("model", transform.transform);
+            shader->SetMatrix4("view", Camera::Main.view);
+            shader->SetMatrix4("projection", Camera::Main.projection);
+            shader->SetVector3f("spriteColor", glm::vec3(1, 1, 1));
+
+            glActiveTexture(GL_TEXTURE0);
+            sprite.Sprite->Bind();
+
+            glBindVertexArray(this->quadVAO);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+            glBindVertexArray(0);
+        }
     }
     // ----------------------------------------------------------
 
@@ -103,7 +159,7 @@ void GL_RenderModule::Update()
 #ifndef EDITOR
     glBlitNamedFramebuffer(framebuffer, 0, 0, 0, w, h, 0, 0, w, h, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 #endif
-    
+
     // call winbdow update afterwards to swap buffers, get events, etc
 }
 
@@ -112,12 +168,17 @@ void GL_RenderModule::Shutdown()
     // window handles destroying the openGL context
 }
 
-void GL_RenderModule::openglCallbackFunction(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
+void GL_RenderModule::openglCallbackFunction(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message, const void *userParam)
 {
-    (void)source; (void)type; (void)id;
-    (void)severity; (void)length; (void)userParam;
+    (void)source;
+    (void)type;
+    (void)id;
+    (void)severity;
+    (void)length;
+    (void)userParam;
     fprintf(stderr, "%s\n", message);
-    if (severity == GL_DEBUG_SEVERITY_HIGH) {
+    if (severity == GL_DEBUG_SEVERITY_HIGH)
+    {
         fprintf(stderr, "Aborting...\n");
         abort();
     }
@@ -128,7 +189,7 @@ unsigned int GL_RenderModule::GetTextureColorBuffer()
     return textureColorbuffer;
 }
 
-void GL_RenderModule::DrawMesh(rm::Mesh* mesh, rm::Shader* shader)
+void GL_RenderModule::DrawMesh(rm::Mesh *mesh, rm::Shader *shader)
 {
     if (shader == mesh->material->Shader.get())
     {
@@ -189,7 +250,7 @@ void GL_RenderModule::FrameBufferResizeCallback(int w, int h)
     glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
     // color attatchment texture
-    
+
     glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

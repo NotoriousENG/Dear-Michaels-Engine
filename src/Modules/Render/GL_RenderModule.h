@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glad/glad.h>
+#include <memory>
 
 namespace rm {
 	class Mesh;
@@ -18,6 +19,10 @@ public:
 
 	unsigned int GetTextureColorBuffer();
 	void FrameBufferResizeCallback(int w, int h);
+
+	std::shared_ptr<rm::Shader> SpriteShader;
+
+	unsigned int quadVAO;
 
 private:
 

@@ -6,6 +6,7 @@
 #include <ResourceManagement/Model.h>
 #include <ResourceManagement/ResourceManager.h>
 #include "Scene/ComponentRegistry.h"
+#include <ResourceManagement/Texture.h>
 
 #include <Entity.h>
 
@@ -87,6 +88,36 @@ struct StaticMeshComponent
             .data<&StaticMeshComponent::ModelPath>(entt::hashed_string("ModelPath"))
             .data<&StaticMeshComponent::ShaderPath>(entt::hashed_string("ShaderPath"))
             .func<&StaticMeshComponent::Assign>(entt::hashed_string("Assign"));
+
+        ComponentRegistry::registeredComponents[name] = entt::hashed_string(name);
+    }
+};
+
+struct SpriteComponent
+{
+    SpriteComponent()
+    {
+        this->TexturePath = "Assets/Textures/awesomeface.png";
+        this->Sprite = rm::ResourceManager::Load<rm::Texture2D>(this->TexturePath);
+    }
+    std::shared_ptr<rm::Texture2D> Sprite;
+    std::string TexturePath = "Assets/Textures/awesomeface.png";
+
+    static void Assign(Entity entity)
+    {
+        if (entity.HasComponent<SpriteComponent>())
+        {
+            return;
+        }
+        entity.AddComponent<SpriteComponent>();
+    }
+
+    static void RegisterComponent()
+    {
+        auto name = "SpriteComponent";
+        auto f = entt::meta<SpriteComponent>().type(entt::hashed_string(name))
+            .data<&SpriteComponent::TexturePath>(entt::hashed_string("TexturePath"))
+            .func<&SpriteComponent::Assign>(entt::hashed_string("Assign"));
 
         ComponentRegistry::registeredComponents[name] = entt::hashed_string(name);
     }

@@ -10,6 +10,7 @@ void ComponentRegistry::Init()
 	NameComponent::RegisterComponent();
 	TransformComponent::RegisterComponent();
 	StaticMeshComponent::RegisterComponent();
+	SpriteComponent::RegisterComponent();
 
 	// REGISTER COMPONENTS HERE //
 

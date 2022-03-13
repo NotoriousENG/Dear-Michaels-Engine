@@ -60,13 +60,13 @@ void GL_RenderModule::Init(void *proc, int w, int h)
         unsigned int VBO;
         float vertices[] = {
             // pos      // tex
-            -.5f, .5f, 0.0f, 1.0f,
-            .5f, -.5f, 1.0f, 0.0f,
-            -.5f, -.5f, 0.0f, 0.0f,
+            -.5f, -.5f, 1.0f, 1.0f,
+            .5f, -.5f, 0.0f, 1.0f,
+            -.5f, .5f, 1.0f, 0.0f,
 
-            -.5f, .5f, 0.0f, 1.0f,
-            .5f, .5f, 1.0f, 1.0f,
-            .5f, -.5f, 1.0f, 0.0f
+            -.5f, .5f, 1.0f, 0.0f,
+            .5f, .5f, 0.0f, 0.0f,
+            .5f, -.5f, 0.0f, 1.0f
         };
 
         glGenVertexArrays(1, &this->quadVAO);

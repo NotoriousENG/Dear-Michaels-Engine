@@ -55,7 +55,7 @@ void Scene::OnUpdate(float delta)
         // use forward iterators and get only the components of interest
         for (auto entity : view)
         {
-            auto& [transform, move] = view.get<TransformComponent, MovementComponent>(entity);
+            auto [transform, move] = view.get<TransformComponent, MovementComponent>(entity);
 
             PlayerMove(transform, move, moveDir, delta);
         }

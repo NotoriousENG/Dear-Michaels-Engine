@@ -130,6 +130,15 @@ void SDL_GL_WindowModule::GetRendererParams(void*& proc, int& w, int& h)
     proc = (void*)SDL_GL_GetProcAddress;
 }
 
+float SDL_GL_WindowModule::GetDelta()
+{
+    float currentFrame = SDL_GetTicks();
+    float deltaTime = (currentFrame - lastFrame) * 0.001f;
+    lastFrame = currentFrame;
+
+    return deltaTime;
+}
+
 void SDL_GL_WindowModule::sdl_die(const char* message) {
     fprintf(stderr, "%s: %s\n", message, SDL_GetError());
     exit(2);

@@ -92,20 +92,6 @@ void GL_RenderModule::Update()
     // make sure we clear the framebuffer's content
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    bool isStandalone = false;
-
-#ifndef EDITOR
-    isStandalone = true;
-#endif // EDITOR
-
-    if (Input::MouseButtons[3] || isStandalone)
-    {
-        Camera::Main.ProcessMouseMovement(Input::MouseRel.x, -Input::MouseRel.y);
-
-        auto inputVec = glm::vec3(Input::GetAxisRight(), Input::GetAxisUp(), -Input::GetAxisForward());
-        Camera::Main.ProcessKeyboard(inputVec, .01f);
-    }
-
     { // render objects here
         auto view = Scene::Instance->registry.view<TransformComponent, StaticMeshComponent>();
 

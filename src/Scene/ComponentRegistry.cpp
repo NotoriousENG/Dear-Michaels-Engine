@@ -13,6 +13,8 @@ void ComponentRegistry::Init()
 	SpriteComponent::RegisterComponent();
 
 	// REGISTER COMPONENTS HERE //
+	MovementComponent::RegisterComponent();
+
 
 	ComponentRegistry::LogRegisteredComponents();
 }

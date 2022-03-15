@@ -34,6 +34,9 @@ void SceneEditor::Draw()
 
     ImGui::PopStyleVar();
     ImGui::End();
+
+    // short lived editors go here //
+
 }
 
 void SceneEditor::MenuItem()

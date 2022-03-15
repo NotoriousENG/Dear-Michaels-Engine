@@ -3,7 +3,6 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <Structs/FTransform.h>
 
 // Default camera values
 const float YAW = 0;

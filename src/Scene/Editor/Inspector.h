@@ -11,6 +11,7 @@
 #include <ImGuizmo.h>
 #include <Components.h>
 #include <Utility/Utility.h>
+#include <Structs/FString.h>
 
 class Inspector : public IEditor
 {

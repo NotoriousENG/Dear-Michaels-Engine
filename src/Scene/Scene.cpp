@@ -3,12 +3,22 @@
 #include <Entity.h>
 #include "Input.h"
 #include <SDL.h>
+#include <Elements/Camera.h>
+#include <Systems/Systems.h>
 
 Scene* Scene::Instance = nullptr;
 
 Scene::Scene() 
 {
     Instance = this;
+
+    {
+        auto e = this->CreateEntity("Smile");
+        e.AddComponent<TransformComponent>();
+        e.AddComponent<SpriteComponent>();
+        e.AddComponent<MovementComponent>();
+    }
+
 }
 
 Scene::~Scene() 
@@ -18,7 +28,34 @@ Scene::~Scene()
 
 void Scene::OnUpdate(float delta) 
 {
-    
+    bool isStandalone = false;
+
+#ifndef EDITOR
+    isStandalone = true;
+#endif // EDITOR
+
+    if (Input::MouseButtons[3] /*|| isStandalone*/)
+    {
+        Camera::Main.ProcessMouseMovement(Input::MouseRel.x, -Input::MouseRel.y);
+
+        auto inputVec = glm::vec3(Input::GetAxisRight(), Input::GetAxisUp(), -Input::GetAxisForward());
+        Camera::Main.ProcessKeyboard(inputVec, .01f);
+    }
+
+    glm::vec3 moveDir = glm::vec3(Input::GetAxisRight(), Input::GetAxisForward(), 0);
+
+    {
+        auto view = Scene::Instance->registry.view<TransformComponent, MovementComponent>();
+
+        // use forward iterators and get only the components of interest
+        for (auto entity : view)
+
+        {
+            auto& [transform, move] = view.get<TransformComponent, MovementComponent>(entity);
+
+            PlayerMove(transform, move, moveDir, delta);
+        }
+    }
 }
 
 Entity Scene::CreateEntity(const std::string& name) 

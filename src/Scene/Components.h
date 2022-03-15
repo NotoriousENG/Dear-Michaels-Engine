@@ -122,3 +122,27 @@ struct SpriteComponent
         ComponentRegistry::registeredComponents[name] = entt::hashed_string(name);
     }
 };
+
+struct MovementComponent
+{
+    float speed = 5.0f;
+
+    static void Assign(Entity entity)
+    {
+        if (entity.HasComponent<MovementComponent>())
+        {
+            return;
+        }
+        entity.AddComponent<MovementComponent>();
+    }
+
+    static void RegisterComponent()
+    {
+        auto name = "MovementComponent";
+        auto f = entt::meta<MovementComponent>().type(entt::hashed_string(name))
+            .data<&MovementComponent::speed>(entt::hashed_string("speed"))
+            .func<&MovementComponent::Assign>(entt::hashed_string("Assign"));
+
+        ComponentRegistry::registeredComponents[name] = entt::hashed_string(name);
+    }
+};

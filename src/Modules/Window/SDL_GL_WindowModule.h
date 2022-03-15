@@ -11,8 +11,10 @@ public:
 	void Shutdown();
 
 	void GetRendererParams(void*& proc, int& w, int& h);
+	float GetDelta();
 
 private:
+	float lastFrame = 0;
 	bool* bQuit;
 
 	SDL_Window* window;

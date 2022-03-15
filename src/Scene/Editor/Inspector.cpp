@@ -91,6 +91,20 @@ void Inspector::ShowComponents()
 		EditAssetInstance(sprite.Sprite, sprite.TexturePath, "Sprite", sprite.Sprite->ValidExtensions());
 	}
 
+	if (entity.HasComponent<MovementComponent>())
+	{
+		ShowComponentHeader("Movement", entity, [](Entity entity) {entity.RemoveComponent<MovementComponent>(); });
+
+		if (!entity.HasComponent<MovementComponent>())
+		{
+			return;
+		}
+
+		auto& move = entity.GetComponent<MovementComponent>();
+
+		ImGui::InputFloat("Speed", &move.speed);
+	}
+
 
 	addComponentButton(entity);
 

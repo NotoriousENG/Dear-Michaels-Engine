@@ -37,14 +37,6 @@ int main(void)
 
     Scene s;
 
-	s.CreateEntity();
-
-	{
-		auto e = s.CreateEntity("Mario");
-		e.AddComponent<TransformComponent>();
-		e.AddComponent<StaticMeshComponent>();
-	}
-
 #ifdef EDITOR
 	EditorModule editorModule;
 
@@ -57,7 +49,7 @@ int main(void)
 		winModule.Update(); 
 		renModule.Update();
 
-		s.OnUpdate(0);
+		s.OnUpdate(winModule.GetDelta());
 
 #ifdef EDITOR
 		editorModule.Update();

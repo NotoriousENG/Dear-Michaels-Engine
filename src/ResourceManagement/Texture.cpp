@@ -75,5 +75,10 @@ namespace rm
         glBindTexture(GL_TEXTURE_2D, this->ID);
     }
 
+    std::vector<std::string> Texture2D::ValidExtensions()
+    {
+        return std::vector<std::string>{".png", ".jpg", ".jpeg", ".bmp", ".tga"};
+    }
+
 }
 

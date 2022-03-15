@@ -23,7 +23,6 @@ namespace rm
         // model data 
         vector<Mesh>    meshes;
         std::string directory;
-        std::string Path;
         bool gammaCorrection = false;
 
         // constructor, expects a filepath to a 3D model.
@@ -37,6 +36,8 @@ namespace rm
 
         // loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
         void loadModel(string const& path);
+
+        std::vector<std::string> ValidExtensions() override;
 
     private:
         

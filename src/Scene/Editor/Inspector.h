@@ -25,6 +25,75 @@ private:
 
     void EditTransform(float *cameraView, float *cameraProjection, float camDistance, float *local, float *world, bool &manipulated);
 
+    template<typename T>
+    void EditAssetInstance(std::shared_ptr<T>& asset, std::string& serializedPath, std::string assetDescriptiveName, std::vector<std::string> fileExtensions)
+    {
+        static_assert(std::is_base_of<rm::Resource, T>::value, "Asset must derive from Resource");
+
+        if (ImGui::Button(assetDescriptiveName.c_str()))
+        {
+            std::string extListStr = assetDescriptiveName;
+            extListStr += "(";
+            for (auto& ext : fileExtensions)
+            {
+                extListStr += "*";
+                extListStr += ext;
+                extListStr += ";";
+            }
+            extListStr += ")";
+
+            extListStr += "{";
+            for (auto& ext : fileExtensions)
+            {
+                extListStr += ext;
+                extListStr += ",";
+            }
+            extListStr += "},.*";
+
+            ImGuiFileDialog::Instance()->OpenDialog("Load Asset", FString("Load %s", assetDescriptiveName.c_str()).Text, extListStr.c_str(), "Assets/");
+            fileDialogOpen = true;
+        }
+
+        float margin = 2;
+
+        ImGui::SameLine();
+        auto pos = ImGui::GetCursorScreenPos();
+        ImGui::PushTextWrapPos();
+        ImGui::Text(asset->path.c_str());
+        ImGui::GetWindowDrawList()->AddRect(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), ImColor(1.0f, 1.0f, 1.0f, 0.25f));
+        ImGui::PopTextWrapPos();
+
+        if (ImGui::BeginDragDropTarget())
+        {
+            auto payload = ImGui::AcceptDragDropPayload("ASSET_PATH");
+            if (payload != nullptr)
+            {
+                std::string data = (const char*)payload->Data;
+
+                bool found = false;
+                for (auto& ext : fileExtensions)
+                {
+                    found |= data.find(ext) != std::string::npos;
+                }
+
+                if (found) {
+                    asset = rm::ResourceManager::Load<T>(data.c_str());
+
+                    serializedPath = data;
+                }
+            }
+            ImGui::EndDragDropTarget();
+        }
+
+        if (fileDialogOpen) {
+            showFileDialog(asset, serializedPath);
+        }
+        else if (ImGuiFileDialog::Instance()->IsOpened("Load Asset"))
+        {
+            ImGuiFileDialog::Instance()->Close();
+        }
+    }
+
     bool useSnap = false;
     ImGuizmo::OPERATION mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
     ImGuizmo::MODE mCurrentGizmoMode = ImGuizmo::LOCAL;

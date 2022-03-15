@@ -30,7 +30,6 @@ namespace rm
         unsigned int Filter_Min; // filtering mode if texture pixels < screen pixels
         unsigned int Filter_Max; // filtering mode if texture pixels > screen pixels
 
-        std::string path;
         std::string type;
         // constructor (sets default texture modes)
         Texture2D();
@@ -40,6 +39,8 @@ namespace rm
         void Generate(unsigned int width, unsigned int height, unsigned char* data);
         // binds the texture as the current active GL_TEXTURE_2D texture object
         void Bind() const;
+
+        std::vector<std::string> ValidExtensions() override;
     };
 }
 

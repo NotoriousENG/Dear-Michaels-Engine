@@ -16,6 +16,7 @@ public:
 
     std::vector<std::unique_ptr<IEditor>> editors;
 
+	static bool playing;
     bool show_demo_window = false;
 
 private:

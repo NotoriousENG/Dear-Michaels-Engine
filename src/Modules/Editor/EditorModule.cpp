@@ -10,6 +10,8 @@
 #include <Input/Input.h>
 #include <Elements/Camera.h>
 
+bool EditorModule::playing = false;
+
 void EditorModule::Init(GL_RenderModule* renderModule)
 {
     editors.push_back(std::make_unique<Inspector>());
@@ -82,7 +84,6 @@ void EditorModule::Update()
     ImGui::SetNextWindowSize(ImVec2(430, 450), ImGuiCond_FirstUseEver);
     ImGui::Begin("GameWindow");
     {
-        bool playing = false;
         const char* playButtonLabel = playing ? "Press Escape to Exit Play Mode" : "Play (F5)";
         if (ImGui::Button(playButtonLabel))
         {

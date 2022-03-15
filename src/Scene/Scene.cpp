@@ -6,6 +6,10 @@
 #include <Elements/Camera.h>
 #include <Systems/Systems.h>
 
+#ifdef EDITOR
+#include <EditorModule.h>
+#endif // EDITOR
+
 Scene* Scene::Instance = nullptr;
 
 Scene::Scene() 
@@ -28,13 +32,13 @@ Scene::~Scene()
 
 void Scene::OnUpdate(float delta) 
 {
-    bool isStandalone = false;
+    bool isPlaying = true;
 
-#ifndef EDITOR
-    isStandalone = true;
+#ifdef EDITOR
+    isPlaying = EditorModule::playing;
 #endif // EDITOR
 
-    if (Input::MouseButtons[3] /*|| isStandalone*/)
+    if (Input::MouseButtons[3] && !isPlaying)
     {
         Camera::Main.ProcessMouseMovement(Input::MouseRel.x, -Input::MouseRel.y);
 
@@ -44,12 +48,12 @@ void Scene::OnUpdate(float delta)
 
     glm::vec3 moveDir = glm::vec3(Input::GetAxisRight(), Input::GetAxisForward(), 0);
 
+    if (isPlaying)
     {
         auto view = Scene::Instance->registry.view<TransformComponent, MovementComponent>();
 
         // use forward iterators and get only the components of interest
         for (auto entity : view)
-
         {
             auto& [transform, move] = view.get<TransformComponent, MovementComponent>(entity);
 

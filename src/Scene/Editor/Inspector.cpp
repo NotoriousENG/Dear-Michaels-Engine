@@ -2,7 +2,6 @@
 #include <Entity.h>
 #include <Scene/Components.h>
 #include <Elements/Camera.h>
-#include <ImGuiFileDialog.h>
 #include <ResourceManagement/ResourceManager.h>
 #include <Utility/Utility.h>
 
@@ -77,7 +76,7 @@ void Inspector::ShowComponents()
 
 		if (ImGui::Button("Model:"))
 		{
-			ImGuiFileDialog::Instance()->OpenDialog("Load Model", "Load Model File", ".obj", "Assets/Models/");
+			ImGuiFileDialog::Instance()->OpenDialog("Load Asset", "Load Model File", ".obj", "Assets/Models/");
 			fileDialogOpen = true;
 		}
 
@@ -106,9 +105,9 @@ void Inspector::ShowComponents()
 		}
 
 		if (fileDialogOpen) {
-			showFileDialog(mesh);
+			showFileDialog(mesh.Model, mesh.ModelPath);
 		}
-		else if (ImGuiFileDialog::Instance()->IsOpened("Load Model"))
+		else if (ImGuiFileDialog::Instance()->IsOpened("Load Asset"))
 		{
 			ImGuiFileDialog::Instance()->Close();
 		}
@@ -127,7 +126,10 @@ void Inspector::ShowComponents()
 
 		if (ImGui::Button("Sprite:"))
 		{
-			ImGuiFileDialog::Instance()->OpenDialog("Load Sprite", "Load Sprite File", ".png", "Assets/Textures/");
+			ImGuiFileDialog::Instance()->OpenDialog("Load Asset", "Load Sprite File", 
+				"Image file (*.png;*.jpg;*.jpeg;*.bmp;*.tga){.png,.jpg,.jpeg,.bmp,.tga},.*", 
+				"Assets/Textures/");
+				
 			fileDialogOpen = true;
 		}
 
@@ -156,9 +158,9 @@ void Inspector::ShowComponents()
 		}
 
 		if (fileDialogOpen) {
-			// showFileDialog(sprite);
+			showFileDialog(sprite.Sprite, sprite.TexturePath);
 		}
-		else if (ImGuiFileDialog::Instance()->IsOpened("Load Model"))
+		else if (ImGuiFileDialog::Instance()->IsOpened("Load Asset"))
 		{
 			ImGuiFileDialog::Instance()->Close();
 		}
@@ -316,38 +318,6 @@ void Inspector::ShowComponentHeader(const char* title, Entity entity, std::funct
 		ImGui::PopStyleColor();
 
 		ImGui::EndTable();
-	}
-}
-
-void Inspector::showFileDialog(StaticMeshComponent& mesh)
-{
-	// display
-	if (ImGuiFileDialog::Instance()->Display("Load Model"))
-	{
-		// action if OK
-		if (ImGuiFileDialog::Instance()->IsOk())
-		{
-			std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-			std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
-
-
-			int localIndex = filePathName.find("Assets");
-			if (localIndex != string::npos)
-			{
-				filePathName = filePathName.substr(localIndex);
-			}
-
-			filePathName = StringUtil::ReplaceAll(filePathName, "\\", "/");
-
-			mesh.Model = rm::ResourceManager::Load<rm::Model>(filePathName.c_str());
-
-			mesh.ModelPath = filePathName;
-
-			fileDialogOpen = false;
-		}
-
-		// close
-		ImGuiFileDialog::Instance()->Close();
 	}
 }
 

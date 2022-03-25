@@ -38,7 +38,7 @@ void Scene::OnUpdate(float delta)
     isPlaying = EditorModule::playing;
 #endif // EDITOR
 
-    if (Input::MouseButtons[3] && !isPlaying)
+    if (Input::MouseButtons[3])
     {
         Camera::Main.ProcessMouseMovement(Input::MouseRel.x, -Input::MouseRel.y);
 
@@ -48,7 +48,9 @@ void Scene::OnUpdate(float delta)
 
     glm::vec3 moveDir = glm::vec3(Input::GetAxisRight(), Input::GetAxisForward(), 0);
 
-    if (isPlaying)
+    moveDir = glm::length(moveDir) != 0 ? glm::normalize(moveDir) : glm::vec3(0, 0, 0);
+
+    if (isPlaying && !Input::MouseButtons[3])
     {
         auto view = Scene::Instance->registry.view<TransformComponent, MovementComponent>();
 

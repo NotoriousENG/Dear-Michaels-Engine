@@ -36,6 +36,7 @@ void SDL_GL_WindowModule::Init(bool* bQuit, GL_RenderModule* renderModule)
     SDL_GL_SetAttribute(
         SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG
     );
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 4);
 
     // Create the window
     if (SCREEN_FULLSCREEN) {
@@ -59,7 +60,8 @@ void SDL_GL_WindowModule::Init(bool* bQuit, GL_RenderModule* renderModule)
         sdl_die("Failed to create OpenGL context");
         
     // Use v-sync
-    SDL_GL_SetSwapInterval(1);
+    // 0 for immediate updates, 1 for updates synchronized with the vertical retrace, -1 for adaptive vsync
+    SDL_GL_SetSwapInterval(0);
 }
 
 void SDL_GL_WindowModule::Update()

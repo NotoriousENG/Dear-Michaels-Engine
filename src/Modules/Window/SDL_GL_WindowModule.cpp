@@ -36,7 +36,11 @@ void SDL_GL_WindowModule::Init(bool* bQuit, GL_RenderModule* renderModule)
     SDL_GL_SetAttribute(
         SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG
     );
-    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 4);
+
+    // Enable multi sample buffer
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+    // Set Samples to 4
+    SDL_GL_SetAttribute( SDL_GL_MULTISAMPLESAMPLES, 4); 
 
     // Create the window
     if (SCREEN_FULLSCREEN) {

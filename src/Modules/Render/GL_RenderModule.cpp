@@ -57,24 +57,11 @@ void GL_RenderModule::Init(void *proc, int w, int h)
 
     // Init Quad
     {
-        // configure VAO/VBO
-        unsigned int VBO;
-        float vertices[] = {
-            // pos      // tex
-            -.5f, -.5f, 1.0f, 1.0f,
-            .5f, -.5f, 0.0f, 1.0f,
-            -.5f, .5f, 1.0f, 0.0f,
-
-            -.5f, .5f, 1.0f, 0.0f,
-            .5f, .5f, 0.0f, 0.0f,
-            .5f, -.5f, 0.0f, 1.0f
-        };
-
         glGenVertexArrays(1, &this->quadVAO);
-        glGenBuffers(1, &VBO);
+        glGenBuffers(1, &quadVBO);
 
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
 
         glBindVertexArray(this->quadVAO);
         glEnableVertexAttribArray(0);
@@ -153,7 +140,14 @@ void GL_RenderModule::Update()
 
 void GL_RenderModule::Shutdown()
 {
-    // window handles destroying the openGL context
+    // free quad data
+    glDeleteBuffers(1, &quadVBO);
+    glDeleteVertexArrays(1, &quadVAO);
+
+    // free framebuffers
+    glDeleteTextures(1, &textureColorbuffer);
+    glDeleteRenderbuffers(1, &rbo);
+    glDeleteFramebuffers(1, &framebuffer);
 }
 
 void GL_RenderModule::openglCallbackFunction(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *message, const void *userParam)
